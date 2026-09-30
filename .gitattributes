@@ -1,0 +1,10 @@
+# Keep line endings LF in the repository. The shell steps in
+# .github/workflows/release.yml and the shebangs in scripts/ run on Linux, where
+# a CRLF would break them.
+* text=auto eol=lf
+
+# Binary formats are never line-ending converted.
+*.pptx binary
+*.pdf  binary
+*.zip  binary
+*.png  binary

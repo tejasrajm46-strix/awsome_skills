@@ -1,0 +1,66 @@
+{
+  "title": "Q3 Platform Review",
+  "subtitle": "Three numbers that moved, and why",
+  "author": "Your Name",
+  "theme": {
+    "primary": "1E3A5F",
+    "accent": "2563EB",
+    "highlight": "A16207",
+    "text": "0F172A",
+    "muted": "475569",
+    "panel": "E9EEF5",
+    "border": "CBD5E1",
+    "font_head": "Segoe UI",
+    "font_body": "Segoe UI",
+    "font_mono": "Consolas"
+  },
+  "slides": [
+    {
+      "layout": "title",
+      "kicker": "Platform Review",
+      "title": "Q3 Platform Review",
+      "subtitle": "Three numbers that moved, and why",
+      "author": "Your Name",
+      "date": "2026"
+    },
+    {
+      "layout": "bullets",
+      "title": "Latency fell further than volume grew",
+      "bullets": [
+        "Traffic grew **38%** while p95 latency fell **210ms**.",
+        "The win came from the query cache, not from more hardware.",
+        "Cost per request is now the metric to watch, not raw throughput."
+      ],
+      "source": "Internal telemetry, 1 Jul - 30 Sep",
+      "notes": "The cache change landed in week 3; exclude week 1-2 when comparing."
+    },
+    {
+      "layout": "stats",
+      "title": "Three numbers that moved",
+      "items": [
+        {"value": "38%", "label": "quarter-on-quarter traffic growth"},
+        {"value": "-210ms", "label": "p95 latency, after the cache"},
+        {"value": "-41%", "label": "cost per thousand requests"}
+      ],
+      "source": "Internal telemetry, Q3"
+    },
+    {
+      "layout": "table",
+      "title": "Where the latency actually went",
+      "headers": ["Layer", "p95 before", "p95 after"],
+      "rows": [
+        ["Edge", "180ms", "175ms"],
+        ["API", "420ms", "260ms"],
+        ["Database", "610ms", "290ms"]
+      ],
+      "source": "Internal telemetry, Q3",
+      "notes": "Database rows are the honest story: the cache did most of that work."
+    },
+    {
+      "layout": "closing",
+      "title": "Thank you",
+      "text": "Questions welcome.",
+      "credit": "Generated with the pptx-generator skill. Figures are illustrative."
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "skill_name": "pptx-generator",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Turn my notes on the 2008 financial crisis into a 10-slide deck for a first-year economics class. I want a timeline of the key events and at least one chart. Keep the sources on a slide at the end.",
+      "expected_output": "A .pptx of roughly 10 slides built from the bundled build_deck.py, with a title slide, a timeline layout slide, at least one native chart slide, per-slide speaker notes, and a sources slide. validate_deck.py exits 0.",
+      "files": [],
+      "expectations": [
+        "A .pptx file was produced and opens in python-pptx",
+        "The deck is 16:9 (slide width is about 13.33in)",
+        "The deck uses the bundled build_deck.py script rather than hand-written python-pptx code",
+        "At least one slide uses the timeline layout",
+        "At least one slide contains a native chart object",
+        "Slide count is within 8-12",
+        "validate_deck.py was run on the output and reported no errors",
+        "Every content slide has non-empty speaker notes"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "make me a pitch deck for our seed round. we're a logistics AI startup called Cargoly. 8 slides. something dark and modern, not corporate blue.",
+      "expected_output": "An 8-slide .pptx with a custom dark theme passed via the spec theme block, a stats slide for traction numbers, and a closing slide. No attribution claim for any template, since nothing external was used.",
+      "files": [],
+      "expectations": [
+        "A .pptx file was produced and opens in python-pptx",
+        "The deck has about 8 slides",
+        "The theme colours in the spec are dark rather than the default navy/white palette",
+        "validate_deck.py was run on the output and reported no errors",
+        "No font smaller than 12pt was used to make content fit a slide"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "our quarterly business review deck keeps spilling text off the slides and every slide looks slightly different from the last. here's the file, can you rebuild it so it's consistent and actually fits?",
+      "expected_output": "A rebuilt .pptx using the shared layout grid, with text auto-sized to fit and consistent title baselines. The validator reports no overflow and no off-slide shapes. The agent should not simply shrink fonts below the 12pt floor.",
+      "files": ["qbr-2026-q2.pptx"],
+      "expectations": [
+        "A rebuilt .pptx file was produced",
+        "validate_deck.py reports zero errors on the output",
+        "validate_deck.py reports no text-overflow warnings on the output",
+        "Content was restructured or split across slides rather than shrunk below the 12pt floor",
+        "The response states the validator result rather than claiming success without checking"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "build me a 10-slide deck on the history of the transistor, and make the slides actually animate into each other - not just a note that says 'fade'",
+      "expected_output": "A 10-slide .pptx with genuine <p:transition> elements written into each slide part by transitions.py, with per-slide types and durations, not merely described in speaker notes.",
+      "files": [],
+      "expectations": [
+        "A .pptx file was produced and opens in python-pptx",
+        "Slide parts in the package contain real <p:transition> elements, not just text in the notes",
+        "Each transition uses one of the valid effect elements (fade, push, wipe, split, cover, cut, dissolve)",
+        "The transitions script was used rather than transitions being faked or omitted",
+        "validate_deck.py was run and reports the embedded transition count",
+        "The response does not claim transitions are present without the validator confirming them"
+      ]
+    }
+  ]
+}

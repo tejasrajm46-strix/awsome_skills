@@ -1,0 +1,198 @@
+{
+  "title": "How the Blue LED Was Invented",
+  "subtitle": "Three decades, three researchers, one stubborn crystal",
+  "author": "Materials Science & Technology",
+  "theme": {
+    "primary": "1E3A5F",
+    "accent": "2563EB",
+    "highlight": "A16207",
+    "text": "0F172A",
+    "muted": "475569",
+    "panel": "E9EEF5",
+    "border": "CBD5E1",
+    "font_head": "Segoe UI",
+    "font_body": "Segoe UI",
+    "font_mono": "Consolas"
+  },
+  "slides": [
+    {
+      "layout": "title",
+      "kicker": "Materials Science",
+      "title": "How the Blue LED Was Invented",
+      "subtitle": "Three decades, three researchers, one stubborn crystal",
+      "author": "Materials Science & Technology",
+      "date": "2026",
+      "notes": "Open with the hook: red and green LEDs existed by the late 1960s. Blue took until 1993, and it is the one that made white light possible. Everything that follows is about why the last colour was the hard one."
+    },
+
+    {
+      "layout": "section",
+      "number": "01",
+      "title": "The Colour That Wouldn't Come",
+      "text": "Red arrived in 1962. Blue stayed dark for three more decades.",
+      "notes": "Set the scale of the problem: this was not a detail left to polish, it was a wall the whole field hit."
+    },
+
+    {
+      "layout": "bullets",
+      "title": "Light colour is set by the band gap",
+      "bullets": [
+        "A light-emitting diode works when an electron drops across a semiconductor's **band gap** and releases the energy as a photon.",
+        "**Red** photons need about **1.9 eV**. **Blue** photons need about **2.7 eV** — a much wider gap.",
+        "Wide-gap semiconductors are the hardest to grow, the hardest to dope, and the hardest to make electrical contact to.",
+        "So the physics did not make blue impossible. It made it **everything that is difficult, at once**."
+      ],
+      "source": "Nobel Prize in Physics 2014, information for the public",
+      "notes": "Keep the physics to one sentence: photon energy equals band gap. The point is that a wider gap forces you into materials the semiconductor industry had no idea how to handle."
+    },
+
+    {
+      "layout": "timeline",
+      "title": "Six dates that tell the story",
+      "items": [
+        {"date": "1907", "label": "Round", "text": "A faint glow from silicon carbide — the first electroluminescence, and unusable."},
+        {"date": "1971", "label": "RCA", "text": "Pankove builds the first GaN light emitter. Orders of magnitude too dim."},
+        {"date": "1986", "label": "Nagoya", "text": "Amano and Akasaki grow the first usable GaN crystal."},
+        {"date": "1989", "label": "Nagoya", "text": "The same team makes GaN p-type. A working junction becomes possible."},
+        {"date": "1993", "label": "Nichia", "text": "Nakamura ships a high-brightness blue LED."},
+        {"date": "2014", "label": "Nobel", "text": "Akasaki, Amano and Nakamura share the Prize in Physics."}
+      ],
+      "source": "Nobel Prize in Physics 2014; IEEE Milestone, 1989-1993",
+      "notes": "This is the roadmap for the rest of the deck. Note the 86-year span between the first glimmer and a marketable lamp."
+    },
+
+    {
+      "layout": "two_column",
+      "title": "Why GaN was written off",
+      "left": {
+        "heading": "The problems nobody had solved",
+        "bullets": [
+          "No usable GaN crystal — films cracked on every available substrate.",
+          "No p-type GaN — so no junction, and without a junction there is no diode.",
+          "Devices that did emit were orders of magnitude too dim to sell."
+        ]
+      },
+      "right": {
+        "heading": "Where the field went instead",
+        "bullets": [
+          "Zinc selenide looked easier, so most groups followed it.",
+          "GaN was widely treated as a dead end.",
+          "The Nobel citation's own framing: they \"succeeded where everyone else had failed.\""
+        ]
+      },
+      "source": "Nobel Prize in Physics 2014, press release",
+      "notes": "The interesting part of this story is a research-culture lesson: a field converging on the wrong material because the right one was harder to grow. Worth a pause."
+    },
+
+    {
+      "layout": "section",
+      "number": "02",
+      "title": "Breaking the Crystal Barrier",
+      "text": "Three problems, solved in order, by two groups years apart.",
+      "notes": "Transition from the problem to the solution. Clock: the three fixes are 1986, 1989 and 1993."
+    },
+
+    {
+      "layout": "table",
+      "title": "Three blockers, and what broke each one",
+      "headers": ["The blocker", "Why it stalled the field", "What broke it open"],
+      "rows": [
+        ["Growing a usable crystal", "GaN films cracked and came out unusable", "AlN buffer layer — Amano & Akasaki, 1986"],
+        ["Making GaN p-type", "Mg-doped GaN stayed insulating; without a p-side there is no junction", "Electron-beam irradiation, 1989; thermal annealing, 1992"],
+        ["Getting bright light out", "Early GaN emitters were orders of magnitude too dim", "InGaN double heterostructure — Nakamura, 1993"]
+      ],
+      "source": "Amano et al., Jpn. J. Appl. Phys. 28 (1989); Nakamura et al., Appl. Phys. Lett. 64 (1994)",
+      "notes": "Emphasise that these had to happen in order. The buffer layer made a crystal good enough that doping experiments meant anything; p-type made a junction; the double heterostructure made the junction bright."
+    },
+
+    {
+      "layout": "section",
+      "number": "03",
+      "title": "A Working Light",
+      "text": "What the 1993 diode actually does, and why it changed lighting.",
+      "notes": "Shift from invention history to the device itself and its consequences."
+    },
+
+    {
+      "layout": "stack",
+      "title": "How the blue LED makes light",
+      "items": [
+        {"label": "p-type GaN", "note": "Magnesium doping supplies the holes", "marker": "h+"},
+        {"label": "InGaN active layer", "note": "Electrons and holes recombine here, emitting a blue photon", "marker": "450 nm"},
+        {"label": "n-type GaN", "note": "Silicon doping supplies the electrons", "marker": "e-"},
+        {"label": "Sapphire substrate", "note": "The lattice-mismatched base the whole stack is grown on", "marker": "Al2O3"}
+      ],
+      "notes": "The active layer is the whole trick: a thin InGaN layer between a p-side and an n-side. The indium content sets the wavelength, which is also why the same structure tuned to more indium gives green."
+    },
+
+    {
+      "layout": "chart",
+      "title": "One number explains the Nobel Prize",
+      "chart_type": "hbar",
+      "unit": "lumens per watt",
+      "categories": ["Incandescent bulb", "Fluorescent lamp", "Best white LED (2014 record)"],
+      "series": [{"name": "Luminous efficacy", "values": [16, 70, 300]}],
+      "bullets": [
+        "A filament bulb turns most of its power into heat: **16 lm/W**.",
+        "The best white LED passed **300 lm/W** by 2014.",
+        "Lighting was about **one quarter** of world electricity consumption."
+      ],
+      "source": "Nobel Prize in Physics 2014, press release",
+      "notes": "Read the ratio aloud: roughly 19 times the useful light per watt. That is the energy argument the prize cited, and it is the whole reason a physics prize went to a light fitting."
+    },
+
+    {
+      "layout": "table",
+      "title": "What blue made possible",
+      "headers": ["Blue made possible", "From", "Why it had to be blue"],
+      "rows": [
+        ["White LED lighting", "1996", "A blue LED pumps a yellow phosphor; blue plus yellow reads as white"],
+        ["Blu-ray Disc", "2002", "A blue-violet laser focuses to a smaller spot, so more data fits on a disc"],
+        ["Full-colour LED displays", "1990s", "Red and green diodes already existed; blue completed the three-colour gamut"]
+      ],
+      "notes": "The phosphor trick is the answer to 'why did they need blue for white light?' — you cannot make white by adding red to green. You need the short-wavelength end."
+    },
+
+    {
+      "layout": "quote",
+      "title": "Why it won the Nobel Prize",
+      "text": "for the invention of efficient blue light-emitting diodes which has enabled bright and energy-saving white light sources",
+      "attribution": "The Royal Swedish Academy of Sciences, 7 October 2014",
+      "source": "nobelprize.org/prizes/physics/2014",
+      "notes": "The citation is deliberately about the enabling, not the diode. The Academy rewarded the consequence, not just the component."
+    },
+
+    {
+      "layout": "stats",
+      "title": "The consequences in numbers",
+      "items": [
+        {"value": "1/4", "label": "of world electricity is used for lighting."},
+        {"value": "~19x", "label": "the efficacy of the best white LED over a filament bulb."},
+        {"value": "100x", "label": "the lifetime of an LED against an incandescent bulb."}
+      ],
+      "source": "Nobel Prize in Physics 2014, press release",
+      "notes": "The press release also notes that these devices run on a few watts, which is why cheap local solar can light homes with no grid connection. That is the development angle if the audience cares about it."
+    },
+
+    {
+      "layout": "bullets",
+      "title": "Sources",
+      "bullets": [
+        "**Nobel Prize in Physics 2014** — press release and information for the public. nobelprize.org",
+        "**S. Nakamura**, Nobel Lecture, 2014. nobelprize.org",
+        "**IEEE Milestone**: Practical Blue Light-Emitting Diode, 1989-1993. ethw.org",
+        "**H. Amano et al.**, P-type conduction in Mg-doped GaN treated with LEEBI. Jpn. J. Appl. Phys. 28 (1989)",
+        "**S. Nakamura et al.**, Candela-class high-brightness InGaN/AlGaN double-heterostructure blue LEDs. Appl. Phys. Lett. 64 (1994)",
+        "**H. J. Round**, A Note on Carborundum. Electrical World (1907)"
+      ],
+      "notes": "Leave this slide up during questions."
+    },
+
+    {
+      "layout": "closing",
+      "title": "Thank you",
+      "text": "Questions welcome.",
+      "credit": "Deck generated with the pptx-generator skill (python-pptx, native editable charts). Facts and figures taken from the Nobel Prize in Physics 2014 press release and the papers listed on the previous slide unless noted."
+    }
+  ]
+}

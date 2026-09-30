@@ -1,0 +1,219 @@
+{
+  "title": "The Internet Under the Ocean",
+  "subtitle": "How invisible cables connect the world",
+  "author": "Deep Ocean Technology",
+  "theme": {
+    "primary": "0A2540",
+    "accent": "0E4C7A",
+    "highlight": "F59E0B",
+    "text": "0B1F2A",
+    "muted": "5A7183",
+    "bg": "FFFFFF",
+    "panel": "EEF4F8",
+    "border": "CBD9E3",
+    "bg_dark": "04121F",
+    "deep": "0A2540",
+    "ocean": "0E4C7A",
+    "cyan": "22D3EE",
+    "cyan_soft": "7DD3FC",
+    "warm": "F59E0B",
+    "alarm": "EF4444",
+    "font_head": "Segoe UI",
+    "font_body": "Segoe UI",
+    "font_mono": "Consolas"
+  },
+  "slides": [
+    {
+      "layout": "hero",
+      "kicker": "01 / The internet isn't in the cloud",
+      "title": "THE INTERNET\nUNDER THE OCEAN",
+      "subtitle": "How invisible cables connect the world",
+      "meta": "DEEP OCEAN TECHNOLOGY   ·   15 SLIDES",
+      "notes": "Open on the contradiction: we describe the internet as weightless and wireless. Then reveal that the physical machine is on the sea floor. Don't explain anything yet - just set the image."
+    },
+
+    {
+      "layout": "split",
+      "kicker": "The invisible infrastructure",
+      "title": "Your message may cross an ocean\nbefore it reaches the next screen.",
+      "text": "When you send a message, stream a video, or join a video call, enormous amounts of data travel through physical infrastructure - most of it under water.",
+      "source": "TeleGeography, Submarine Cable FAQs",
+      "notes": "The device in your hand is the endpoint, not the network. Everything after the cell tower is largely cable, and most of the long haul is subsea."
+    },
+
+    {
+      "layout": "statement",
+      "kicker": "02 / The real internet",
+      "title": "THE CLOUD\nHAS A FLOOR.",
+      "text": "More than 600 active and planned cable systems carry data between continents beneath the sea.",
+      "source": "TeleGeography, Submarine Cable FAQs",
+      "notes": "This is the line the deck is built around. Pause on it. The background routes are conceptual, not a real cable map."
+    },
+
+    {
+      "layout": "flow",
+      "kicker": "How it works",
+      "title": "LIGHT DOES THE TRAVELING.",
+      "steps": ["DATA", "ELECTRICAL SIGNAL", "LASER", "FIBER OPTIC", "LIGHT PULSE", "RECEIVER"],
+      "chips": ["PROTECTIVE LAYERS", "COPPER / POWER LAYER", "FIBER-OPTIC STRANDS"],
+      "source": "TeleGeography, Submarine Cable FAQs",
+      "notes": "Walk the chain down the left, then across the cross-section on the right. The key idea: nothing about the ocean journey is radio. It is light in glass, with an electrical layer only to power the repeaters."
+    },
+
+    {
+      "layout": "cutaway",
+      "kicker": "03 / A cable is more than a wire",
+      "title": "BUILT TO SURVIVE THE OCEAN.",
+      "layers": [
+        {"label": "OUTER PROTECTIVE JACKET", "note": "An insulating polymer sheath, the outermost barrier"},
+        {"label": "ARMOR", "note": "Steel wire; extra layers are added nearer the shore"},
+        {"label": "WATER BARRIER", "note": "Keeps moisture away from the glass"},
+        {"label": "POWER CONDUCTOR", "note": "Feeds the optical amplifiers along the route"},
+        {"label": "OPTICAL FIBERS", "note": "The glass strands that actually carry the light"}
+      ],
+      "note": "Conceptual cross-section. Construction varies with cable design and environment - shore, sand, rock and deep ocean each demand different protection. For most of the crossing, a cable is about as thick as a garden hose, and the fibers are roughly the width of a human hair.",
+      "source": "TeleGeography, Submarine Cable FAQs",
+      "notes": "Resist the temptation to state a canonical build; the layers vary by manufacturer and by whether the section is buried near shore or laid on the abyssal floor."
+    },
+
+    {
+      "layout": "journey",
+      "kicker": "04 / A journey across the planet",
+      "title": "FROM SHORE TO SHORE.",
+      "stations": [
+        {"label": "DATA CENTER"},
+        {"label": "CABLE LANDING STATION"},
+        {"label": "SHALLOW WATER"},
+        {"label": "DEEP OCEAN"},
+        {"label": "SUBSEA CABLE"},
+        {"label": "LANDING STATION"},
+        {"label": "DATA CENTER"}
+      ],
+      "zones": ["CITY", "SHORE", "CONTINENTAL SHELF", "DEEP OCEAN"],
+      "source": "Conceptual cross-section - not to scale",
+      "notes": "The cable is buried under the seabed near shore and simply laid on the floor in the deep ocean. That single fact explains most of why fault causes differ by location."
+    },
+
+    {
+      "layout": "hero_stat",
+      "kicker": "05 / The scale is hard to see",
+      "value": "1.5",
+      "unit": "MILLION KILOMETRES",
+      "text": "of submarine fiber-optic cable is believed to be in service worldwide as of early 2026.",
+      "source": "TeleGeography, Submarine Cable FAQs",
+      "notes": "For scale: that is roughly 37 times the circumference of the Earth. The number is TeleGeography's own estimate - attribute it rather than stating it as a census."
+    },
+
+    {
+      "layout": "network",
+      "kicker": "One planet. Many connections.",
+      "title": "A GLOBAL MESH.",
+      "nodes": [
+        {"name": "NORTH AMERICA", "x": 0.14, "y": 0.28},
+        {"name": "EUROPE", "x": 0.47, "y": 0.18},
+        {"name": "ASIA", "x": 0.80, "y": 0.26},
+        {"name": "SOUTH AMERICA", "x": 0.26, "y": 0.68},
+        {"name": "AFRICA", "x": 0.50, "y": 0.60},
+        {"name": "OCEANIA", "x": 0.85, "y": 0.74}
+      ],
+      "links": [[0, 1], [0, 3], [1, 4], [1, 2], [4, 2], [4, 5], [2, 5], [0, 2]],
+      "note": "Conceptual node graph - not a survey of actual cable routes, and not a complete map of the network.",
+      "source": "TeleGeography, Submarine Cable FAQs",
+      "notes": "Say plainly that this is illustrative. Real route maps are stylised too - TeleGeography notes its own cable paths do not reflect precise geolocation."
+    },
+
+    {
+      "layout": "compare",
+      "kicker": "06 / Why light?",
+      "title": "COPPER MOVES SIGNALS.\nFIBER MOVES LIGHT.",
+      "left": {
+        "heading": "Copper",
+        "motif": "signal",
+        "bullets": [
+          "Carries an **electrical** signal.",
+          "Loses more signal over long distances.",
+          "The traditional transmission medium."
+        ]
+      },
+      "right": {
+        "heading": "Fiber",
+        "motif": "light",
+        "bullets": [
+          "Carries **light pulses** through glass.",
+          "Very high bandwidth per strand.",
+          "Built for long-distance optical communication."
+        ]
+      },
+      "source": "TeleGeography, Submarine Cable FAQs",
+      "notes": "Keep this proportionate. Copper still runs the last mile everywhere; the claim is only about long-haul ocean crossing."
+    },
+
+    {
+      "layout": "forces",
+      "kicker": "07 / The hard part",
+      "title": "THE OCEAN FIGHTS BACK.",
+      "items": ["PRESSURE", "ANCHORS", "FISHING", "LANDSLIDES", "EARTHQUAKES", "CURRENTS"],
+      "note": "Cables are engineered with different protection levels depending on location and risk. Fishing and ship anchors account for roughly two-thirds of all cable faults.",
+      "source": "ICPC data via TeleGeography, Submarine Cable FAQs",
+      "notes": "Deliberately not sensationalised. The ocean is hostile, but the damage is overwhelmingly caused by human activity, not by the environment itself."
+    },
+
+    {
+      "layout": "sequence",
+      "kicker": "08 / Failure",
+      "title": "ONE BREAK CAN BECOME A GLOBAL PROBLEM.",
+      "steps": ["CABLE BREAK", "TRAFFIC REROUTED", "LATENCY CHANGES", "CAPACITY PRESSURE", "REPAIR"],
+      "highlight": 0,
+      "network": true,
+      "note": "Networks are designed with redundancy, so traffic can often be rerouted while the damaged cable is restored. Roughly 200 faults are reported worldwide each year.",
+      "source": "ICPC data via TeleGeography, Submarine Cable FAQs",
+      "notes": "The point is pressure, not outage. Most users never notice a break, because capacity is spread across several cables by design."
+    },
+
+    {
+      "layout": "flow",
+      "dark": true,
+      "vessel": true,
+      "kicker": "09 / The repair ship",
+      "title": "WHEN THE CABLE BREAKS,\nA SHIP GOES LOOKING.",
+      "steps": ["SHIP", "GRAPNEL", "CABLE", "REPAIR", "RE-LAY"],
+      "source": "TeleGeography, Submarine Cable FAQs; ICPC",
+      "notes": "A specialist vessel cuts and lifts one side of the damaged cable, splices in a new section, and re-lays it. The sea state, not the splice, usually sets the timeline."
+    },
+
+    {
+      "layout": "trinity",
+      "kicker": "10 / The big picture",
+      "title": "THE INTERNET IS PHYSICAL.",
+      "items": ["DATA CENTERS", "SUBMARINE CABLES", "PEOPLE"],
+      "text": "Every digital experience depends on physical infrastructure somewhere.",
+      "source": "Conceptual - not to scale",
+      "notes": "Land on this quietly. The three bands are the whole argument of the deck in one slide."
+    },
+
+    {
+      "layout": "closing",
+      "motif": "ocean",
+      "title": "THE CLOUD\nIS NOT IN THE SKY.",
+      "text": "Much of the world's digital life travels through glass beneath the ocean.",
+      "credit": "THE INTERNET UNDER THE OCEAN   ·   Questions?",
+      "notes": "Hold the silence for a beat before taking questions."
+    },
+
+    {
+      "layout": "bullets",
+      "title": "SOURCES",
+      "body_size": 12,
+      "bullets": [
+        "**TeleGeography**, Submarine Cable FAQs - cable kilometres in service, system counts, cable construction and thickness, design life, fault frequency and cause. telegeography.com",
+        "**International Cable Protection Committee (ICPC)** - submarine cable fault statistics, and recommendations for cable protection. iscpc.org",
+        "**ITU**, International Advisory Body for Submarine Cable Resilience, press release, 29 November 2024 - global fault frequency.",
+        "**Congressional Research Service**, Protection of Undersea Telecommunication Cables, R47648 - share of transoceanic digital communications carried by cable.",
+        "**UK Parliament**, Joint Committee on the National Security Strategy, Subsea telecommunications cables, 19 September 2025 - cable counts and traffic share.",
+        "Maps, node graphs and cross-sections in this deck are **conceptual illustrations, not to scale**, and do not depict actual cable routes or complete network topology.",
+        "This deck uses no third-party imagery. Every diagram is drawn as native, editable PowerPoint shapes."
+      ],
+      "notes": "Leave up during questions. All figures are attributed rather than presented as the deck's own measurement."
+    }
+  ]
+}

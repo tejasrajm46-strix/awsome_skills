@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Build outputs
+dist/
+build/
+*.zip
+
+# Generated decks and previews (the repo ships specs, not outputs)
+*.pptx
+*.pdf
+
+# Office lock files
+~$*
+
+# Editor / agent tooling metadata
+.freebuff/
+.vscode/
+.idea/
