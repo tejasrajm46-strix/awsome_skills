@@ -258,7 +258,7 @@ def fit_size(items, width_in, height_in, *, sizes=(20, 18, 17, 16, 15, 14, 13, 1
         needed += gap_pt / 72.0 * max(0, len(items) - 1)
         if needed <= height_in:
             return size
-    return sizes[-1]
+    raise ValueError("text cannot fit at %spt; shorten it or split the slide" % sizes[-1])
 
 
 def fit_title(text, width_in, height_in=TITLE_H, sizes=(34, 30, 27, 26, 24, 22)):
@@ -295,7 +295,10 @@ class Deck:
 
     def new_slide(self):
         self.n += 1
-        return self.prs.slides.add_slide(self.blank)
+        slide = self.prs.slides.add_slide(self.blank)
+        slide.background.fill.solid()
+        slide.background.fill.fore_color.rgb = self.color("bg")
+        return slide
 
     # -- shared chrome ------------------------------------------------------
     def chrome(self, slide, title, kicker=None, subtitle=None, source=None):
@@ -343,7 +346,7 @@ class Deck:
         navy, accent = self.color("primary"), self.color("accent")
         rect(slide, 0, 0, SLIDE_W, SLIDE_H, fill=navy)
         # a small "emitting LED" motif: soft outer ring + bright core
-        rect(slide, 10.35, 0.95, 2.35, 2.35, fill=rgb("2C5185"), shape=MSO_SHAPE.OVAL)
+        rect(slide, 10.35, 0.95, 2.35, 2.35, fill=rgb(mix(self.theme["accent"], self.theme["primary"], 0.45)), shape=MSO_SHAPE.OVAL)
         rect(slide, 10.80, 1.40, 1.45, 1.45, fill=accent, shape=MSO_SHAPE.OVAL)
 
         tf = textbox(slide, MARGIN, 3.30, 8.2, 0.34)
@@ -419,7 +422,7 @@ class Deck:
                 head_h = 0.52
             if not items:
                 continue
-            size = fit_size(items, col_w - 0.32, BODY_H - head_h - 0.1, sizes=(17, 16, 15, 14, 13))
+            size = fit_size(items, col_w - 0.32, BODY_H - head_h - 0.1, sizes=(22, 20, 18, 17, 16, 15, 14, 13, 12))
             tf = textbox(slide, x, BODY_Y + head_h, col_w, BODY_H - head_h)
             for i, text in enumerate(items):
                 p = line(tf, i == 0, space_after=size * 0.62, line_spacing=1.18)
@@ -609,7 +612,10 @@ class Deck:
         else:
             value_axis = chart.value_axis
             value_axis.has_major_gridlines = True
+            if kind in ("bar", "hbar"):
+                value_axis.minimum_scale = 0
             if s.get("unit"):
+                value_axis.has_title = True
                 value_axis.axis_title.text_frame.text = s["unit"]
                 for p in value_axis.axis_title.text_frame.paragraphs:
                     for r in p.runs:
@@ -641,8 +647,10 @@ class Deck:
         avail_h = BODY_H - (0.45 if s.get("caption") else 0.1)
         scale = min(CONTENT_W / iw, avail_h / ih)
         w, h = iw * scale, ih * scale
-        slide.shapes.add_picture(path, Inches(MARGIN + (CONTENT_W - w) / 2), Inches(top),
-                                 width=Inches(w), height=Inches(h))
+        picture = slide.shapes.add_picture(
+            path, Inches(MARGIN + (CONTENT_W - w) / 2), Inches(top),
+            width=Inches(w), height=Inches(h))
+        picture._element.nvPicPr.cNvPr.set("descr", s.get("alt") or s.get("caption", ""))
         if s.get("caption"):
             tf = textbox(slide, MARGIN, top + h + 0.14, CONTENT_W, 0.3)
             p = line(tf, True)
@@ -1318,6 +1326,11 @@ def main(argv=None):
     args = ap.parse_args(argv)
     with open(args.spec, encoding="utf-8") as fh:
         spec = json.load(fh)
+    # Asset paths belong to the spec, not the caller's working directory.
+    for slide in spec.get("slides", []):
+        if slide.get("image") and not os.path.isabs(slide["image"]):
+            slide["image"] = os.path.join(os.path.dirname(os.path.abspath(args.spec)),
+                                         slide["image"])
     path = build(spec, args.out, args.base)
     print("wrote %s (%d slides)" % (path, len(spec.get("slides", []))))
     return 0

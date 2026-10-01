@@ -9,17 +9,17 @@ compatibility: Requires Python 3.8+ with python-pptx and lxml (both pulled in au
 
 Turn content into a real, editable `.pptx`. The output is a normal PowerPoint
 file - the recipient can retype a number, restyle a colour, or swap a chart
-type. Nothing is a flattened image.
+type. Text, charts and diagrams stay editable; imported images remain images.
 
 ## Why the workflow is shaped like this
 
 The failure modes of generated decks are, in order: **text that overflows the
 slide**, **inconsistent geometry between slides**, and **transitions that were
-written in the notes but never actually embedded**. All three are eliminated by
-construction here: every slide lays out on one measured grid, headlines and body
-text size themselves down to fit, transitions are written into the slide XML as
-real `<p:transition>` elements, and the validation step re-reads the saved
-package and reports anything structurally wrong.
+written in the notes but never actually embedded**. The measured grid, text-fit
+estimates, real `<p:transition>` elements and saved-package checks reduce these
+failures; they do not replace rendering in PowerPoint or LibreOffice. Font metrics
+are heuristic, and imported images are checked for bounds/collisions, not their
+internal label legibility.
 
 Respect the order below. In particular, never report a deck as finished without
 running the validator - it is the only thing that has actually looked at the
@@ -33,8 +33,11 @@ bytes.
    is not an error.
 
 2. **Draft the content as an outline first**, in prose or bullets, before
-   touching JSON. Decide the single takeaway of each slide. A deck is an
-   argument, not a document with page breaks.
+   touching JSON. Set audience, purpose and a coherent visual system. Decide the
+   single takeaway of each slide. For research, read authoritative sources and
+   keep numbered source IDs with URLs and claim coverage. Share this register
+   and original image assets with `word-generator` when delivering both formats.
+   A deck is an argument, not a document with page breaks.
 
 3. **Write a deck spec JSON** (schema below), choosing a layout per slide from
    the table further down. Write the `title` as a claim, not a label.
@@ -52,7 +55,7 @@ bytes.
 
 6. **Validate, and read the warnings:**
    ```bash
-   python <skill-path>/scripts/validate_deck.py deck.pptx --expect <n>
+   python <skill-path>/scripts/validate_deck.py deck.pptx --expect <n> --strict
    ```
    Errors are hard failures: a shape off the slide, overlapping text, a table
    that grows past the bottom of the slide, malformed transition XML. Warnings
@@ -62,8 +65,14 @@ bytes.
    slide or cutting words - **not** by lowering the font size. Tables are
    measured, not skipped, so a cramped table is reported like any other slide.
 
-7. **Report** the output path, slide count, theme, and whether transitions are
-   embedded. Do not paste the deck's contents back into chat.
+7. **Render and inspect** every slide with installed PowerPoint or LibreOffice,
+   when available. Check actual wrapping, figure-label size, contrast, clipping,
+   whitespace and narrative rhythm. Fix the spec and rebuild; no validator can
+   certify visual perfection. Do not modify the user template in place.
+
+8. **Report** the output path, slide count, theme, embedded transition count,
+   structural result and whether rendering/visual review actually occurred.
+   Do not paste the deck's contents back into chat or call unrendered output flawless.
 
 ## Deck spec schema
 
@@ -141,7 +150,7 @@ Light-background layouts use the standard header grid. Dark layouts
 | `table` | `title`, `headers`, `rows` | Keep to <= 5 columns. Rows are sized to their tallest cell and columns to their content, so the table cannot grow over the footer; a table that would need under 12pt raises instead. |
 | `chart` | `title`, `chart_type`, `categories`, `series`, `unit`, `bullets` | `bar`, `hbar`, `line`, `area`, `pie`, `doughnut`. Native and editable. |
 | `stack` | `title`, `items` (`{label, note, marker}`) | Layered structure bands. Max 8. Label, note and marker occupy measured columns with a reserved gutter, so a long note cannot run into its marker. |
-| `image` | `title`, `image`, `caption` | Local path. Contained, never distorted. |
+| `image` | `title`, `image`, `caption`, `alt` | Local PNG/JPEG path relative to spec JSON (API uses caller paths). Contained, never distorted. `alt` describes the message; caption is the fallback. |
 | `closing` | `title`, `text`, `credit` | `credit` is where template/attribution lines go. |
 | `hero` | `kicker`, `title`, `subtitle`, `meta` | Cinematic opening: ocean floor, grid, glowing cable. |
 | `statement` | `kicker`, `title`, `text` | Giant typography on a dark ambient background. |
@@ -250,7 +259,7 @@ layouts paint their own canvas, so they do not use the standard header grid.
 Read `references/design-rules.md` before writing a spec of any size: the type
 scale, the six-bullets-six-words guideline, narrative arcs, chart conventions
 (always label the unit; never truncate a bar axis), and the anti-patterns. The
-script guarantees a deck that opens and fits; that file is what makes it good.
+script estimates fit and creates a normal package; that file guides editorial quality.
 
 For anything with real evidence in it, read `references/free-assets.md` - it has
 licence facts verified at source, and the attribution duties that follow.
@@ -279,6 +288,9 @@ almost none of the layouts above. Prefer asking the user to install
 `python-pptx`.
 
 If LibreOffice is present, `soffice --headless --convert-to pdf deck.pptx`
-produces a PDF you can look at. That is the only way to visually inspect the
-deck; structural validation does not replace looking at it, and you should say
-which of the two you actually did.
+produces a PDF you can look at. Installed PowerPoint can also export PDF and PNG
+slides. Structural validation does not replace looking at rendered slides; say
+which checks you actually performed. `--strict` fails on warnings too. Missing
+alt text and picture/text collisions are checked, bar axes start at zero, theme
+backgrounds are explicit, and text that cannot fit at the floor raises rather
+than silently returning the smallest font. Shorten content instead of hiding it.

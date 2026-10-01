@@ -2,14 +2,22 @@
 __pycache__/
 *.py[cod]
 
+# Project-local dependencies
+.local-python/
+
 # Build outputs
 dist/
 build/
 *.zip
 
+# Local deliverables and duplicated evaluation output
+outputs/
+skill-review-workspace/
+
 # Generated decks and previews (the repo ships specs, not outputs)
 *.pptx
 *.pdf
+*.docx
 
 # Office lock files
 ~$*

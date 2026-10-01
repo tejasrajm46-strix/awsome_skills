@@ -18,7 +18,7 @@ SCRIPTS = os.path.join(os.path.dirname(HERE), "scripts")
 sys.path.insert(0, SCRIPTS)
 
 import validate_deck                                     # noqa: E402
-from build_deck import build                             # noqa: E402
+from build_deck import build, fit_size                             # noqa: E402
 from pptx import Presentation                            # noqa: E402
 from pptx.util import Pt                                 # noqa: E402
 from textmetrics import column_widths, row_heights       # noqa: E402
@@ -146,6 +146,69 @@ def test_clean_deck_passes_the_gate():
         ])
         report = validate_deck.validate(_write(tmp, spec))
         assert report["ok"], report["errors"] + report["warnings"]
+
+
+def test_text_that_cannot_fit_is_refused():
+    try:
+        fit_size(["word " * 1000], 2, 1)
+    except ValueError as exc:
+        assert "split" in str(exc)
+    else:
+        raise AssertionError("overflowing text was silently accepted")
+
+
+def test_image_alt_text_bounds_and_collisions():
+    from PIL import Image
+    with tempfile.TemporaryDirectory() as tmp:
+        image = os.path.join(tmp, "figure.png")
+        Image.new("RGB", (800, 300), "white").save(image)
+        path = _write(tmp, _deck([{
+            "layout": "image", "title": "Evidence", "image": image,
+            "alt": "A labelled timeline", "caption": "Conceptual diagram"}]))
+        report = validate_deck.validate(path)
+        assert report["ok"], report["errors"]
+        assert not any("alt text" in w for w in report["warnings"])
+        prs = Presentation(path)
+        picture = next(s for s in prs.slides[0].shapes
+                       if s.shape_type == validate_deck.MSO_SHAPE_TYPE.PICTURE)
+        picture._element.nvPicPr.cNvPr.set("descr", "")
+        ghost = prs.slides[0].shapes.add_textbox(picture.left, picture.top,
+                                               picture.width, picture.height)
+        ghost.text_frame.text = "This text is hidden by the picture"
+        ghost.text_frame.paragraphs[0].runs[0].font.size = Pt(18)
+        prs.save(path)
+        report = validate_deck.validate(path)
+        assert any("alt text" in w for w in report["warnings"])
+        assert any("collide" in e for e in report["errors"])
+
+
+def test_bar_axis_and_background_are_explicit():
+    with tempfile.TemporaryDirectory() as tmp:
+        path = _write(tmp, {"title": "Test", "theme": {"bg": "F8F5EF"}, "slides": [{
+            "layout": "chart", "title": "Measured", "unit": "years",
+            "categories": ["A", "B"], "series": [{"name": "Age", "values": [5, 9]}]}]})
+        slide = Presentation(path).slides[0]
+        assert str(slide.background.fill.fore_color.rgb) == "F8F5EF"
+        chart = next(s.chart for s in slide.shapes if s.has_chart)
+        assert chart.value_axis.minimum_scale == 0
+        assert chart.value_axis.has_title
+
+
+def test_transition_ignorable_prefix_is_declared_on_root():
+    import zipfile
+    from lxml import etree
+    from transitions import add_transitions, NS_P14
+    with tempfile.TemporaryDirectory() as tmp:
+        path = _write(tmp, _deck([{"layout": "title", "title": "Open in Office"}]))
+        add_transitions(path, {"default": {"type": "fade", "duration": 600, "adv_tm": 2000}})
+        with zipfile.ZipFile(path) as package:
+            root = etree.fromstring(package.read("ppt/slides/slide1.xml"))
+        assert root.nsmap.get("p14") == NS_P14, root.nsmap
+        transition = root.find("{http://schemas.openxmlformats.org/presentationml/2006/main}transition")
+        assert transition.get("advTm") == "2000"
+        report = validate_deck.validate(path)
+        assert report["ok"], report["errors"]
+        assert report["transitions"]["count"] == 1
 
 
 def main():

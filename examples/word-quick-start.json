@@ -1,0 +1,19 @@
+{
+  "title": "A Clearer Project Brief",
+  "subtitle": "Editable structure, not a wall of text",
+  "meta": "Illustrative example — no invented project metrics",
+  "sections": [
+    {"heading": "Executive summary", "blocks": [
+      {"text": "Turn a shared outline into **readable, editable files**. Keep the detail in the document and the argument on the slides."},
+      {"type": "callout", "text": "**Decision:** choose one audience and one central takeaway before formatting."}
+    ]},
+    {"heading": "Delivery checklist", "blocks": [
+      {"type": "table", "headers": ["Check", "Why it matters"], "rows": [
+        ["Semantic headings", "Readers can navigate the document."],
+        ["Strict validation", "Saved packages are checked for structural problems."],
+        ["Rendered review", "Actual pages are inspected for layout issues."]
+      ]},
+      {"type": "bullets", "items": ["Keep sources beside factual claims.", "Add descriptive alt text to images.", "Do not call an unrendered file visually verified."]}
+    ]}
+  ]
+}

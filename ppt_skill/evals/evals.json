@@ -2,6 +2,20 @@
   "skill_name": "pptx-generator",
   "evals": [
     {
+      "id": 5,
+      "prompt": "Create a 12-slide general-audience human-evolution deck with an original sourced infographic, descriptive alt text, notes and an honest explanation of uncertainty; pair it with a Word brief.",
+      "expected_output": "Editable PPTX with common source IDs and infographic shared with the DOCX, no linear progress myth, zero strict structural warnings, and disclosed rendered review status.",
+      "files": [],
+      "assertions": [
+        "The deck has exactly 12 slides",
+        "The infographic has descriptive alt text",
+        "Sources and caveats appear with the claims they support",
+        "All substantive slides contain speaker notes",
+        "The strict validator exits zero",
+        "Visual review status is not overstated"
+      ]
+    },
+    {
       "id": 1,
       "prompt": "Turn my notes on the 2008 financial crisis into a 10-slide deck for a first-year economics class. I want a timeline of the key events and at least one chart. Keep the sources on a slide at the end.",
       "expected_output": "A .pptx of roughly 10 slides built from the bundled build_deck.py, with a title slide, a timeline layout slide, at least one native chart slide, per-slide speaker notes, and a sources slide. validate_deck.py exits 0.",

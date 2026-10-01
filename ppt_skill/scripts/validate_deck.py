@@ -32,6 +32,7 @@ import zipfile
 from lxml import etree
 from pptx import Presentation
 from pptx.enum.text import PP_ALIGN
+from pptx.enum.shapes import MSO_SHAPE_TYPE
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -149,6 +150,8 @@ def ink_box(shape):
         return left, top, left + w, top + max(required, h), "table %r" % shape.name
     if shape.has_chart:
         return left, top, left + w, top + h, "chart %r" % shape.name
+    if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+        return left, top, left + w, top + h, "picture %r" % shape.name
     if not shape.has_text_frame:
         return None
     tf = shape.text_frame
@@ -197,7 +200,7 @@ def check_collisions(slide):
             x0b, y0b, x1b, y1b, lb = boxes[j]
             ox = min(x1a, x1b) - max(x0a, x0b)
             oy = min(y1a, y1b) - max(y0a, y0b)
-            opaque = la.startswith(("table ", "chart ")) or lb.startswith(("table ", "chart "))
+            opaque = la.startswith(("table ", "chart ", "picture ")) or lb.startswith(("table ", "chart ", "picture "))
             if ox > (0.02 if opaque else 0.10) and oy > (0.04 if opaque else 0.08):
                 problems.append("shapes collide by %.2fx%.2fin: %s over %s"
                                 % (ox, oy, la, lb))
@@ -314,6 +317,8 @@ def check_transitions(zf):
             else:
                 entry["duration_ms"] = int(dur)
             ignorable = (root.get(_qn("mc:Ignorable")) or "").split()
+            if root.nsmap.get("p14") != NS_P14:
+                result["errors"].append("%s: p14 is not declared at the slide root" % part)
             if "p14" not in ignorable:
                 result["errors"].append(
                     "%s: uses p14:dur but mc:Ignorable does not list p14; "
@@ -355,9 +360,8 @@ def validate(path, expect=None):
     slide_h = prs.slide_height or 0
     report["slide_width_in"] = round(slide_w / EMU_IN, 3)
     report["slide_height_in"] = round(slide_h / EMU_IN, 3)
-    if slide_w / EMU_IN < 12.0:
-        report["warnings"].append("slide is not 16:9 (%.2fin wide)"
-                                  % (slide_w / EMU_IN))
+    if not slide_h or abs(slide_w / slide_h - 16 / 9) > 0.02:
+        report["warnings"].append("slide aspect ratio is not 16:9")
 
     with zipfile.ZipFile(path) as zf:
         report["transitions"] = check_transitions(zf)
@@ -384,6 +388,9 @@ def validate(path, expect=None):
                                           or left < -tol or top < -tol):
                 entry["errors"].append(
                     "shape %r extends past the slide edge" % (shape.name,))
+            if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+                if not (shape._element.nvPicPr.cNvPr.get("descr") or "").strip():
+                    entry["warnings"].append("picture %r is missing alt text" % shape.name)
             if shape.has_table:
                 declared, required, cell_font, _ = table_metrics(shape)
                 for row in shape.table.rows:
@@ -484,7 +491,7 @@ def print_report(r):
     print("")
     print("Summary: %d slides, %d errors, %d warnings"
           % (r["slide_count"], len(r["errors"]), len(r["warnings"])))
-    print("Result: %s" % ("PASS (editable, opens cleanly)" if r["ok"] else "FAIL"))
+    print("Result: %s" % ("PASS (structural checks; rendering not verified)" if r["ok"] else "FAIL"))
 
 
 def main(argv=None):
@@ -492,13 +499,14 @@ def main(argv=None):
     ap.add_argument("deck")
     ap.add_argument("--expect", type=int, help="expected slide count")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
+    ap.add_argument("--strict", action="store_true", help="fail on warnings as well as errors")
     args = ap.parse_args(argv)
     report = validate(args.deck, expect=args.expect)
     if args.json:
         print(json.dumps(report, indent=2))
     else:
         print_report(report)
-    return 0 if report["ok"] else 1
+    return 0 if report["ok"] and not (args.strict and report["warnings"]) else 1
 
 
 if __name__ == "__main__":

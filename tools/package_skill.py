@@ -46,18 +46,18 @@ def guess_version():
     return max(versions)[1] if versions else "v0.0.0"
 
 
-def collect():
+def collect(source=SOURCE, zip_root=ZIP_ROOT):
     """[(absolute_path, path_inside_the_zip)] for the files that ship."""
-    if not os.path.isdir(SOURCE):
-        raise SystemExit("no skill folder at %s" % SOURCE)
+    if not os.path.isdir(source):
+        raise SystemExit("no skill folder at %s" % source)
     members = []
     for name in INCLUDE_FILES:
-        path = os.path.join(SOURCE, name)
+        path = os.path.join(source, name)
         if not os.path.isfile(path):
             raise SystemExit("skill is missing %s - refusing to ship a partial skill" % name)
-        members.append((path, "%s/%s" % (ZIP_ROOT, name)))
+        members.append((path, "%s/%s" % (zip_root, name)))
     for top in INCLUDE_DIRS:
-        base = os.path.join(SOURCE, top)
+        base = os.path.join(source, top)
         if not os.path.isdir(base):
             raise SystemExit("skill is missing the %s/ directory" % top)
         for dirpath, dirnames, filenames in os.walk(base):
@@ -66,14 +66,15 @@ def collect():
                 if filename.endswith(".pyc"):
                     continue
                 path = os.path.join(dirpath, filename)
-                rel = os.path.relpath(path, SOURCE).replace(os.sep, "/")
-                members.append((path, "%s/%s" % (ZIP_ROOT, rel)))
+                rel = os.path.relpath(path, source).replace(os.sep, "/")
+                members.append((path, "%s/%s" % (zip_root, rel)))
     return sorted(members, key=lambda m: m[1])
 
 
-def build(version, out=None):
-    out = out or os.path.join(REPO, "pptx-generator-%s.zip" % version)
-    members = collect()
+def build(version, out=None, source=SOURCE, zip_root=ZIP_ROOT):
+    out = out or os.path.join(REPO, "%s-%s.zip" % (zip_root, version))
+    members = collect(source, zip_root)
+    os.makedirs(os.path.dirname(os.path.abspath(out)), exist_ok=True)
     # Deterministic archive: sorted entries, fixed timestamps, no OS metadata.
     # Two builds of the same tree then produce byte-identical zips.
     with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zf:
@@ -92,11 +93,14 @@ def build(version, out=None):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Zip the skill for a release.")
+    ap.add_argument("--skill", choices=("ppt", "word"), default="ppt")
     ap.add_argument("--version", help="version tag, e.g. v1.0.0 (default: newest git tag)")
     ap.add_argument("-o", "--out", help="output zip path")
     args = ap.parse_args(argv)
     version = args.version or guess_version()
-    out, members = build(version, args.out)
+    source, zip_root = ((SOURCE, ZIP_ROOT) if args.skill == "ppt" else
+                        (os.path.join(REPO, "word_skill"), "word-generator"))
+    out, members = build(version, args.out, source, zip_root)
     print("packaged %d files -> %s (%.1f KB)"
           % (len(members), os.path.basename(out), os.path.getsize(out) / 1024.0))
     for _, arcname in members:

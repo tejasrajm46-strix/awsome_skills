@@ -83,8 +83,8 @@ def build_transition(spec):
     attrs = []
     if spec.get("adv_click", True) is False:
         attrs.append('advClick="0"')
-    if spec.get("adv_tm"):
-        attrs.append('advTm="%d"' % int(spec["advTm"]))
+    if spec.get("adv_tm") is not None:
+        attrs.append('advTm="%d"' % int(spec["adv_tm"]))
     speed = _speed(duration)
     if speed:
         attrs.append('spd="%s"' % speed)
@@ -131,6 +131,14 @@ def apply_to_slide(slide_bytes, spec):
         root.remove(old)
     if spec is None:
         return _serialize(root)
+    # mc:Ignorable prefixes must resolve on the element carrying the attribute.
+    # A p14 declaration only on the transition child passes XML parsing but
+    # makes desktop PowerPoint reject the entire presentation.
+    rebuilt = etree.Element(root.tag, nsmap={**root.nsmap, "p14": NS_P14, "mc": NS_MC})
+    rebuilt.attrib.update(root.attrib)
+    rebuilt.text, rebuilt.tail = root.text, root.tail
+    rebuilt.extend(list(root))
+    root = rebuilt
     ignorable = (root.get(qn("mc:Ignorable")) or "").split()
     if "p14" not in ignorable:
         ignorable.append("p14")
