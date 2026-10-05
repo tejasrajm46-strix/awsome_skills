@@ -1,0 +1,79 @@
+{
+  "source_deck": "BMW_M4_CS_Performance_Brief.pptx",
+  "renderer": "Microsoft PowerPoint export (COM), 1600px then downscaled",
+  "note": "Sample output rendered from a deck supplied by the repository owner. Vehicle imagery and marks belong to their respective owners; shown as skill samples, not licensed for reuse.",
+  "slides": [
+    {
+      "file": "slide-01.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 149041
+    },
+    {
+      "file": "slide-02.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 49199
+    },
+    {
+      "file": "slide-03.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 63813
+    },
+    {
+      "file": "slide-04.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 140284
+    },
+    {
+      "file": "slide-05.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 53417
+    },
+    {
+      "file": "slide-06.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 138938
+    },
+    {
+      "file": "slide-07.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 130220
+    },
+    {
+      "file": "slide-08.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 61434
+    },
+    {
+      "file": "slide-09.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 141453
+    }
+  ]
+}

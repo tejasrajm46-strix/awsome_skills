@@ -1,0 +1,119 @@
+{
+  "source_deck": "porsche-911 (1).pptx",
+  "renderer": "Microsoft PowerPoint export (COM), 1600px then downscaled",
+  "note": "Sample output rendered from a deck supplied by the repository owner. Vehicle imagery and marks belong to their respective owners; shown as skill samples, not licensed for reuse.",
+  "slides": [
+    {
+      "file": "slide-01.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 60771
+    },
+    {
+      "file": "slide-02.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 40825
+    },
+    {
+      "file": "slide-03.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 31106
+    },
+    {
+      "file": "slide-04.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 76964
+    },
+    {
+      "file": "slide-05.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 42153
+    },
+    {
+      "file": "slide-06.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 31508
+    },
+    {
+      "file": "slide-07.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 37548
+    },
+    {
+      "file": "slide-08.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 74013
+    },
+    {
+      "file": "slide-09.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 36129
+    },
+    {
+      "file": "slide-10.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 84857
+    },
+    {
+      "file": "slide-11.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 43332
+    },
+    {
+      "file": "slide-12.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 32483
+    },
+    {
+      "file": "slide-13.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 70421
+    },
+    {
+      "file": "slide-14.jpg",
+      "px": [
+        1280,
+        720
+      ],
+      "bytes": 64686
+    }
+  ]
+}
