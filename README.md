@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/outputs-editable-176B60?style=flat-square" alt="Editable outputs">
 </p>
 
-<p align="center"><a href="#choose-your-skill">Explore skills</a> · <a href="#give-your-agent-one-link">Use with an agent</a> · <a href="#install-a-skill">Download &amp; install</a> · <a href="#quality-that-you-can-check">Quality &amp; safety</a> · <a href="#deck-gallery">Deck gallery</a></p>
+<p align="center"><a href="#see-the-output">See the output</a> · <a href="#choose-your-skill">Explore skills</a> · <a href="#give-your-agent-one-link">Use with an agent</a> · <a href="#install-a-skill">Download &amp; install</a> · <a href="#quality-that-you-can-check">Quality &amp; safety</a></p>
 
 ![Awesome Skills: from intent to artifact, with PowerPoint, Word, PDF, Excel and poster workflows.](docs/assets/hero.png)
 
@@ -63,6 +63,50 @@ The [catalog](skills.json) gives machine-readable identities and routing.
 browsing to read GitHub and code/file tools to run builders and return actual
 files. A text-only session can create an outline/spec, not honestly claim a
 rendered Office file. Follow your client's supported skill location and permissions.
+
+## See the output
+
+Real decks, real files. Every frame below is a rendered export from a
+`.pptx` built with these skills, not a mockup — click any slide to open
+the full-resolution image.
+
+**Porsche 911 — performance brief** (14 slides)
+
+|  |  |  |
+| --- | --- | --- |
+| <img src="docs/assets/gallery/porsche-911/slide-01.jpg" width="260" alt="Porsche 911 — performance brief slide 1 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-02.jpg" width="260" alt="Porsche 911 — performance brief slide 2 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-03.jpg" width="260" alt="Porsche 911 — performance brief slide 3 of 14" /> |
+| <img src="docs/assets/gallery/porsche-911/slide-04.jpg" width="260" alt="Porsche 911 — performance brief slide 4 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-05.jpg" width="260" alt="Porsche 911 — performance brief slide 5 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-06.jpg" width="260" alt="Porsche 911 — performance brief slide 6 of 14" /> |
+| <img src="docs/assets/gallery/porsche-911/slide-07.jpg" width="260" alt="Porsche 911 — performance brief slide 7 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-08.jpg" width="260" alt="Porsche 911 — performance brief slide 8 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-09.jpg" width="260" alt="Porsche 911 — performance brief slide 9 of 14" /> |
+| <img src="docs/assets/gallery/porsche-911/slide-10.jpg" width="260" alt="Porsche 911 — performance brief slide 10 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-11.jpg" width="260" alt="Porsche 911 — performance brief slide 11 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-12.jpg" width="260" alt="Porsche 911 — performance brief slide 12 of 14" /> |
+| <img src="docs/assets/gallery/porsche-911/slide-13.jpg" width="260" alt="Porsche 911 — performance brief slide 13 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-14.jpg" width="260" alt="Porsche 911 — performance brief slide 14 of 14" /> |  |
+
+**BMW M4 CS — performance brief** (9 slides)
+
+|  |  |  |
+| --- | --- | --- |
+| <img src="docs/assets/gallery/bmw-m4-cs/slide-01.jpg" width="260" alt="BMW M4 CS — performance brief slide 1 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-02.jpg" width="260" alt="BMW M4 CS — performance brief slide 2 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-03.jpg" width="260" alt="BMW M4 CS — performance brief slide 3 of 9" /> |
+| <img src="docs/assets/gallery/bmw-m4-cs/slide-04.jpg" width="260" alt="BMW M4 CS — performance brief slide 4 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-05.jpg" width="260" alt="BMW M4 CS — performance brief slide 5 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-06.jpg" width="260" alt="BMW M4 CS — performance brief slide 6 of 9" /> |
+| <img src="docs/assets/gallery/bmw-m4-cs/slide-07.jpg" width="260" alt="BMW M4 CS — performance brief slide 7 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-08.jpg" width="260" alt="BMW M4 CS — performance brief slide 8 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-09.jpg" width="260" alt="BMW M4 CS — performance brief slide 9 of 9" /> |
+
+> **Samples, not a license.** These renders come from decks supplied by the
+> repository owner and are published to show skill output. Vehicle imagery,
+> trademarks and model names belong to their respective owners and are not
+> licensed for reuse through this repository. Provenance for every frame is
+> recorded in [porsche-911/sources.json](docs/assets/gallery/porsche-911/sources.json)
+> and [bmw-m4-cs/sources.json](docs/assets/gallery/bmw-m4-cs/sources.json).
+
+### Other rendered examples
+
+![Existing rendered PowerPoint example.](docs/assets/presentation-preview.png)
+
+![Existing rendered Word example.](docs/assets/document-preview.png)
+
+[Five-slide starter](examples/quick-start.json) · [Word starter](examples/word-quick-start.json) ·
+[Shared human-evolution specification](examples/human-evolution.json)
+
+Metrics in these examples may be illustrative. They are not performance
+claims, and the frames above are new renders of the decks rather than
+stock screenshots.
 
 ## Install a skill
 
@@ -154,50 +198,6 @@ node poster_skill/scripts/render.mjs --html out/poster.html --out out/poster --p
 Read [template-reference mode](poster_skill/references/template-reference-mode.md)
 for supplied designs. Baked-in text is not editable; background repair needs real
 pixel review. JPG export additionally needs ImageMagick or macOS `sips`.
-
-## Real examples, not promises
-
-![Existing rendered PowerPoint example.](docs/assets/presentation-preview.png)
-
-![Existing rendered Word example.](docs/assets/document-preview.png)
-
-[Five-slide starter](examples/quick-start.json) · [Word starter](examples/word-quick-start.json) ·
-[Shared human-evolution specification](examples/human-evolution.json)
-
-The gallery contains existing rendered examples. Example metrics may be
-illustrative; they are not performance claims or new screenshots.
-
-### Deck gallery
-
-Two full decks built with these skills, rendered slide by slide. Every frame
-below is a real export from a `.pptx`, not a mockup.
-
-**Porsche 911 — performance brief** (14 slides)
-
-|  |  |  |
-| --- | --- | --- |
-| <img src="docs/assets/gallery/porsche-911/slide-01.jpg" width="260" alt="Porsche 911 deck slide, slide 1 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-02.jpg" width="260" alt="Porsche 911 deck slide, slide 2 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-03.jpg" width="260" alt="Porsche 911 deck slide, slide 3 of 14" /> |
-| <img src="docs/assets/gallery/porsche-911/slide-04.jpg" width="260" alt="Porsche 911 deck slide, slide 4 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-05.jpg" width="260" alt="Porsche 911 deck slide, slide 5 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-06.jpg" width="260" alt="Porsche 911 deck slide, slide 6 of 14" /> |
-| <img src="docs/assets/gallery/porsche-911/slide-07.jpg" width="260" alt="Porsche 911 deck slide, slide 7 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-08.jpg" width="260" alt="Porsche 911 deck slide, slide 8 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-09.jpg" width="260" alt="Porsche 911 deck slide, slide 9 of 14" /> |
-| <img src="docs/assets/gallery/porsche-911/slide-10.jpg" width="260" alt="Porsche 911 deck slide, slide 10 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-11.jpg" width="260" alt="Porsche 911 deck slide, slide 11 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-12.jpg" width="260" alt="Porsche 911 deck slide, slide 12 of 14" /> |
-| <img src="docs/assets/gallery/porsche-911/slide-13.jpg" width="260" alt="Porsche 911 deck slide, slide 13 of 14" /> | <img src="docs/assets/gallery/porsche-911/slide-14.jpg" width="260" alt="Porsche 911 deck slide, slide 14 of 14" /> |  |
-
-
-**BMW M4 CS — performance brief** (9 slides)
-
-|  |  |  |
-| --- | --- | --- |
-| <img src="docs/assets/gallery/bmw-m4-cs/slide-01.jpg" width="260" alt="BMW M4 CS deck slide, slide 1 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-02.jpg" width="260" alt="BMW M4 CS deck slide, slide 2 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-03.jpg" width="260" alt="BMW M4 CS deck slide, slide 3 of 9" /> |
-| <img src="docs/assets/gallery/bmw-m4-cs/slide-04.jpg" width="260" alt="BMW M4 CS deck slide, slide 4 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-05.jpg" width="260" alt="BMW M4 CS deck slide, slide 5 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-06.jpg" width="260" alt="BMW M4 CS deck slide, slide 6 of 9" /> |
-| <img src="docs/assets/gallery/bmw-m4-cs/slide-07.jpg" width="260" alt="BMW M4 CS deck slide, slide 7 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-08.jpg" width="260" alt="BMW M4 CS deck slide, slide 8 of 9" /> | <img src="docs/assets/gallery/bmw-m4-cs/slide-09.jpg" width="260" alt="BMW M4 CS deck slide, slide 9 of 9" /> |
-
-
-> **Samples, not a license.** These renders come from decks supplied by the
-> repository owner and are published to show skill output. Vehicle imagery,
-> trademarks and model names belong to their respective owners and are not
-> licensed for reuse through this repository. Provenance for every frame is
-> recorded in [porsche-911/sources.json](docs/assets/gallery/porsche-911/sources.json)
-> and [bmw-m4-cs/sources.json](docs/assets/gallery/bmw-m4-cs/sources.json).
 
 ## Quality that you can check
 
