@@ -11,7 +11,6 @@ sys.path.insert(0, str(ROOT / "ppt_skill/scripts"))
 sys.path.insert(0, str(ROOT / "word_skill/scripts"))
 from build_deck import build as build_deck
 from build_doc import build as build_doc
-from transitions import add_transitions as apply_transitions
 
 
 def infographic(data, out):
@@ -90,7 +89,6 @@ def main():
     (out / "deck-spec.json").write_text(json.dumps(deck, ensure_ascii=False, indent=2), encoding="utf-8")
     build_doc(doc, out / "human-evolution.docx", out)
     build_deck(deck, str(out / "human-evolution.pptx"))
-    apply_transitions(str(out / "human-evolution.pptx"), {"default": {"type": "fade", "duration": 600}, "slides": {"1": None}})
     print("Built Word, 12-slide PowerPoint and PNG/SVG infographic in " + str(out))
 
 

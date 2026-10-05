@@ -76,6 +76,110 @@ title -> why it matters -> the obstacle -> the breakthrough -> the mechanism
 Vary the rhythm: a deck of eight identical bullet slides reads as a wall.
 Alternate bullets, then a stat slide, then a chart, then a quote.
 
+## Optional reference treatment: problem → solution → journey
+
+The supplied reference is a **specific slide treatment**, not a replacement theme
+or a new default. Use it only when the story genuinely compares a problem with
+its proposed response and then explains a workflow. Keep the user's selected
+PowerPoint theme and apply this composition only to the relevant slide; other
+users and topics should retain their own visual language.
+
+The PowerPoint theme-gallery reference also matters: theme is a user choice, not
+an engine's permanent house style. If the user supplies a deck or names a theme,
+follow that preference. If no style is specified and the choice would materially
+change the result, offer a small set of styles (for example: clean light,
+corporate, or dark editorial) rather than silently imposing this sample. Map the
+chosen theme's colors and installed fonts into the spec tokens; do not claim
+`--base` transfers every visual feature—the bundled builder appends slides and
+its layouts draw explicit geometry/colors.
+
+1. **Pair the story, not the paragraphs.** Use two equal-width rounded panels
+   across the top: left = 2–3 short problem/impact statements; right = 2–3
+   matched solution/capability statements. Pair each heading and sentence
+   deliberately. Avoid one large wall of text per panel.
+2. **Add one shared journey strip below.** Use 5–7 concise, equal-size stages
+   with simple native icons or editable shapes, directional connectors and one
+   clearly distinguished outcome. Every label stays inside its own card; stage
+   names are short enough not to wrap awkwardly. If the deck contains no actual
+   end-to-end journey, omit this strip rather than inventing steps.
+3. **Keep visual hierarchy restrained.** Keep the reference's clear title,
+   two-panel comparison and bottom flow. Preserve the user's chosen fonts,
+   palette and slide dimensions; use a single accent for the outcome, high
+   contrast, even margins and consistent gaps. Rounded cards and shadows are
+   optional; use them only if they fit the rest of the deck.
+4. **Fit before decorate.** Make the long content readable by editing for
+   concise matched statements and checking actual box dimensions. Do not shrink
+   type excessively to force the sample's amount of copy into the panel. Avoid
+   orphan connector labels, clipped captions, collisions between headings and
+   descriptions, and arrows that appear to enter the wrong card.
+5. **Quality gate.** Check the two panels align at top and bottom, panel headings
+   and copy have consistent spacing, journey cards share a baseline, arrows are
+   centred, and the outcome is visibly the final stage. Run the saved-deck
+   validator, then inspect a rendered slide at presentation size. The user's
+   reference is a layout cue—not an asset to copy, and not permission to alter
+   unrelated slides or the deck-wide style.
+
+Suggested content model (adapt to the real narrative, not a required schema):
+
+```text
+[PROBLEM]                        [PROPOSED SOLUTION]
+Access gap                       Capability 1
+Quality uncertainty              Capability 2
+Operational/productivity impact  Capability 3
+
+[Stage 1] → [Stage 2] → [Stage 3] → [Outcome]
+```
+
+Use the built-in `two_column` for the paired comparison and `sequence` for a
+short bottom journey when that is sufficient. Reuse of the visual treatment
+doesn't require a new PPT builder layout; build one-off native shapes only when
+the composition needs them.
+
+## Quick style selection, not a forced style
+
+- **Research/report:** restrained light palette, source line, evidence chart or
+  figure; give notes the detail that would clutter the slide.
+- **Pitch/problem-solution:** optionally use the reference treatment above for
+  the comparison and journey—not as a deck-wide template.
+- **Technical explainer:** editable labelled diagrams, a few carefully chosen
+  photos only when they add evidence or context.
+- **Photo-led/storytelling:** give a purposeful visual the room; do not add a
+  flow diagram just to make a slide look busy.
+
+A design reference answers *how to arrange this story*; the audience, subject,
+and user-provided theme still decide which story and style to use.
+
+## Fast research and asset triage
+
+Normal requests should use a fast, bounded research path—not “collect everything
+and summarize later.” First identify 3–6 questions the output must answer. Run
+independent, focused searches concurrently; inspect at most five strong primary
+or authoritative sources for routine factual work. Keep a compact evidence
+register (source URL/title/date, extracted fact, claim/slide using it), deduplicate
+repeated facts, and stop when each important claim has support. Widen the search
+only for disputed, high-stakes, or explicitly deep-research work. Speed must not
+come from skipping source checks.
+
+For outside images, issue several purpose-labelled queries in parallel (hero,
+component, process/diagram), cap each around 10 candidates, filter metadata and
+thumbnails before downloading full files, remove URL/content duplicates, and
+usually choose only the 1–5 visuals that improve comprehension. Store source,
+creator, URL, rights/attribution, dimensions and retrieval date with the selected
+file. Cache retrieved research/assets for the current project and reuse them
+across paired PPT/DOCX outputs; check freshness and licence terms before reuse.
+Do not crawl every result page or scrape a search-engine image-result page.
+
+## Embedded assets: select and place, don't just extract
+
+If media have been extracted, treat that as the start of selection—not the
+finished result. Use the contact sheet to check relevance, legibility, crop and
+visual quality; then explicitly place useful choices in the deck spec or leave
+them out with a reason. Prefer a smaller, coherent set over a folder of unused
+images. Never infer legal reuse permission from presence inside a file.
+The local helper only shortlists raster images by resolution, broad aspect-ratio
+suitability and reuse count; it is not a web crawler, semantic image model or
+rights checker. See `references/free-assets.md` before introducing outside art.
+
 ## Color
 
 The default theme is the "Research Lab" palette: navy `#1E3A5F` for structure,

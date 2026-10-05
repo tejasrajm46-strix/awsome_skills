@@ -12,6 +12,7 @@ import json
 import os
 import sys
 import tempfile
+from pathlib import Path
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SCRIPTS = os.path.join(os.path.dirname(HERE), "scripts")
@@ -182,6 +183,24 @@ def test_image_alt_text_bounds_and_collisions():
         assert any("collide" in e for e in report["errors"])
 
 
+def test_user_reference_composition_uses_existing_layouts():
+    """The supplied problem/solution + journey treatment remains opt-in."""
+    with tempfile.TemporaryDirectory() as tmp:
+        path = _write(tmp, _deck([
+            {"layout": "two_column", "title": "Problem and response",
+             "left": {"heading": "Problem", "bullets": ["Access is slow", "Quality is uncertain"]},
+             "right": {"heading": "Proposed solution", "bullets": ["Assess quickly", "Track each batch"]}},
+            {"layout": "sequence", "title": "One connected journey",
+             "steps": ["Select", "Assess", "Plan", "Order", "Value"],
+             "highlight": 4, "note": "Example workflow; adapt stages to the real service."},
+        ]))
+        prs = Presentation(path)
+        assert len(prs.slides) == 2
+        assert any("Problem" in sh.text_frame.text for sh in prs.slides[0].shapes if sh.has_text_frame)
+        assert any("Select" in sh.text_frame.text for sh in prs.slides[1].shapes if sh.has_text_frame)
+        assert validate_deck.validate(path)["ok"]
+
+
 def test_bar_axis_and_background_are_explicit():
     with tempfile.TemporaryDirectory() as tmp:
         path = _write(tmp, {"title": "Test", "theme": {"bg": "F8F5EF"}, "slides": [{
@@ -194,21 +213,26 @@ def test_bar_axis_and_background_are_explicit():
         assert chart.value_axis.has_title
 
 
-def test_transition_ignorable_prefix_is_declared_on_root():
-    import zipfile
+def test_generated_and_template_decks_are_transition_free():
     from lxml import etree
-    from transitions import add_transitions, NS_P14
     with tempfile.TemporaryDirectory() as tmp:
         path = _write(tmp, _deck([{"layout": "title", "title": "Open in Office"}]))
-        add_transitions(path, {"default": {"type": "fade", "duration": 600, "adv_tm": 2000}})
-        with zipfile.ZipFile(path) as package:
-            root = etree.fromstring(package.read("ppt/slides/slide1.xml"))
-        assert root.nsmap.get("p14") == NS_P14, root.nsmap
-        transition = root.find("{http://schemas.openxmlformats.org/presentationml/2006/main}transition")
-        assert transition.get("advTm") == "2000"
         report = validate_deck.validate(path)
-        assert report["ok"], report["errors"]
-        assert report["transitions"]["count"] == 1
+        assert report["ok"] and report["transitions"]["count"] == 0
+        assert not any("no slide transitions" in w for w in report["warnings"])
+        base = Presentation(path)
+        transition = etree.SubElement(base.slides[0]._element,
+                                     "{http://schemas.openxmlformats.org/presentationml/2006/main}transition")
+        etree.SubElement(transition, "{http://schemas.openxmlformats.org/presentationml/2006/main}fade")
+        base.save(path)
+        original = Path(path).read_bytes()
+        report = validate_deck.validate(path)
+        assert not report["ok"] and report["transitions"]["count"] == 1
+        assert any("not allowed" in e for e in report["errors"])
+        output = os.path.join(tmp, "clean.pptx")
+        build(_deck([]), output, base=path)
+        assert validate_deck.validate(output)["transitions"]["count"] == 0
+        assert Path(path).read_bytes() == original
 
 
 def main():

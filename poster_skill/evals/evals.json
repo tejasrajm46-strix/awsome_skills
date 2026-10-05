@@ -1,0 +1,17 @@
+{
+  "skill_name": "smart-poster-designer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Use my supplied event-poster image as the template. Keep the background, typography style, layout and colors, but replace the event title, date, venue and QR code with the details I provide.",
+      "expected_output": "New poster with original preserved, requested design cues matched, all obsolete source details removed, new QR target verified, and side-by-side visual QA.",
+      "assertions": ["Source file remains unchanged", "Keep/replace map is made", "Background and key layout cues are retained", "Old baked-in text is removed without visible ghosting", "New factual content is not invented", "Output is compared side-by-side with the reference"]
+    },
+    {
+      "id": 2,
+      "prompt": "Make a premium science symposium poster for researchers, portrait print size, with the real date and venue from my notes and a restrained scientific illustration.",
+      "expected_output": "Purposeful original direction, legible hierarchy, exact supplied facts, licensed or generated illustration, print dimensions and bleed checked against available specifications.",
+      "assertions": ["No event facts are fabricated", "Design uses meaningful whitespace and coherent type/palette", "Contrast and crop are checked", "Print specifications are not guessed"]
+    }
+  ]
+}

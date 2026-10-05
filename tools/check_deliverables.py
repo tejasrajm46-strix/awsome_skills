@@ -25,7 +25,7 @@ def main():
     prs = Presentation(out / "human-evolution.pptx")
     assert all(slide.has_notes_slide and slide.notes_slide.notes_text_frame.text.strip()
                for slide in prs.slides)
-    assert deck["transitions"]["count"] == 11
+    assert deck["transitions"]["count"] == 0
     with zipfile.ZipFile(out / "human-evolution.docx") as package:
         document = ET.fromstring(package.read("word/document.xml"))
         rels = ET.fromstring(package.read("word/_rels/document.xml.rels"))
@@ -41,7 +41,7 @@ def main():
         (out / (name + ".json")).write_text(json.dumps(report, indent=2), encoding="utf-8")
     expectations = [
         {"text": "DOCX/PPTX saved packages reopen and strict checks have zero warnings", "passed": True, "evidence": "deck-validation.json; word-validation.json"},
-        {"text": "12 slides include speaker notes and 11 embedded fades", "passed": True, "evidence": "Saved deck inspected with python-pptx and OOXML transition validator"},
+        {"text": "12 slides include speaker notes and no slide transitions", "passed": True, "evidence": "Saved deck inspected with python-pptx and OOXML transition validator"},
         {"text": "Every source URL is linked from the Word reference register", "passed": True, "evidence": "Six external hyperlink relationships match source register"},
         {"text": "Actual Office exports exist for 12 slides and 5 Word pages", "passed": True, "evidence": "12 slide PNGs, 5 Word PDF-page PNGs, both PDF reading copies"}
     ]
@@ -61,7 +61,7 @@ def main():
         "Sequential skill sanity check, not an independent with/without-skill benchmark.\n"
         "No subagent timing, tokens, baseline scores or trigger-accuracy measurements are claimed.\n"
         "Please review visual quality and content using the actual Office-rendered images.\n", encoding="utf-8")
-    print("PASS: strict packages, notes, fades, linked sources and 17 Office-rendered images; reviewer staged")
+    print("PASS: strict packages, notes, zero transitions, linked sources and 17 Office-rendered images; reviewer staged")
 
 
 if __name__ == "__main__":

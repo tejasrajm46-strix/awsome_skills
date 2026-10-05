@@ -1,32 +1,30 @@
-# PPTX Generator — identity brief
+# Awesome Skills — identity brief
 
-**Name:** PPTX Generator. **Companion:** Word Generator.
-**Audience:** agent users, developers, educators and researchers making editable Office files.
-**Promise:** structured content becomes readable, editable documents, with checks instead of unsupported confidence.
-**Character:** precise, useful, editorial, open, quietly confident.
-**Primary use:** GitHub README, skill archive, small repository avatar.
+**Repository slug:** `awsome_skills` (the user's requested spelling).
+**Display name:** Awesome Skills.
+**Audience:** developers, educators, researchers and agent users creating/editing
+real PowerPoint, Word, PDF, Excel and poster artifacts.
+**Promise:** from intent to editable output, with preservation and saved-file checks.
+**Character:** precise, capable, bold, open, editorial.
+**Primary uses:** GitHub README, repository avatar, skill downloads and documentation.
 
-## Strategy
+## Strategy and concept exploration
 
-The supplied logo-design skill was used for discovery, category research,
-construction and SVG auditing. Its library was studied, not copied or bundled.
-Productivity/collaboration references frequently use blue, multicolour circles,
-rounded tiles and negative space. Avoid Office lookalikes, paperclip/page clip art,
-AI sparkles and gradients that substitute for a strong silhouette.
+The supplied logo-design skill's developer-tools library was studied for category
+conventions—geometric marks, containment, negative space and repeated blue palettes.
+Its trademark artwork was not copied or shipped. Avoid Office lookalikes, generic
+AI sparkles and a collage of file-type icons in the logo itself.
 
-## Exploration
+Explored ideas included a routed S, an open aperture A, modular assembly, aligned
+crop corners, relay rails, an input/output junction, a negative-space arrow, a
+stepped baseline and a shared research hub. Three geometries were built and
+compared at small sizes: Relay S, Aperture A and Assembly.
 
-1. Frame Shift — opposing alignment corners imply a transformation into order.
-2. PX — custom P counter with an X junction, explicitly presentation-led.
-3. Twin Fold — two folded rails create a shared aperture for two output formats.
-4. Baseline — a stepped underscore signals consistent typographic alignment.
-5. Margin — four asymmetric margin bars frame a calm interior.
-6. Register — offset crop marks converge into a precise central square.
-7. Relay — a single routed ribbon splits at a clean output junction.
-8. Proof — a squared open loop ends in an editorial check.
-9. Folio — a custom F with one detached row suggests content becoming pages.
-10. Gridline — a diagonal cut through three aligned bars reveals a forward rhythm.
+**Approved:** Relay S. It suggests continuity and handoff without tying the identity
+to slides or Word. Graphite and lime depart from common blue productivity branding;
+warm white preserves a clear editorial reading surface. The wordmark uses outlined
+OFL Geist letterforms. The skill folders and package identities remain stable.
 
-Three directions built: Frame Shift (abstract), PX (lettermark), Twin Fold (abstract).
-Frame Shift is recommended: simple, two-format-neutral, reproducible at small sizes.
-No claim of trademark clearance. Obtain legal/reverse-image review before commercial branding.
+The user canceled video publication; the final repository uses static original
+logo/hero artwork only. No claim of trademark clearance or objectively perfect
+branding is made.

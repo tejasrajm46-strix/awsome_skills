@@ -9,8 +9,13 @@ __pycache__/
 dist/
 build/
 *.zip
+# Publish only freshly built, verified skill archives.
+!releases/
+!releases/skills/
+!releases/skills/*.zip
 
-# Local deliverables and duplicated evaluation output
+# Local deliverables, preserved imports and duplicated evaluation output
+local-archive/
 outputs/
 skill-review-workspace/
 

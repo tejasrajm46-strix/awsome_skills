@@ -48,7 +48,9 @@
       "id": 3,
       "prompt": "our quarterly business review deck keeps spilling text off the slides and every slide looks slightly different from the last. here's the file, can you rebuild it so it's consistent and actually fits?",
       "expected_output": "A rebuilt .pptx using the shared layout grid, with text auto-sized to fit and consistent title baselines. The validator reports no overflow and no off-slide shapes. The agent should not simply shrink fonts below the 12pt floor.",
-      "files": ["qbr-2026-q2.pptx"],
+      "files": [
+        "qbr-2026-q2.pptx"
+      ],
       "expectations": [
         "A rebuilt .pptx file was produced",
         "validate_deck.py reports zero errors on the output",
@@ -59,16 +61,15 @@
     },
     {
       "id": 4,
-      "prompt": "build me a 10-slide deck on the history of the transistor, and make the slides actually animate into each other - not just a note that says 'fade'",
-      "expected_output": "A 10-slide .pptx with genuine <p:transition> elements written into each slide part by transitions.py, with per-slide types and durations, not merely described in speaker notes.",
+      "prompt": "Build a 10-slide deck on the history of the transistor using relevant visual references, with no slide transitions.",
+      "expected_output": "Editable 10-slide PPTX, deliberate reference-informed design, no p:transition elements and passing strict structural validation.",
       "files": [],
       "expectations": [
-        "A .pptx file was produced and opens in python-pptx",
-        "Slide parts in the package contain real <p:transition> elements, not just text in the notes",
-        "Each transition uses one of the valid effect elements (fade, push, wipe, split, cover, cut, dissolve)",
-        "The transitions script was used rather than transitions being faked or omitted",
-        "validate_deck.py was run and reports the embedded transition count",
-        "The response does not claim transitions are present without the validator confirming them"
+        "A PPTX opens in python-pptx",
+        "Relevant reference assets were inspected before choosing the design",
+        "All slide parts contain zero p:transition elements",
+        "The strict validator passes",
+        "Visual review status and source rights are reported honestly"
       ]
     }
   ]

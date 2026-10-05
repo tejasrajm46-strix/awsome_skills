@@ -1,59 +1,57 @@
-# Frame Shift — project identity
+# Awesome Skills — Relay S identity
 
-![Original PPTX Generator symbol](../assets/logo.svg)
+![Approved Relay S symbol](../assets/logo-black.svg)
 
-Two opposing alignment corners turn loose content into a clear frame. The
-abstract mark represents the workflow rather than imitating Microsoft Office
-icons, and remains relevant to the companion Word skill.
+**Idea:** one routed shape carries an idea into a finished artifact. The angular
+S is an identifier, not a collage of Office icons. It works in one color and
+remains format-neutral as the toolkit expands.
 
-## Assets
+## Production files
 
-- [Colour SVG master](../assets/logo.svg)
-- [Black](../assets/logo-black.svg) and [white](../assets/logo-white.svg)
-- [512px PNG](../assets/logo.png)
-- [16/32/48px favicon](../assets/favicon.ico)
-- [README banner SVG](../assets/hero.svg) and [PNG](../assets/hero.png)
+- [Lime symbol master](../assets/logo.svg)
+- [Black](../assets/logo-black.svg) · [white](../assets/logo-white.svg)
+- [Dark horizontal lockup](../assets/brand-lockup.svg)
+- [Light horizontal lockup](../assets/brand-lockup-light.svg)
+- [Stacked lockup](../assets/brand-stacked.svg)
+- [512px transparent PNG](../assets/logo.png)
+- [App icon](icons/relay-app-icon.svg) · [favicon](icons/favicon.ico)
+- [README hero](../assets/hero.png) · [editable SVG hero](../assets/hero-multiskill.svg)
+- [Concept exploration](concepts/overview.png)
 
-The symbol masters are filled vector geometry: no fonts, gradients, filters,
-rasters or strokes. The banner intentionally uses live text; it is an editorial
-illustration, not a font-independent logo master. Its PNG is used in the README
-for consistent typography.
+The mark uses a single filled path. Lockup letterforms are outlined from Geist
+under its SIL Open Font License, not live font-dependent SVG text. The hero is
+an original editorial illustration with outlined type and geometric artifacts.
+The trademark/reference logo library supplied with the design skill is excluded.
 
 ## Palette
 
-| Role | HEX |
+| Role | Color |
 |---|---|
-| Teal | `#176B60` |
-| Copper | `#C57942` |
-| Deep background | `#0C2425` |
-| Light background | `#FAF8F3` |
-| Light-background heading | `#163D38` |
+| Graphite | `#111412` |
+| Electric lime | `#CDF56B` |
+| Warm white | `#F5F6EE` |
+| Muted sage | `#AEBEAC` |
+| Light-surface teal | `#176B60` |
 
-Use black on light surfaces, white on dark surfaces, and the colour master on a
-plain light background. Do not use copper as small body text on white. The banner
-uses brighter tint variants for dark-background contrast.
+Use lime on graphite, black/teal on light surfaces, and white on dark surfaces.
+Do not use lime for small text on white. Use clear space of at least one stem
+width around the visible mark. Recommended symbol minimum: 24px; the 16px favicon
+is provided as a tested small raster export.
 
-## Clear space and size
+Do not stretch, rotate, add effects to the master, separate parts of the S or
+place it on busy artwork. Use the standalone mark or stacked lockup when a long
+horizontal wordmark would become too small.
 
-Keep at least one corner-stem thickness (36 units on the 256-unit master)
-between the visible mark and neighbouring content. The master already includes
-40-unit outside padding. Minimum recommended standalone canvas: **24px**;
-the favicon cut was generated at 16px and visually inspected, but is necessarily
-less crisp at fractional display scales.
+## Process and verification
 
-Do not stretch, rotate, add shadows, move one corner independently or place on a
-busy photograph without a quiet background. Keep the project name as normal
-editable text beside the symbol; no separate font-dependent logo lockup is needed.
+The user-supplied logo-design skill guided category research, three original
+concepts, grayscale comparison, SVG audits and export. Relay S was approved by
+the user. The symbol audit has no structural findings; the lockup's font-derived
+angles/anchor complexity are intentional typography, not a production fault.
+Preview checks cover small sizes, dark/light backgrounds and repository context.
+Audit scores are heuristics, not artistic quality scores or legal clearance.
 
-## Checks and provenance
-
-Created using the user's supplied logo-design skill: fast-track discovery,
-productivity-category reference study, three geometric concepts, refinement,
-SVG audit and rendering. The library was studied, not copied or published.
-The final symbol's structural audit reported **100/100 (heuristic)** with no
-issues; this is not a design score or legal clearance.
-
-Original illustration and preview composites are included under the repository's
-MIT license. Product previews use actual generated Office exports. No stock
-imagery, borrowed trademark art or copied font outlines are included.
-The name and symbol have not undergone legal trademark clearance.
+Original symbol and artwork are under repository MIT. Geist remains under
+[OFL](../assets/fonts/OFL.txt). Source generator:
+[build_brand.py](../../tools/build_brand.py). Trademark clearance and print-color
+proofing have not been performed. No OneTake video or runtime is published.

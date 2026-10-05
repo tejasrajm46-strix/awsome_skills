@@ -1,6 +1,6 @@
 ---
 name: word-generator
-description: Create, improve, or rebuild professional editable Microsoft Word documents (.docx), reports, research briefs, illustrated explainers, proposals, handouts, and documents derived from notes or presentations. Use whenever the user asks for a Word file, DOCX, polished report, or a document with headings, tables, citations, and images, even if they do not mention Python. Use the bundled builder before hand-writing document code. Do not use for slide-only tasks, spreadsheets, or plain chat answers.
+description: Create professional editable Microsoft Word documents (.docx) from notes, research, outlines or structured JSON; read, extract and inspect existing DOCX/DOTX documents and plan careful template edits. Use for Word reports, briefs, proposals, letters, handouts and document review. Existing-file edits require package-aware preservation; the bundled builder creates new documents, not lossless template round-trips.
 license: MIT
 compatibility: Python 3.8+ and python-docx. Word or LibreOffice is optional for rendered pagination review; structural checks alone cannot certify appearance.
 ---
@@ -10,31 +10,54 @@ compatibility: Python 3.8+ and python-docx. Word or LibreOffice is optional for 
 Deliver a genuine editable DOCX, not Markdown renamed as Word. Keep text, headings,
 and tables editable; embed images only for visuals. Do not promise perfection.
 
+The builder creates new documents from content specs. For existing DOCX/DOTX,
+first run `scripts/inspect_docx.py` and read
+[`references/ooxml-review.md`](references/ooxml-review.md). Preserve the source,
+revisions, comments and unsupported parts; use Word automation or targeted OOXML
+edits when needed. Do not rebuild an existing file merely to change one paragraph.
+There is no separate document skill required by this repository.
+
+## Shared research and assets
+
+When external facts, images, tables or a website's visual style are needed, read
+[`references/shared-scraping.md`](references/shared-scraping.md), which connects
+this skill to `ultimate-scrape-skill`. Skip scraping for local-only work.
+
 ## Workflow
 
-1. Read the supplied material. Determine audience, purpose, length, output path,
-   and whether an existing file/template must be preserved. Default a science
+1. Read the supplied content. Determine audience, purpose, length, output path,
+   and whether an existing source file should remain unchanged. Default a science
    explainer to a general audience, A4, installed fonts, and concise sections.
 2. Inspect available dependencies. Obtain permission before installing anything
    or running scripts when the host requires it. Prefer a project-local install.
-3. Establish a source register for factual work: numbered IDs, real titles,
-   URLs, access date, and which claims each supports. Read the sources. Mark
-   disputed relationships, estimates, and conceptual diagrams honestly.
-4. Plan the argument and one restrained design system. Use semantic headings,
+3. **Research efficiently.** For routine work, define 3–6 questions, search
+   independent topics in parallel, read up to five authoritative pages, and
+   capture only facts needed for the brief in one source register. Deduplicate
+   URLs/facts and stop when key claims have support; use deeper source coverage
+   for disputed/high-stakes topics. Never save time by skipping source checks.
+   Record title, URL, access date and supported claims.
+4. Reuse user-provided figures before sourcing new ones. For embedded images in
+   a companion PPTX/DOCX, the bundled
+   `scripts/extract_office_assets.py` creates a bounded, deduplicated shortlist
+   and contact sheet without scraping. Select deliberately, then reference
+   selected paths explicitly in this spec. For web images, search targeted
+   queries, preview/filter thumbnails before full downloads, deduplicate, and
+   retain creator/source/licence/attribution metadata for chosen images.
+5. Plan the argument and one restrained design system. Use semantic headings,
    11pt body text, approximately 1.15 line spacing, high contrast, generous
    margins, captions and descriptive image alt text. Never encode meaning by
    colour alone. Read `references/design-rules.md` for editorial QA.
-5. Write a JSON spec and run:
+6. Write a JSON spec and run:
    ```bash
    python <skill-path>/scripts/build_doc.py report.json -o report.docx
    python <skill-path>/scripts/validate_doc.py report.docx --strict --json
    ```
-6. Render the saved DOCX with installed Word or LibreOffice if available. Review
-   every page for clipped images, orphan headings, widows, blank spillover pages,
-   table splits, legibility, and excessive whitespace. Fix the spec and rebuild.
-   Otherwise say explicitly that pagination and appearance remain unverified.
-7. Deliver the document link, page count only if rendered, source coverage, and
-   exact checks performed. Include a PDF reading copy when requested or useful.
+7. Render the saved DOCX with installed Word or LibreOffice if available. Review
+   every page for clipping, orphan headings, widows, blank spillover pages,
+   table splits, legibility, and excessive whitespace. Fix and re-render. Otherwise
+   say explicitly that pagination and appearance remain unverified.
+8. Reopen and validate the generated structure; report page count only if rendered,
+   source coverage, and exact checks performed.
 
 ## JSON spec
 
@@ -81,6 +104,23 @@ rows may still exceed a page: shorten them or split the table and render again.
 Image width is limited to the text region. Height/pagination needs rendered QA.
 Links accept HTTP(S) only. Do not claim sources are verified merely because a
 hyperlink is syntactically valid.
+
+## Existing documents and review features
+
+- `python-docx` cannot faithfully edit every Word feature and has no standard API
+  for tracked changes or anchored comments. Do not simulate redlining with styled
+  text or leave orphan comment parts.
+- Actual insertions/deletions use `<w:ins>` / `<w:del>` with author/date/IDs;
+  deleted text uses `<w:delText>`. Comments need the related parts and range/reference
+  markers. Validate both accepted/rejected views where revisions matter.
+- Preserve out-of-scope styles, numbering, headers/footers, bookmarks, hyperlinks,
+  fields, section breaks, images, relationships, comments and revision markup. Editing
+  may invalidate digital signatures; keep the source and disclose this.
+- For careful package inventory without dependencies, run
+  `python scripts/inspect_docx.py input.docx --json`. This is not an OOXML schema
+  validator or visual page renderer.
+- Follow [`references/design-rules.md`](references/design-rules.md) for rendered
+  pagination, accessibility, source, table and image QA.
 
 ## Ownership and checks
 

@@ -1,6 +1,6 @@
 ---
 name: pptx-generator
-description: Build polished, editable PowerPoint (.pptx) decks with Python and python-pptx - title, section, hero and giant-statement slides, bullets, two-column comparisons, stat callouts, timelines, quotes, tables, native editable charts, layered cutaways, flow and sequence diagrams, ocean cross-sections, network maps, and real embedded slide transitions, on one consistent colour and type system. Use this skill whenever the user wants to make, generate, build, design, or restyle slides, a slide deck, a PowerPoint, a PPT, a .pptx file, a presentation, a pitch deck, or slide notes - even if they only say "deck" or "slides" and never mention PowerPoint or Python. Also use it to turn a report, document, notes, research, or an outline into a presentation, to fix a deck whose text overflows or whose styling is inconsistent, and when asked for real PowerPoint transitions between slides. Check this before hand-rolling python-pptx code, since it already encodes the layout, fit, transition and validation work.
+description: "Build, design, inspect or restyle polished editable PowerPoint (.pptx) decks, slides, pitch decks and speaker notes from outlines, reports, research or templates. Includes measured layouts, native charts, diagrams, visual reference assets and saved-file validation. Generated decks have no slide transitions. Read this before hand-writing python-pptx code or rebuilding a supplied deck."
 license: MIT
 compatibility: Requires Python 3.8+ with python-pptx and lxml (both pulled in automatically). Charts are native PPTX charts, so matplotlib is not needed. LibreOffice is optional and only used to render a PDF preview.
 ---
@@ -13,17 +13,29 @@ type. Text, charts and diagrams stay editable; imported images remain images.
 
 ## Why the workflow is shaped like this
 
-The failure modes of generated decks are, in order: **text that overflows the
-slide**, **inconsistent geometry between slides**, and **transitions that were
-written in the notes but never actually embedded**. The measured grid, text-fit
-estimates, real `<p:transition>` elements and saved-package checks reduce these
-failures; they do not replace rendering in PowerPoint or LibreOffice. Font metrics
+The main failure modes are **text that overflows the slide** and
+**inconsistent geometry between slides**. The measured grid, text-fit estimates
+and saved-package checks reduce these failures; they do not replace rendering
+in PowerPoint or LibreOffice. Generated decks must contain no slide transitions. Font metrics
 are heuristic, and imported images are checked for bounds/collisions, not their
 internal label legibility.
 
 Respect the order below. In particular, never report a deck as finished without
 running the validator - it is the only thing that has actually looked at the
 bytes.
+
+## Shared research and reference assets
+
+For external facts, images, tables or website style, read
+[`references/shared-scraping.md`](references/shared-scraping.md), which connects
+this skill to `ultimate-scrape-skill`. Skip scraping for local-only work.
+
+Before choosing a visual direction, read [`assets/README.md`](assets/README.md)
+and open [`assets/template-sheet.jpg`](assets/template-sheet.jpg) or
+[`assets/preview-sheet.jpg`](assets/preview-sheet.jpg). Use relevant references
+for hierarchy, grid, typography and image treatment; do not copy unrelated
+content or imply preview images are editable templates. Check
+[`assets/credits.json`](assets/credits.json) for source and reuse cautions.
 
 ## Workflow
 
@@ -32,45 +44,76 @@ bytes.
    `soffice --version` tells you whether a PDF preview is possible; its absence
    is not an error.
 
-2. **Draft the content as an outline first**, in prose or bullets, before
+2. **If the input includes an existing deck/template, read
+   `references/template-editing.md` before choosing a build path.** Preserve the
+   source, inspect its slide structure and rendered appearance, and state what
+   can be reused faithfully. `--base` appends slides; it does not replace or
+   restyle existing slides. Do not imply otherwise.
+
+3. **Draft the content as an outline first**, in prose or bullets, before
    touching JSON. Set audience, purpose and a coherent visual system. Decide the
    single takeaway of each slide. For research, read authoritative sources and
    keep numbered source IDs with URLs and claim coverage. Share this register
    and original image assets with `word-generator` when delivering both formats.
    A deck is an argument, not a document with page breaks.
 
-3. **Write a deck spec JSON** (schema below), choosing a layout per slide from
+4. **Research quickly without starving quality.** Default to *Fast* unless the
+   user requests exhaustive research or the topic is high-stakes: write 3–6
+   focused questions, run independent searches in parallel, inspect up to five
+   strong primary/authoritative pages, and extract only facts needed for the
+   slide claims. Record title, URL, access date, key facts and slide/claim IDs
+   in one source register. Deduplicate facts and URLs; stop once each key claim
+   has support. Use *Deep* mode for disputed/high-stakes claims: widen source
+   coverage and reconcile conflicting evidence. Never trade away claim checking
+   for speed.
+
+   For visuals, reuse supplied/local figures first. If authorized web images
+   are genuinely needed, use structured search with a small candidate cap
+   (about 10 per targeted query), preview/thumbnail-filter first, deduplicate
+   before full downloads, and download only the few chosen assets. Save the
+   creator, source page, direct URL, rights and attribution beside each choice.
+   The embedded-asset helper below is for user-provided PPTX/DOCX files; it is
+   not web search or semantic ranking. Cache task research and selected local
+   asset metadata so a paired Word/PPT deliverable does not repeat retrieval.
+
+5. **Write a deck spec JSON** (schema below), choosing a layout per slide from
    the table further down. Write the `title` as a claim, not a label.
 
-4. **Build it:**
+6. **Use visuals and build it.** Reuse user-provided figures and original assets
+   from a paired DOCX first. For images already embedded in a PPTX/DOCX, run the
+   bounded local shortlist tool before rebuilding; it writes a contact sheet,
+   dimensions, SHA-256 deduplication and use locations. Example:
    ```bash
+   python scripts/extract_office_assets.py source.pptx --out work/assets --max-assets 12 --spec deck.json
    python <skill-path>/scripts/build_deck.py deck.json -o deck.pptx
    ```
-   Add `--base their-template.pptx` to start from a template the user supplied.
+   This extractor only inventories local embedded raster images; it does not
+   scrape the web, infer semantic relevance, or establish reuse rights. Open its
+   contact sheet, pick only relevant assets, cite/license them where needed, and
+   add chosen paths to the spec. Add `--base their-template.pptx` only when the
+   supplied deck is intended as an append-only base.
 
-5. **Add real transitions** (if the deck wants them - see below):
-   ```bash
-   python <skill-path>/scripts/transitions.py deck.pptx --config transitions.json
-   ```
+7. **Keep slides transition-free.** Do not add fades, wipes, automatic advances
+   or transition instructions in notes. The builder removes inherited slide
+   transitions from the output copy when using `--base`; the source stays intact.
 
-6. **Validate, and read the warnings:**
+8. **Validate, and read the warnings:**
    ```bash
    python <skill-path>/scripts/validate_deck.py deck.pptx --expect <n> --strict
    ```
-   Errors are hard failures: a shape off the slide, overlapping text, a table
-   that grows past the bottom of the slide, malformed transition XML. Warnings
-   mean it will open but probably looks wrong - text likely overflowing its box,
-   a table that will auto-grow, type below 10pt, no transitions at all. Overflow
+   Errors are hard failures: a shape off the slide, overlapping text, a table    that grows past the bottom of the slide, or an embedded slide transition.
+   Warnings mean it will open but probably looks wrong - text likely overflowing
+   its box, a table that will auto-grow, or type below 10pt. Overflow
    warnings mean the slide is carrying too much text. Fix it by splitting the
    slide or cutting words - **not** by lowering the font size. Tables are
    measured, not skipped, so a cramped table is reported like any other slide.
 
-7. **Render and inspect** every slide with installed PowerPoint or LibreOffice,
+9. **Render and inspect** every slide with installed PowerPoint or LibreOffice,
    when available. Check actual wrapping, figure-label size, contrast, clipping,
    whitespace and narrative rhythm. Fix the spec and rebuild; no validator can
    certify visual perfection. Do not modify the user template in place.
 
-8. **Report** the output path, slide count, theme, embedded transition count,
+10. **Report** the output path, slide count, theme, zero-transition check,
    structural result and whether rendering/visual review actually occurred.
    Do not paste the deck's contents back into chat or call unrendered output flawless.
 
@@ -167,6 +210,14 @@ Light-background layouts use the standard header grid. Dark layouts
 
 Inline `**bold**` works inside any bullet or text field.
 
+For a process with explicit source/context → action → outcome, use the native
+`sequence` or `flow` layout before reaching for unrelated photos. For a
+comparison that must fit a single page, use `compare`; for substantive evidence
+or a topic-specific hero, use a relevant image slide and a short caption. The
+image extractor is an inventory/shortlist step—not an auto-insertion feature.
+A selected asset must be explicitly referenced by an `image` slide or an image
+block in a companion Word spec; otherwise it remains unused by design.
+
 ## How the scripts fit together
 
 The workflow is a pipeline of small parts, not one program, because each part
@@ -176,7 +227,7 @@ answers a different question and each can be run and tested alone:
 |------|------|
 | `scripts/textmetrics.py` | Text and table measurement. The single owner of "how many lines does this need, how tall is that row, how wide is that column". No python-pptx import, so it is testable alone. |
 | `scripts/build_deck.py` | Spec JSON -> `.pptx`. Layout, theme tokens, freeform geometry. Imports its measurements from `textmetrics` and never re-derives them. |
-| `scripts/transitions.py` | Post-processes a saved package to add real `<p:transition>` elements, which `python-pptx` cannot express. |
+| `scripts/extract_office_assets.py` | Bounded PPTX/DOCX embedded-raster shortlist, SHA-256 deduplication, source-slide tracking, contact sheet and spec-use audit. No network or external dependencies. |
 | `scripts/validate_deck.py` | Re-reads the saved package and gates it. Re-measures with the *same* functions as the builder, so the two can never disagree. |
 | `tests/test_layout_rules.py` | Assert-based regression checks for the layout rules, including the two bugs that once shipped (a table sized for its shortest cell; a stack note box reaching into the marker column). |
 
@@ -191,46 +242,12 @@ Run the checks with:
 python <skill-path>/tests/test_layout_rules.py
 ```
 
-## Slide transitions
+## No slide transitions
 
-`python-pptx` has no transition API. The bundled `transitions.py` post-processes
-the saved package and writes real `<p:transition>` elements into each slide
-part, which is what PowerPoint reads and actually plays.
-
-```bash
-python <skill-path>/scripts/transitions.py deck.pptx --config transitions.json
-python <skill-path>/scripts/transitions.py deck.pptx --preset fade --duration 700
-```
-
-A config maps a default plus per-slide overrides; slide numbers are 1-based and
-a transition on slide N is the transition **into** slide N, so slide 1 is
-normally `null`:
-
-```json
-{
-  "default": {"type": "fade", "duration": 700},
-  "slides": {
-    "3": {"type": "push", "dir": "l", "duration": 700},
-    "9": {"type": "split", "dir": "l", "duration": 700},
-    "12": null
-  }
-}
-```
-
-Types: `fade`, `dissolve`, `cut`, `push`, `wipe`, `cover`, `split`. `dir` is
-`l`, `r`, `u` or `d`. Durations are milliseconds.
-
-House style, learned from how these read on a projector:
-
-- `fade` is the default for anything informational. Use it for section changes
-  at slightly longer duration to mark the narrative shift.
-- `push`/`wipe` only where the content genuinely moves in a direction - a
-  journey, a sequence, a progression.
-- `split` for a comparison or a reveal.
-- Never use random bars, checkerboard, airplane or rotating effects.
-- Keep everything within 0.5-1.2s. Anything slower reads as a stall.
-- Object animations are a different system and are not needed for a deck like
-  this. Prefer transitions; do not overload both.
+Slide transitions are intentionally unsupported in this collection. The builder
+removes inherited `<p:transition>` elements from an output copy, and validation
+fails if any remain. Zero transitions is a requirement, not a warning. Never
+modify the original reference/template just to remove its transitions.
 
 ## Themes and design tokens
 
@@ -266,6 +283,10 @@ licence facts verified at source, and the attribution duties that follow.
 
 ## Rules that are not negotiable
 
+For existing templates/decks, also follow `references/template-editing.md`. Be
+explicit about whether you appended slides, rebuilt a deck from the visual style,
+or edited the supplied slide content in place.
+
 - **Never lower a font below 12pt** to make text fit. Split the slide.
 - **Never state a licence or attribution claim you have not checked** at the
   source. SlidesCarnival templates are CC BY 4.0 - a credit is mandatory.
@@ -275,7 +296,7 @@ licence facts verified at source, and the attribution duties that follow.
   authoritative.
 - **Never scrape or script-download** templates from sites that require an
   account, and never bypass a paywall. Ask the user for the file.
-- **Never claim a transition, chart or feature is present** without the
+- **Never claim a chart or feature is present** without the
   validator confirming it.
 - **Always run the validator** before telling the user the deck is ready.
 

@@ -5,10 +5,9 @@
 
 Errors   = the file is broken or unreadable as intended (bad zip, shape off the
            slide, overlapping text/tables/charts, a table that grows off the
-           slide, malformed or out-of-order transition XML).
+           slide, or a slide transition forbidden by the skill policy).
 Warnings = it will open fine but probably looks wrong (text likely overflows its
-           box, a table will auto-grow, tiny type, empty slide, repeated title,
-           no transitions at all).
+           box, a table will auto-grow, tiny type, empty slide, repeated title).
 
 Exit code is 1 when there is at least one error, so this is usable as a gate in
 a script or a test. Tables are measured, not skipped: PowerPoint grows a row to
@@ -151,6 +150,8 @@ def ink_box(shape):
     if shape.has_chart:
         return left, top, left + w, top + h, "chart %r" % shape.name
     if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
+        if shape.name.startswith("bleed:"):
+            return None
         return left, top, left + w, top + h, "picture %r" % shape.name
     if not shape.has_text_frame:
         return None
@@ -301,6 +302,7 @@ def check_transitions(zf):
         if trans is None:
             continue
         result["count"] += 1
+        result["errors"].append("%s: slide transitions are not allowed" % part)
         entry = {"slide": i, "type": None, "duration_ms": None}
         # the effect element must be the only child
         kids = [etree.QName(c).localname for c in trans]
@@ -331,8 +333,6 @@ def check_transitions(zf):
                 "%s: <p:transition> is out of schema order, followed by %s"
                 % (part, stray))
         result["slides"].append(entry)
-    if not result["count"]:
-        result["warnings"].append("no slide transitions are embedded in this deck")
     return result
 
 

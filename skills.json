@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "version": "v2.0.0",
+  "repository": "https://github.com/tejasrajm46-strix/awsome_skills",
+  "skills": [
+    {
+      "key": "ppt",
+      "folder": "ppt_skill",
+      "name": "pptx-generator",
+      "formats": [
+        "pptx"
+      ],
+      "shared_helper": "ultimate-scrape-skill"
+    },
+    {
+      "key": "word",
+      "folder": "word_skill",
+      "name": "word-generator",
+      "formats": [
+        "docx",
+        "dotx"
+      ],
+      "shared_helper": "ultimate-scrape-skill"
+    },
+    {
+      "key": "pdf",
+      "folder": "pdf_skill",
+      "name": "pdf-processor",
+      "formats": [
+        "pdf"
+      ],
+      "shared_helper": "ultimate-scrape-skill"
+    },
+    {
+      "key": "xlsm",
+      "folder": "xlsm_skill",
+      "name": "xlsm-processor",
+      "formats": [
+        "xlsx",
+        "xlsm",
+        "xltx",
+        "xltm",
+        "csv",
+        "tsv"
+      ],
+      "shared_helper": "ultimate-scrape-skill"
+    },
+    {
+      "key": "poster",
+      "folder": "poster_skill",
+      "name": "smart-poster-designer",
+      "formats": [
+        "png",
+        "jpg",
+        "pdf",
+        "html"
+      ],
+      "shared_helper": "ultimate-scrape-skill"
+    },
+    {
+      "key": "scrape",
+      "folder": "ultimate-scrape-skill",
+      "name": "ultimate-scrape-skill",
+      "formats": [
+        "html",
+        "json",
+        "images"
+      ]
+    }
+  ]
+}

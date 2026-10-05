@@ -61,11 +61,25 @@ For anything research-flavoured, cite the sources rather than the assets:
 
 ## Icons and imagery
 
-`build_deck.py` has no icon or stock-photo fetching. That is deliberate: an
-automatic fetch is a licence and reliability liability, and shape-drawn
-diagrams (the `stack` layout) usually communicate structure better than a
-clip-art icon.
+`build_deck.py` does not fetch stock photos or icons. That is deliberate: an
+automatic fetch can create licensing and reliability issues, and shape-drawn
+diagrams often communicate structure better than clip art.
 
-If the user asks for a photo, save it locally first and use the `image` layout -
-that keeps the deck self-contained and makes the licence question something a
-human answered.
+If an input PPTX/DOCX contains reusable pictures, the bundled
+`scripts/extract_office_assets.py` can create a small, deduplicated local
+shortlist and HTML contact sheet. It records source-slide usage and audits
+whether selected candidates are referenced in the supplied spec. Run it only
+on files the user provided or authorized you to inspect; select assets by actual
+relevance and visual quality, not resolution alone. The ranking is technical
+triage, not semantic understanding or rights clearance. Raster assets (PNG,
+JPEG, GIF, BMP) are supported; vector media remain in the source package and
+are reported as unsupported rather than silently converted.
+
+For web research, use a structured search interface with user authorization or
+a reputable image API, small query-specific result limits, preview/thumbnail
+triage, and full-resolution download only for selected results. Keep title,
+creator, source page, direct media URL, licence and attribution with the asset.
+Do not scrape Google Images result pages, evade access controls, or assume a
+search result itself grants reuse rights. Cache only by a stable content/source
+identity with freshness/rights metadata, and refresh when the task or licence
+requires it. Use the `image` layout for selected photos and caption them.

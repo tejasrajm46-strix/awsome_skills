@@ -1,0 +1,56 @@
+[
+  {
+    "file": "render/editorial.jpg",
+    "title": "Editorial clarity",
+    "source": "repository:tools/build_reference_assets.py",
+    "creator": "Awesome Skills contributors",
+    "license": "MIT",
+    "native_file_included": false,
+    "reuse": "Original layout reference; recreate as native editable objects, not a flattened slide."
+  },
+  {
+    "file": "render/signal.jpg",
+    "title": "Signal / dark",
+    "source": "repository:tools/build_reference_assets.py",
+    "creator": "Awesome Skills contributors",
+    "license": "MIT",
+    "native_file_included": false,
+    "reuse": "Original layout reference; recreate as native editable objects, not a flattened slide."
+  },
+  {
+    "file": "render/evidence.jpg",
+    "title": "Evidence / comparison",
+    "source": "repository:tools/build_reference_assets.py",
+    "creator": "Awesome Skills contributors",
+    "license": "MIT",
+    "native_file_included": false,
+    "reuse": "Original layout reference; recreate as native editable objects, not a flattened slide."
+  },
+  {
+    "file": "render/diagram.jpg",
+    "title": "System / flow",
+    "source": "repository:tools/build_reference_assets.py",
+    "creator": "Awesome Skills contributors",
+    "license": "MIT",
+    "native_file_included": false,
+    "reuse": "Original layout reference; recreate as native editable objects, not a flattened slide."
+  },
+  {
+    "file": "render/data.jpg",
+    "title": "Data / hierarchy",
+    "source": "repository:tools/build_reference_assets.py",
+    "creator": "Awesome Skills contributors",
+    "license": "MIT",
+    "native_file_included": false,
+    "reuse": "Original layout reference; recreate as native editable objects, not a flattened slide."
+  },
+  {
+    "file": "render/gallery.jpg",
+    "title": "Portfolio / restraint",
+    "source": "repository:tools/build_reference_assets.py",
+    "creator": "Awesome Skills contributors",
+    "license": "MIT",
+    "native_file_included": false,
+    "reuse": "Original layout reference; recreate as native editable objects, not a flattened slide."
+  }
+]

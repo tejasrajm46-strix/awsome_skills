@@ -343,6 +343,9 @@ class Deck:
 
     # -- layouts ------------------------------------------------------------
     def l_title(self, slide, s):
+        if s.get("image"):
+            self.l_photo_title(slide, s)
+            return
         navy, accent = self.color("primary"), self.color("accent")
         rect(slide, 0, 0, SLIDE_W, SLIDE_H, fill=navy)
         # a small "emitting LED" motif: soft outer ring + bright core
@@ -365,6 +368,44 @@ class Deck:
             tf = textbox(slide, MARGIN, 6.72, 8.4, 0.3)
             add_runs(tf.paragraphs[0], meta, size=11, color=rgb("8FA8CC"),
                      font=self.theme["font_mono"])
+
+    def l_photo_title(self, slide, s):
+        """Automotive cover: full-bleed car photo with an editable dark text band."""
+        from PIL import Image
+        path = s["image"]
+        with Image.open(path) as im:
+            iw, ih = im.size
+        scale = max(SLIDE_W / iw, SLIDE_H / ih)
+        w, h = iw * scale, ih * scale
+        pic = slide.shapes.add_picture(path, Inches((SLIDE_W - w) / 2), Inches((SLIDE_H - h) / 2),
+                                       width=Inches(w), height=Inches(h))
+        pic.name = "bleed:cover-image"
+        pic._element.nvPicPr.cNvPr.set("descr", s.get("alt", "BMW M5 CS photographed at Goodwood Festival of Speed."))
+        # The full-bleed image is already the backmost shape; the photograph is
+        # intentionally exposed rather than covered with a canvas fill.
+        # The bottom title band is deliberately dark and translucent-looking;
+        # keeping it to a shallow band preserves the image as the main focus.
+        rect(slide, 0, 5.00, SLIDE_W, 2.50, fill=rgb("0B0D0F"))
+        rect(slide, MARGIN, 5.34, 0.08, 1.60, fill=self.color("accent"))
+        tf = textbox(slide, MARGIN + 0.30, 5.26, 10.6, 0.30)
+        add_runs(tf.paragraphs[0], (s.get("kicker") or "BMW M / CS EDITION").upper(), size=11,
+                 color=self.color("accent"), font=self.theme["font_head"], bold=True, spacing=1.8)
+        tf = textbox(slide, MARGIN + 0.30, 5.64, 11.0, 0.82)
+        add_runs(line(tf, True, line_spacing=0.94), s["title"], size=44,
+                 color=rgb("FFFFFF"), font=self.theme["font_head"], bold=True)
+        if s.get("subtitle"):
+            tf = textbox(slide, MARGIN + 0.30, 6.48, 10.8, 0.48)
+            add_runs(line(tf, True, line_spacing=1.12), s["subtitle"], size=14,
+                     color=rgb("D1D5D8"), font=self.theme["font_body"])
+        if s.get("meta"):
+            tf = textbox(slide, SLIDE_W - MARGIN - 2.1, 0.48, 2.1, 0.28, name="chrome:meta")
+            p = line(tf, True)
+            p.alignment = PP_ALIGN.RIGHT
+            add_runs(p, s["meta"], size=10, color=rgb("FFFFFF"), font=self.theme["font_mono"])
+        if s.get("image_credit"):
+            tf = textbox(slide, MARGIN + 0.30, 7.28, 11.5, 0.16, name="chrome:credit")
+            add_runs(tf.paragraphs[0], s["image_credit"], size=9,
+                     color=rgb("C9CBCD"), font=self.theme["font_body"])
 
     def l_section(self, slide, s):
         navy, accent = self.color("primary"), self.color("accent")
@@ -437,6 +478,9 @@ class Deck:
                     p.runs[0].text = "\u2022  " + p.runs[0].text
 
     def l_stats(self, slide, s):
+        if s.get("image"):
+            self.l_photo_stats(slide, s)
+            return
         self.chrome(slide, s["title"], s.get("kicker", self.section), s.get("subtitle"),
                    s.get("source"))
         items = s.get("items", [])
@@ -457,6 +501,87 @@ class Deck:
             tf = textbox(slide, x + 0.30, top + 1.55, w - 0.6, height - 1.65)
             add_runs(line(tf, True, line_spacing=1.18), item.get("label", ""), size=13,
                      color=self.color("muted"), font=self.theme["font_body"])
+
+    def l_photo_stats(self, slide, s):
+        """Three oversized automotive performance metrics over a photo."""
+        from PIL import Image
+        path = s["image"]
+        with Image.open(path) as im:
+            iw, ih = im.size
+        scale = max(SLIDE_W / iw, SLIDE_H / ih)
+        w, h = iw * scale, ih * scale
+        pic = slide.shapes.add_picture(path, Inches((SLIDE_W - w) / 2), Inches((SLIDE_H - h) / 2),
+                                       width=Inches(w), height=Inches(h))
+        pic.name = "bleed:performance-image"
+        pic._element.nvPicPr.cNvPr.set("descr", s.get("alt", "BMW M5 CS photographed at Goodwood Festival of Speed."))
+        rect(slide, 0, 0, SLIDE_W, 1.48, fill=rgb("101315"))
+        rect(slide, 0, 4.38, SLIDE_W, 3.12, fill=rgb("101315"))
+        tf = textbox(slide, MARGIN, 0.48, CONTENT_W, 0.28, name="chrome:kicker")
+        add_runs(tf.paragraphs[0], (s.get("kicker") or "BMW M5 CS").upper(), size=10,
+                 color=self.color("accent"), font=self.theme["font_head"], bold=True, spacing=1.4)
+        tf = textbox(slide, MARGIN, 0.82, CONTENT_W, 0.54)
+        add_runs(line(tf, True), s["title"], size=28, color=rgb("FFFFFF"),
+                 font=self.theme["font_head"], bold=True)
+        items = s.get("items", [])
+        gap = 0.38
+        n = max(1, len(items))
+        col_w = (CONTENT_W - gap * (n - 1)) / n
+        for i, item in enumerate(items):
+            x = MARGIN + i * (col_w + gap)
+            tf = textbox(slide, x, 4.76, col_w, 0.76)
+            add_runs(line(tf, True, line_spacing=0.94), str(item.get("value", "")),
+                     size=36 if len(str(item.get("value", ""))) < 8 else 28,
+                     color=rgb("FFFFFF"), font=self.theme["font_head"], bold=True)
+            rect(slide, x, 5.70, 0.62, 0.045, fill=self.color("accent"))
+            tf = textbox(slide, x, 5.89, col_w, 0.68)
+            add_runs(line(tf, True, line_spacing=1.12), item.get("label", ""), size=12,
+                     color=rgb("E1E2E3"), font=self.theme["font_body"])
+        if s.get("source"):
+            tf = textbox(slide, MARGIN, 6.73, CONTENT_W, 0.18, name="chrome:source")
+            add_runs(line(tf, True), s["source"], size=9,
+                     color=rgb("B9BCBE"), font=self.theme["font_body"], italic=True)
+        if s.get("image_credit"):
+            tf = textbox(slide, MARGIN, 7.28, CONTENT_W, 0.14, name="chrome:credit")
+            add_runs(tf.paragraphs[0], s["image_credit"], size=8,
+                     color=rgb("B9BCBE"), font=self.theme["font_body"])
+
+    def l_photo_hero_stat(self, slide, s):
+        """Full-bleed performance hero with a dramatic single metric overlay."""
+        from PIL import Image
+        path = s["image"]
+        with Image.open(path) as im:
+            iw, ih = im.size
+        scale = max(SLIDE_W / iw, SLIDE_H / ih)
+        w, h = iw * scale, ih * scale
+        pic = slide.shapes.add_picture(path, Inches((SLIDE_W - w) / 2), Inches((SLIDE_H - h) / 2),
+                                       width=Inches(w), height=Inches(h))
+        pic.name = "bleed:hero-stat-image"
+        pic._element.nvPicPr.cNvPr.set("descr", s.get("alt", "BMW M5 CS photograph."))
+        # Place the visual first; this overlay only occupies negative-space sky
+        # and is deliberately free of opaque blocks across the car's silhouette.
+        rect(slide, 0, 0, SLIDE_W, 0.72, fill=rgb("101315"))
+        tf = textbox(slide, MARGIN, 0.34, CONTENT_W, 0.24, name="chrome:kicker")
+        add_runs(tf.paragraphs[0], (s.get("kicker") or "BMW M5 CS").upper(), size=10,
+                 color=self.color("accent"), font=self.theme["font_head"], bold=True, spacing=1.3)
+        tf = textbox(slide, MARGIN, 0.94, 5.4, 1.65)
+        add_runs(line(tf, True, line_spacing=0.88), str(s.get("value", "")), size=96,
+                 color=rgb("FFFFFF"), font=self.theme["font_head"], bold=True)
+        if s.get("unit"):
+            tf = textbox(slide, MARGIN, 2.62, 5.6, 0.42)
+            add_runs(line(tf, True), s["unit"], size=20, color=self.color("accent"),
+                     font=self.theme["font_head"], bold=True, spacing=1.2)
+        if s.get("text"):
+            tf = textbox(slide, MARGIN, 3.12, 5.2, 0.90)
+            add_runs(line(tf, True, line_spacing=1.18), s["text"], size=14,
+                     color=rgb("FFFFFF"), font=self.theme["font_body"])
+        if s.get("source"):
+            tf = textbox(slide, MARGIN, 7.10, CONTENT_W, 0.16, name="chrome:source")
+            add_runs(line(tf, True), s["source"], size=9,
+                     color=rgb("FFFFFF"), font=self.theme["font_body"], italic=True)
+        if s.get("image_credit"):
+            tf = textbox(slide, MARGIN, 7.29, CONTENT_W, 0.13, name="chrome:credit")
+            add_runs(tf.paragraphs[0], s["image_credit"], size=8,
+                     color=rgb("FFFFFF"), font=self.theme["font_body"])
 
     def l_timeline(self, slide, s):
         items = s.get("items", [])
@@ -636,6 +761,9 @@ class Deck:
                 fmt.fill.fore_color.rgb = colour
 
     def l_image(self, slide, s):
+        if s.get("full_bleed"):
+            self.l_photo_story(slide, s)
+            return
         self.chrome(slide, s["title"], s.get("kicker", self.section), s.get("subtitle"),
                    s.get("source"))
         path = s["image"]
@@ -657,6 +785,56 @@ class Deck:
             p.alignment = PP_ALIGN.CENTER
             add_runs(p, s["caption"], size=11, color=self.color("muted"),
                      font=self.theme["font_body"], italic=True)
+
+    def l_photo_story(self, slide, s):
+        """Full-bleed automotive photograph with an editorial text overlay."""
+        from PIL import Image
+        path = s["image"]
+        with Image.open(path) as im:
+            iw, ih = im.size
+        scale = max(SLIDE_W / iw, SLIDE_H / ih)
+        w, h = iw * scale, ih * scale
+        pic = slide.shapes.add_picture(path, Inches((SLIDE_W - w) / 2), Inches((SLIDE_H - h) / 2),
+                                       width=Inches(w), height=Inches(h))
+        pic.name = "bleed:story-image"
+        pic._element.nvPicPr.cNvPr.set("descr", s.get("alt") or s.get("caption", ""))
+        mode = s.get("panel", "bottom")
+        if mode == "left":
+            rect(slide, 0, 0, 4.70, SLIDE_H, fill=rgb("101315"))
+            rect(slide, MARGIN, 0.82, 0.07, 0.52, fill=self.color("accent"))
+            tf = textbox(slide, MARGIN + 0.27, 0.78, 3.45, 0.46, name="chrome:kicker")
+            add_runs(tf.paragraphs[0], (s.get("kicker") or "BMW M5 CS").upper(), size=10,
+                     color=self.color("accent"), font=self.theme["font_head"], bold=True, spacing=1.2)
+            tf = textbox(slide, MARGIN, 1.55, 3.55, 1.70)
+            add_runs(line(tf, True, line_spacing=0.98), s["title"], size=31,
+                     color=rgb("FFFFFF"), font=self.theme["font_head"], bold=True)
+            if s.get("caption"):
+                tf = textbox(slide, MARGIN, 3.63, 3.55, 1.24)
+                add_runs(line(tf, True, line_spacing=1.22), s["caption"], size=13,
+                         color=rgb("E5E7E8"), font=self.theme["font_body"])
+            if s.get("source"):
+                tf = textbox(slide, MARGIN, 5.04, 3.55, 0.42, name="chrome:source")
+                add_runs(line(tf, True), s["source"], size=9,
+                         color=rgb("C5C8CA"), font=self.theme["font_body"], italic=True)
+            credit_y = 7.12
+        else:
+            rect(slide, 0, 5.06, SLIDE_W, 2.44, fill=rgb("101315"))
+            rect(slide, MARGIN, 5.39, 0.07, 1.51, fill=self.color("accent"))
+            tf = textbox(slide, MARGIN + 0.28, 5.30, 10.8, 0.28, name="chrome:kicker")
+            add_runs(tf.paragraphs[0], (s.get("kicker") or "BMW M5 CS").upper(), size=10,
+                     color=self.color("accent"), font=self.theme["font_head"], bold=True, spacing=1.3)
+            tf = textbox(slide, MARGIN + 0.28, 5.66, 11.3, 0.66)
+            add_runs(line(tf, True, line_spacing=0.98), s["title"], size=31,
+                     color=rgb("FFFFFF"), font=self.theme["font_head"], bold=True)
+            if s.get("caption"):
+                tf = textbox(slide, MARGIN + 0.28, 6.39, 11.4, 0.48)
+                add_runs(line(tf, True, line_spacing=1.12), s["caption"], size=12,
+                         color=rgb("E5E7E8"), font=self.theme["font_body"])
+            credit_y = 7.12
+        if s.get("image_credit"):
+            tf = textbox(slide, MARGIN + 0.28, credit_y, 11.5, 0.18, name="chrome:credit")
+            add_runs(tf.paragraphs[0], s["image_credit"], size=8,
+                     color=rgb("B6B9BB"), font=self.theme["font_body"])
 
     def l_stack(self, slide, s):
         """Layered / stacked bands - structure diagrams (LED junction, stack, tiers)."""
@@ -1006,6 +1184,9 @@ class Deck:
         self._dark_footer(slide, s.get("source"))
 
     def l_hero_stat(self, slide, s):
+        if s.get("image"):
+            self.l_photo_hero_stat(slide, s)
+            return
         self.ocean_motif(slide, grid=True, routes=True)
         self._dark_kicker(slide, s.get("kicker"), 0.95)
         tf = textbox(slide, MARGIN, 1.50, CONTENT_W, 2.15, anchor=MSO_ANCHOR.MIDDLE)
@@ -1314,6 +1495,11 @@ def build(spec, out_path, base=None):
     if spec.get("subtitle"):
         cp.subject = spec["subtitle"]
     cp.comments = "Generated from a JSON deck spec."
+    # Remove inherited transitions from the output copy, never the source deck.
+    for slide in prs.slides:
+        for transition in list(slide._element):
+            if transition.tag == "{http://schemas.openxmlformats.org/presentationml/2006/main}transition":
+                slide._element.remove(transition)
     prs.save(out_path)
     return out_path
 

@@ -3,7 +3,10 @@
 import argparse
 import json
 import re
+from datetime import datetime, timezone
 from pathlib import Path
+
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 from docx import Document
 from docx.enum.table import WD_TABLE_ALIGNMENT
@@ -90,15 +93,24 @@ def configure(doc, spec):
             style.paragraph_format.keep_with_next = True
     doc.styles["Normal"].paragraph_format.line_spacing = 1.15
     header = section.header.paragraphs[0]
+    header.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     header.text = spec.get("running_title", spec["title"])
     header.style = doc.styles["Caption"]
     footer = section.footer.paragraphs[0]
+    footer.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     footer.style = doc.styles["Caption"]
-    footer.text = spec.get("footer", "Research brief") + "  |  "
+    footer.text = spec.get("footer", "Research brief") + "  |  Page "
     footer._p.append(element("w:fldSimple", **{"w:instr": "PAGE"}))
     doc.core_properties.title = spec["title"]
     doc.core_properties.subject = spec.get("subtitle", "")
-    doc.core_properties.author = spec.get("author", "")
+    props = doc.core_properties
+    props.author = spec.get("author", "")
+    props.last_modified_by = ""
+    props.keywords = ""
+    props.comments = ""
+    props.category = ""
+    props.revision = 1
+    props.created = props.modified = datetime.now(timezone.utc)
     return theme
 
 

@@ -1,0 +1,50 @@
+{
+  "skill_name": "xlsm-processor",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Change the 'Status' cell on the Summary sheet in this XLSM and leave every macro, button, formula, and sheet unchanged.",
+      "expected_output": "Separate XLSM output, minimal cell edit, preserved VBA binary and package inventory, plus honest note that macro execution was not tested.",
+      "assertions": [
+        "Original is preserved",
+        "VBA project stream is present and compared",
+        "Output retains the XLSM extension",
+        "Macros are not executed",
+        "Formula/sheet/control/package differences are reported"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "This signed macro workbook has ActiveX controls and a query connection. Update its forecast input without breaking anything.",
+      "expected_output": "Use Excel automation or explain that a generic library cannot promise preservation; ask for acceptance before risky round-trip; disclose likely signature invalidation.",
+      "assertions": [
+        "Complex unsupported features are identified first",
+        "No silent openpyxl/LibreOffice destructive round-trip",
+        "Signature policy is addressed",
+        "No claims of macro safety without verification"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Audit this forecast workbook for formula errors, broken totals and external links; do not modify it yet.",
+      "expected_output": "Read-only structural and formula inventory, representative formula/value review, validated findings without saving over the source.",
+      "assertions": [
+        "Source workbook is not modified",
+        "Formula text and cached values are inspected separately",
+        "External links are identified",
+        "Formula logic findings are distinguished from evaluator limitations"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Update the assumptions cells I highlighted in the existing model and preserve every formula, style and tab.",
+      "expected_output": "A separate edited workbook that changes only designated inputs, preserves workbook conventions, and verifies formula recalculation when supported.",
+      "assertions": [
+        "Existing input conventions are inspected before editing",
+        "Out-of-scope formulas and sheet names remain",
+        "Output is separately saved",
+        "New formula errors and recalculation status are reported"
+      ]
+    }
+  ]
+}

@@ -1,7 +1,5 @@
 name: release
 
-# Push a tag and this builds the skill zip and publishes it on a GitHub Release.
-#   git tag v1.0.1 && git push origin v1.0.1
 on:
   push:
     tags:
@@ -9,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version tag to release, e.g. v1.0.1"
+        description: "Version tag to release, e.g. v2.0.0"
         required: true
 
 permissions:
@@ -17,25 +15,49 @@ permissions:
 
 jobs:
   verify:
-    name: Verify the skill
+    name: Verify all skills
     runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: python -m pip install --quiet python-pptx
-      - name: Run the layout regression suite
-        run: python ppt_skill/tests/test_layout_rules.py
-      - name: Build the example deck and gate it
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: browser-actions/setup-chrome@v1
+      - run: python -m pip install python-pptx python-docx Pillow
+      - name: Build all portable packages
+        run: python tools/package_skill.py --skill all --version v2.0.0
+      - name: Check repository, syntax and installation
+        run: |
+          set -euo pipefail
+          python tools/verify_repository.py
+          python tools/test_package_skill.py
+      - name: Run all skill regression suites
+        run: |
+          set -euo pipefail
+          python ppt_skill/tests/test_layout_rules.py
+          python ppt_skill/tests/test_extract_office_assets.py
+          python word_skill/tests/test_doc_rules.py
+          python word_skill/tests/test_inspect_docx.py
+          python pdf_skill/tests/test_inspect_pdf.py
+          python xlsm_skill/tests/test_inspect_workbook.py
+          python xlsm_skill/tests/test_inspect_xlsm.py
+          python ultimate-scrape-skill/tests/test_scraping.py
+          node poster_skill/tests/test_template_mode.mjs
+      - name: Generate and strictly validate example files
         run: |
           set -euo pipefail
           python ppt_skill/scripts/build_deck.py examples/quick-start.json -o /tmp/ci.pptx
-          python ppt_skill/scripts/transitions.py /tmp/ci.pptx --preset fade --duration 700
-          python ppt_skill/scripts/validate_deck.py /tmp/ci.pptx --expect 5
+          python ppt_skill/scripts/validate_deck.py /tmp/ci.pptx --expect 5 --strict
+          python word_skill/scripts/build_doc.py examples/word-quick-start.json -o /tmp/ci.docx
+          python word_skill/scripts/validate_doc.py /tmp/ci.docx --strict
 
   release:
-    name: Publish the release
+    name: Publish all packages
     needs: verify
     runs-on: ubuntu-latest
     env:
@@ -45,28 +67,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Package the skill
-        run: python tools/package_skill.py --version "$VERSION"
-      - name: Check the archive holds the skill and nothing else
-        run: |
-          set -euo pipefail
-          python - "$VERSION" <<'PY'
-          import sys, zipfile
-          version = sys.argv[1]
-          with zipfile.ZipFile("pptx-generator-%s.zip" % version) as zf:
-              names = zf.namelist()
-          bad = [n for n in names if not n.startswith("pptx-generator/")]
-          assert bad == [], "entries outside the skill folder: %s" % bad
-          assert "pptx-generator/SKILL.md" in names, names
-          assert all("__pycache__" not in n for n in names), names
-          assert all(not n.endswith(".pptx") for n in names), names
-          print("archive holds %d skill files, nothing else" % len(names))
-          PY
+      - name: Package every skill
+        run: python tools/package_skill.py --skill all --version "$VERSION"
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$VERSION" \
-            "pptx-generator-$VERSION.zip" \
-            --title "$VERSION" \
-            --generate-notes
+          set -euo pipefail
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            gh release upload "$VERSION" releases/skills/*-"$VERSION".zip --clobber
+          else
+            gh release create "$VERSION" \
+              releases/skills/*-"$VERSION".zip \
+              --title "$VERSION" \
+              --generate-notes
+          fi
