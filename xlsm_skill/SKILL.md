@@ -1,58 +1,61 @@
 ---
 name: xlsm-processor
-description: "Create, read, clean, edit and audit Excel spreadsheets (.xlsx, .xlsm, .xltx, .xltm), CSV and TSV data, formulas, charts and financial models. Use for ordinary spreadsheets as well as macro-enabled workbooks. Preserve formulas, formatting, VBA and embedded controls; never execute macros or external connections merely to inspect a file."
+description: "Create, read, clean, edit and audit Excel workbooks (.xlsx, .xlsm, .xltx, .xltm), CSV and TSV data, formulas, charts and financial models. Use it for ordinary and macro-enabled spreadsheets. Keep formulas, formatting, VBA and embedded controls intact, and never run a macro or refresh a connection just to look at a file."
 license: MIT
-compatibility: Python 3.8+ for package inspectors; openpyxl for ordinary editing; pandas is optional for flat tabular data. Excel or compatible LibreOffice is needed for formula recalculation. Complex macros and controls require Microsoft Excel.
+compatibility: Python 3.8+ for the package inspectors; openpyxl for everyday editing; pandas is optional for flat tabular data. Excel or LibreOffice is needed to recalculate formulas. Complex macros and controls need Microsoft Excel.
+version: v3.0.0
 ---
 
 # Excel — XLSX and XLSM
 
-This is the single spreadsheet skill. Ordinary `.xlsx` and macro-enabled `.xlsm`
-workbooks share a workflow, but **macro preservation adds checks, not permission
-to execute code**. A CSV is flat data, not an Excel workbook with styles/formulas.
+One skill covers every spreadsheet. Ordinary `.xlsx` and macro-enabled `.xlsm`
+files follow the same workflow; macros add checks, not a licence to run code. A
+CSV is flat data, not a workbook with styles and formulas.
 
 ## Shared research and assets
 
-When external facts, images, tables or a website's visual style are needed, read
+When you need outside facts, images, tables or a website's visual style, read
 [`references/shared-scraping.md`](references/shared-scraping.md). It connects this
-skill to `ultimate-scrape-skill`. Skip scraping for local-only edits. Reuse one
-source register and asset set when delivering multiple formats.
+skill to `ultimate-scrape-skill`. Skip it for local edits, and reuse one source
+register and asset set across formats.
 
 ## Workflow
 
-1. Confirm format, output path, sheets/ranges, units and date conventions. Preserve
-   the original. Identify formulas, external links, connections, pivots, controls,
-   signatures and macros that must survive.
-2. Inventory with `python <skill-path>/scripts/inspect_workbook.py input.xlsx --json`.
-   For VBA or `.xlsm`/`.xltm`, also run
-   `python <skill-path>/scripts/inspect_xlsm.py input.xlsm --json`.
-   These are package inventories, not formula engines or malware scans.
-3. Choose the least destructive editor. Use `openpyxl` for ordinary cells/styles/
-   formulas; `pandas` only for flat transformations when Excel features are not
-   required. For ActiveX, Power Query, slicers, signatures, complex pivots or
-   unsupported XML, use Excel automation or leave the feature untouched.
+1. Confirm format, output path, sheets and ranges, units and date conventions.
+   Keep the original. List the formulas, external links, connections, pivots,
+   controls, signatures and macros that have to survive.
+2. Inventory the file with
+   `python <skill-path>/scripts/inspect_workbook.py input.xlsx --json`. For VBA or
+   `.xlsm`/`.xltm`, also run
+   `python <skill-path>/scripts/inspect_xlsm.py input.xlsm --json`. Both read the
+   package; neither calculates formulas or scans for malware.
+3. Pick the least destructive editor. `openpyxl` handles ordinary cells, styles
+   and formulas; `pandas` is only for flat transformations where Excel features
+   do not matter. For ActiveX, Power Query, slicers, signatures, complex pivots or
+   XML that openpyxl cannot model, use Excel automation or leave that part alone.
 4. Read formulas and cached values separately (`data_only=False` / `True`). Match
-   the source's design and preserve all out-of-scope cells, formulas, names,
-   validations, protection, sheet visibility/order, frozen panes and print areas.
-   For new models, label inputs, assumptions, units, sources and example values.
-5. Edit a copy. Keep derived values as formulas; quote sheet names containing
-   spaces, handle missing inputs and divide-by-zero, and check target-engine
-   compatibility. **Never save a `data_only=True` load**: that discards formulas.
+   the source's conventions and leave everything out of scope untouched: cells,
+   formulas, names, validations, protection, sheet visibility and order, frozen
+   panes, print areas. For a new model, label the inputs, assumptions, units and
+   sources.
+5. Edit a copy. Keep derived values as formulas, quote sheet names that contain
+   spaces, handle missing inputs and divide-by-zero, and check compatibility with
+   the engine that will open the result. **Never save a `data_only=True` load** -
+   that writes cached values over your formulas.
 6. For macro-enabled edits, read
    [`references/macro-preservation.md`](references/macro-preservation.md) and
    [`references/xlsm-preservation.md`](references/xlsm-preservation.md). Load with
-   `keep_vba=True, data_only=False`, save to `.xlsm`, and compare package parts.
-   Do not create a plain XLSX and merely rename it `.xlsm`.
-7. Recalculate in a compatible engine. `openpyxl` writes formulas but does not
-   calculate caches. Use Excel for macro-enabled or complex workbooks; a
-   LibreOffice round-trip can alter unsupported features and requires acceptance
-   of that risk. Do not run macros or refresh connections to calculate by default.
-8. Reopen the saved artifact. Compare sheet names, formula/error counts, links and
-   package parts. Check representative calculations against known inputs and
-   cached values after recalculation. Render/open changed sheets when possible.
-9. Deliver the file with the exact checks, recalculation status, preservation
-   result, signature invalidation and limitations. Do not claim macro behavior
-   was tested unless execution testing was explicitly authorized and performed.
+   `keep_vba=True, data_only=False`, save as `.xlsm`, and compare package parts.
+   Renaming an `.xlsx` to `.xlsm` does not create macros.
+7. Recalculate in an engine that actually does. `openpyxl` writes formulas but
+   never calculates the cached values. Use Excel for macro-enabled or complex
+   workbooks; a LibreOffice round-trip can quietly change features it does not
+   support. Do not reach for macros or a connection refresh as a way to calculate.
+8. Reopen what you saved. Compare sheet names, formula and error counts, links and
+   package parts, then check representative calculations against known inputs.
+9. Report the file, the checks you ran, whether recalculation happened, what was
+   preserved, whether signatures are now invalid, and what you could not verify.
+   Only claim macro behaviour was tested if you ran it and were allowed to.
 
 ## Basic macro-preserving edit
 
@@ -63,22 +66,24 @@ wb = load_workbook("source.xlsm", keep_vba=True, data_only=False)
 wb.save("edited.xlsm")
 ```
 
-`keep_vba=True` preserves the VBA stream in supported cases, not every control,
-relationship, custom XML part or signature. Compare `xl/vbaProject.bin` hashes
-when code should be unchanged; also inventory signature, ActiveX, control,
-connection, embedding and relationship parts. Editing usually invalidates digital
-signatures. A matching VBA binary does not prove macro functionality.
+`keep_vba=True` keeps the VBA stream in the cases openpyxl supports - not every
+control, relationship, custom XML part or signature. Hash `xl/vbaProject.bin`
+when the code should come out unchanged, and inventory the signature, ActiveX,
+control, connection and relationship parts too. Editing usually invalidates digital
+signatures, and an identical VBA binary still does not prove the macro works.
 
 ## Security and QA
 
-- Treat macros, DDE, add-ins, links and connections as untrusted. Never enable
-  content or upload confidential workbooks to a service without authorization.
-- Do not silently replace formulas with values, discard links/caches, or accept
-  unsupported feature loss. Ask when preservation and the requested edit conflict.
-- Never introduce new formula errors; distinguish pre-existing errors from edits.
-- Confirm the file opens in the intended Excel version with macros disabled.
-- Read [`references/formulas-and-modeling.md`](references/formulas-and-modeling.md)
-  for modeling and formula QA.
+- Treat macros, DDE, add-ins, links and connections as untrusted. Do not click
+  Enable Content on a file you were only asked to read, and do not upload a
+  confidential workbook to an online converter.
+- Never swap formulas for values, drop links or caches, or let an unsupported
+  feature disappear. When preservation and the requested edit collide, ask.
+- Do not add a formula error. Say which errors were already there and which one
+  your edit introduced.
+- Confirm the file opens in the target Excel version with macros disabled.
+- [`references/formulas-and-modeling.md`](references/formulas-and-modeling.md)
+  covers modeling and formula QA.
 
 ## Checks
 
@@ -87,5 +92,34 @@ python <skill-path>/tests/test_inspect_workbook.py
 python <skill-path>/tests/test_inspect_xlsm.py
 ```
 
-Both inspectors and their tests use the standard library. CSV/TSV tasks need
-separate row/column, encoding, delimiter and value checks rather than ZIP checks.
+Both inspectors and their tests use only the standard library. CSV and TSV work
+needs row/column, encoding, delimiter and value checks instead of ZIP checks.
+
+## Evolving this skill
+
+An edit to this guide lands only when it improves a measured score, so read
+[`references/skill-evolution.md`](references/skill-evolution.md) first.
+
+<!-- SLOW_UPDATE_START -->
+## Carried-forward rules
+
+These survived real work; only an explicit, gate-passing slow update changes them.
+
+- **A workbook edit is a package edit.** Compare the parts, not just the cells.
+- **Never load `data_only=True` and save.** openpyxl writes the cached values over
+  your formulas with no error and no warning.
+- **`keep_vba=True` is a preservation claim, not a guarantee.** Hash
+  `xl/vbaProject.bin`, then inventory signature, ActiveX, control, connection and
+  relationship parts; a file that opens is not a file that works.
+- **Do not recalculate by running the file.** No macros and no connection refresh:
+  recalculate in Excel, or say plainly that the cached values are stale.
+- **Preservation and behaviour are separate results.** "Macros preserved" and
+  "macro behaviour tested" are different sentences, and only the first is usually
+  true.
+<!-- SLOW_UPDATE_END -->
+
+<!-- APPENDIX_START -->
+Keep the source and write to a new path. When a library rather than Excel does the
+saving, say what it does not model, and if the host has no Excel, name the checks
+that stopped there.
+<!-- APPENDIX_END -->

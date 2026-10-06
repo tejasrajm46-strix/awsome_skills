@@ -1,63 +1,61 @@
 ---
 name: word-generator
-description: Create professional editable Microsoft Word documents (.docx) from notes, research, outlines or structured JSON; read, extract and inspect existing DOCX/DOTX documents and plan careful template edits. Use for Word reports, briefs, proposals, letters, handouts and document review. Existing-file edits require package-aware preservation; the bundled builder creates new documents, not lossless template round-trips.
+description: "Write, read and edit Microsoft Word documents (.docx, .dotx): reports, briefs, proposals, letters, handouts and document reviews, built from notes, research, an outline or a JSON spec. Use it to create a new Word file or to inspect and carefully edit an existing one. Editing a DOCX or template needs package-aware preservation; the bundled builder creates new documents and is not a lossless template round-trip."
 license: MIT
-compatibility: Python 3.8+ and python-docx. Word or LibreOffice is optional for rendered pagination review; structural checks alone cannot certify appearance.
+compatibility: Python 3.8+ with python-docx. Word or LibreOffice is optional and only used to review rendered pagination; structural checks cannot certify how a page looks.
+version: v3.0.0
 ---
 
 # Word Generator
 
-Deliver a genuine editable DOCX, not Markdown renamed as Word. Keep text, headings,
-and tables editable; embed images only for visuals. Do not promise perfection.
+Ship a real, editable DOCX, not Markdown renamed to `.docx`. Text, headings and
+tables stay editable; embed images only where the content needs a visual.
 
-The builder creates new documents from content specs. For existing DOCX/DOTX,
-first run `scripts/inspect_docx.py` and read
-[`references/ooxml-review.md`](references/ooxml-review.md). Preserve the source,
-revisions, comments and unsupported parts; use Word automation or targeted OOXML
-edits when needed. Do not rebuild an existing file merely to change one paragraph.
-There is no separate document skill required by this repository.
+The builder writes new documents from a content spec. Given an existing DOCX or
+DOTX, run `scripts/inspect_docx.py` and read
+[`references/ooxml-review.md`](references/ooxml-review.md). Keep the source, its
+revisions, comments and anything you do not fully understand. Prefer targeted
+OOXML edits over rebuilding: regenerating a document to change one paragraph
+discards everything else the author put into it.
 
 ## Shared research and assets
 
-When external facts, images, tables or a website's visual style are needed, read
-[`references/shared-scraping.md`](references/shared-scraping.md), which connects
-this skill to `ultimate-scrape-skill`. Skip scraping for local-only work.
+For outside facts, images, tables or a website's style, read
+[`references/shared-scraping.md`](references/shared-scraping.md), which wires this
+skill to `ultimate-scrape-skill`. Local-only work needs none of it.
 
 ## Workflow
 
-1. Read the supplied content. Determine audience, purpose, length, output path,
-   and whether an existing source file should remain unchanged. Default a science
-   explainer to a general audience, A4, installed fonts, and concise sections.
-2. Inspect available dependencies. Obtain permission before installing anything
-   or running scripts when the host requires it. Prefer a project-local install.
-3. **Research efficiently.** For routine work, define 3–6 questions, search
-   independent topics in parallel, read up to five authoritative pages, and
-   capture only facts needed for the brief in one source register. Deduplicate
-   URLs/facts and stop when key claims have support; use deeper source coverage
-   for disputed/high-stakes topics. Never save time by skipping source checks.
-   Record title, URL, access date and supported claims.
-4. Reuse user-provided figures before sourcing new ones. For embedded images in
-   a companion PPTX/DOCX, the bundled
-   `scripts/extract_office_assets.py` creates a bounded, deduplicated shortlist
-   and contact sheet without scraping. Select deliberately, then reference
-   selected paths explicitly in this spec. For web images, search targeted
-   queries, preview/filter thumbnails before full downloads, deduplicate, and
-   retain creator/source/licence/attribution metadata for chosen images.
-5. Plan the argument and one restrained design system. Use semantic headings,
-   11pt body text, approximately 1.15 line spacing, high contrast, generous
-   margins, captions and descriptive image alt text. Never encode meaning by
-   colour alone. Read `references/design-rules.md` for editorial QA.
+1. Read what you were given. Settle audience, purpose, length and exact output
+   path, and note whether an existing source file must come back untouched. For a
+   thin brief, default a science explainer to a general audience, A4, installed
+   fonts and short sections.
+2. Check dependencies, ask before installing or running scripts if the host
+   expects that, and prefer a project-local install.
+3. **Research enough to be right.** Write 3-6 questions, search them in parallel,
+   read up to five authoritative pages, and keep only the facts the brief uses in
+   one register: title, URL, access date and supported claims. Stop once every
+   claim has support; high-stakes claims deserve wider coverage.
+4. Reach for the user's own figures first. For images inside a companion PPTX or
+   DOCX, `scripts/extract_office_assets.py` builds a deduplicated shortlist and
+   contact sheet offline; pick from it, then name the paths in the spec. For web
+   images, preview before downloading, deduplicate, and keep creator, source,
+   license and attribution beside each kept file.
+5. Decide the argument, then one restrained design system: semantic headings, 11pt
+   body, ~1.15 line spacing, strong contrast, generous margins, captions and alt
+   text describing the message. Never let colour carry meaning alone.
+   `references/design-rules.md` covers editorial QA.
 6. Write a JSON spec and run:
    ```bash
    python <skill-path>/scripts/build_doc.py report.json -o report.docx
    python <skill-path>/scripts/validate_doc.py report.docx --strict --json
    ```
-7. Render the saved DOCX with installed Word or LibreOffice if available. Review
-   every page for clipping, orphan headings, widows, blank spillover pages,
-   table splits, legibility, and excessive whitespace. Fix and re-render. Otherwise
-   say explicitly that pagination and appearance remain unverified.
-8. Reopen and validate the generated structure; report page count only if rendered,
-   source coverage, and exact checks performed.
+7. Render the saved DOCX if Word or LibreOffice is available. Read every page for
+   clipped text, orphan headings, widows, blank spillover pages, split tables,
+   small type and dead whitespace, then fix and render again. If nothing can
+   render it, say pagination and appearance are unverified.
+8. Reopen the file and validate its structure. Report a page count only when you
+   rendered it, list the checks you ran, and say how much of the source you covered.
 
 ## JSON spec
 
@@ -99,36 +97,58 @@ Unknown block types and malformed tables fail rather than silently disappearing.
 Supported blocks: `paragraph` (default), `bullets`, `callout`, `image`, `table`,
 `references`. Sections have `heading`, `blocks`, optional `page_break`.
 Theme keys: `primary`, `accent`, `text`, `muted`, `panel`, `font`.
-Tables repeat their header and prevent individual rows from splitting. Large
-rows may still exceed a page: shorten them or split the table and render again.
-Image width is limited to the text region. Height/pagination needs rendered QA.
-Links accept HTTP(S) only. Do not claim sources are verified merely because a
-hyperlink is syntactically valid.
+Tables repeat their header and stop rows splitting, but a huge row can still
+outgrow a page: shorten it or split the table and render again. Image width is
+capped to the text region; height and pagination need a render. Links accept
+HTTP(S) only, and a well-formed link can still point at nothing.
 
 ## Existing documents and review features
 
 - `python-docx` cannot faithfully edit every Word feature and has no standard API
-  for tracked changes or anchored comments. Do not simulate redlining with styled
-  text or leave orphan comment parts.
-- Actual insertions/deletions use `<w:ins>` / `<w:del>` with author/date/IDs;
-  deleted text uses `<w:delText>`. Comments need the related parts and range/reference
-  markers. Validate both accepted/rejected views where revisions matter.
-- Preserve out-of-scope styles, numbering, headers/footers, bookmarks, hyperlinks,
-  fields, section breaks, images, relationships, comments and revision markup. Editing
-  may invalidate digital signatures; keep the source and disclose this.
-- For careful package inventory without dependencies, run
-  `python scripts/inspect_docx.py input.docx --json`. This is not an OOXML schema
-  validator or visual page renderer.
-- Follow [`references/design-rules.md`](references/design-rules.md) for rendered
-  pagination, accessibility, source, table and image QA.
+  for tracked changes or anchored comments. Do not fake redlining with styled text
+  or leave orphaned comment parts.
+- Real insertions and deletions use `<w:ins>` / `<w:del>` with author, date and
+  IDs; deleted text uses `<w:delText>`. Comments need their parts plus range and
+  reference markers. When revisions matter, check the accepted and rejected views.
+- Preserve what is out of scope: styles, numbering, headers and footers, bookmarks,
+  hyperlinks, fields, section breaks, images, relationships, comments, revisions.
+  Editing usually invalidates a digital signature; keep the source and say so.
+- For a dependency-free package inventory, run
+  `python scripts/inspect_docx.py input.docx --json`. It is not an OOXML
+  validator and it does not render pages.
+- Follow [`references/design-rules.md`](references/design-rules.md) for pagination,
+  accessibility, source, table and image QA.
 
 ## Ownership and checks
 
 - `scripts/build_doc.py`: spec validation and document formatting.
-- `scripts/validate_doc.py`: independently reopens the saved package.
-- `tests/test_doc_rules.py`: assert-based regression checks; run with Python.
-- `evals/evals.json`: realistic skill-level tasks for human evaluation.
+- `scripts/validate_doc.py`: reopens the saved package independently.
+- `tests/test_doc_rules.py`: assert-based regression checks; run them with Python.
+- `evals/evals.json`: realistic tasks split into a selection set that tunes this
+  guide and a held-out set that stays untouched.
+- [`references/skill-evolution.md`](references/skill-evolution.md): how to change
+  this guide. `SKILL.md` is trained text here; edits are scored against the
+  contract and land only on strict improvement.
 
-When pairing with `pptx-generator`, maintain one source register and common
-visual assets. Adapt the detail to each medium; do not paste the entire report
-onto slides. Do not modify the source template or user file in place.
+Pair with `pptx-generator` from one source register and the same image files,
+adjusting depth per medium instead of pasting the report onto slides. Never edit
+the user's template or source file in place.
+
+<!-- SLOW_UPDATE_START -->
+## Rules that survived every revision
+
+Each earned its place by breaking a real document when missing. Edit patches may
+not rewrite them.
+
+- **Render before claiming a page count.** It comes from Word or LibreOffice, never from an estimate; "pagination unverified" is a correct answer.
+- **Rebuilding is not editing.** A regenerated DOCX loses tracked changes, comments, numbering, fields and section breaks.
+- **Never invent a source, owner, metric or date.** Leave it out or ask; a confident table of made-up numbers is the worst thing this skill can produce.
+- **Alt text describes the message.** "Chart" is not alt text, and neither is the caption with "Figure 1" removed.
+- **One source register per deliverable.** A report and its deck read the same sources and files.
+<!-- SLOW_UPDATE_END -->
+
+<!-- APPENDIX_START -->
+- Name the checks that actually ran; never imply a render you did not perform.
+- Keep the user's source file, and never save over it.
+- A DOCX claim needs a DOCX: validate the saved package, not the spec.
+<!-- APPENDIX_END -->

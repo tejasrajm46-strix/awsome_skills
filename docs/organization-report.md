@@ -72,6 +72,6 @@ and code/file tools—no automatic universal-agent installation is claimed.
 ## Release target
 
 Publication target: `https://github.com/tejasrajm46-strix/awsome_skills`.
-Release: `v2.0.0`, six installable skill ZIPs, no video.
+Release: `v3.0.0`, six installable skill ZIPs, no video.
 Final remote verification is recorded after push/release; local completion alone
 is not claimed to prove a GitHub-hosted result.

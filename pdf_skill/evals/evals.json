@@ -1,20 +1,24 @@
 {
   "skill_name": "pdf-processor",
+  "skill_version": "v3.0.0",
   "evals": [
     {
       "id": 1,
+      "split": "selection",
       "prompt": "Extract text and the two data tables from this mixed PDF. Preserve page references and tell me which page had to be OCRed.",
       "expected_output": "Text and tables with source page numbers, clear distinction between extracted and OCR-estimated content, and a validated output workbook only if requested.",
       "assertions": ["PDF structure and page count are inspected", "Extracted content is compared with rendered page layout", "OCR use and uncertainty are disclosed", "No page references or values are fabricated"]
     },
     {
       "id": 2,
+      "split": "selection",
       "prompt": "Merge these three PDFs in the order I gave you, keep bookmarks if possible, and report the final page count.",
       "expected_output": "New merged PDF, unchanged sources, verified page order/count, and a clear note if bookmarks could not be retained.",
       "assertions": ["Source PDFs remain unchanged", "Final PDF reopens with an independent parser", "Page count and order are verified", "Bookmark preservation is reported accurately"]
     },
     {
       "id": 3,
+      "split": "test",
       "prompt": "Redact the confidential account number from this PDF so it cannot be copied out of the file.",
       "expected_output": "A truly redacted new PDF with source retained, hidden text/layers sanitized as appropriate, and target string absent from searchable output.",
       "assertions": ["A black rectangle alone is not treated as a redaction", "Output text search checks the target string", "Changed pages are rendered and inspected", "Security limits and checks are disclosed"]

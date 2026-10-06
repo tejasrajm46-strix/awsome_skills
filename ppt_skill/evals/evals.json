@@ -1,8 +1,11 @@
 {
   "skill_name": "pptx-generator",
+  "skill_version": "v3.0.0",
+  "split_policy": "The selection split is what an edit is optimised against; the test split is held out and is only ever used to check a finished candidate.",
   "evals": [
     {
       "id": 5,
+      "split": "test",
       "prompt": "Create a 12-slide general-audience human-evolution deck with an original sourced infographic, descriptive alt text, notes and an honest explanation of uncertainty; pair it with a Word brief.",
       "expected_output": "Editable PPTX with common source IDs and infographic shared with the DOCX, no linear progress myth, zero strict structural warnings, and disclosed rendered review status.",
       "files": [],
@@ -17,6 +20,7 @@
     },
     {
       "id": 1,
+      "split": "selection",
       "prompt": "Turn my notes on the 2008 financial crisis into a 10-slide deck for a first-year economics class. I want a timeline of the key events and at least one chart. Keep the sources on a slide at the end.",
       "expected_output": "A .pptx of roughly 10 slides built from the bundled build_deck.py, with a title slide, a timeline layout slide, at least one native chart slide, per-slide speaker notes, and a sources slide. validate_deck.py exits 0.",
       "files": [],
@@ -33,6 +37,7 @@
     },
     {
       "id": 2,
+      "split": "selection",
       "prompt": "make me a pitch deck for our seed round. we're a logistics AI startup called Cargoly. 8 slides. something dark and modern, not corporate blue.",
       "expected_output": "An 8-slide .pptx with a custom dark theme passed via the spec theme block, a stats slide for traction numbers, and a closing slide. No attribution claim for any template, since nothing external was used.",
       "files": [],
@@ -46,6 +51,7 @@
     },
     {
       "id": 3,
+      "split": "selection",
       "prompt": "our quarterly business review deck keeps spilling text off the slides and every slide looks slightly different from the last. here's the file, can you rebuild it so it's consistent and actually fits?",
       "expected_output": "A rebuilt .pptx using the shared layout grid, with text auto-sized to fit and consistent title baselines. The validator reports no overflow and no off-slide shapes. The agent should not simply shrink fonts below the 12pt floor.",
       "files": [
@@ -61,6 +67,7 @@
     },
     {
       "id": 4,
+      "split": "selection",
       "prompt": "Build a 10-slide deck on the history of the transistor using relevant visual references, with no slide transitions.",
       "expected_output": "Editable 10-slide PPTX, deliberate reference-informed design, no p:transition elements and passing strict structural validation.",
       "files": [],

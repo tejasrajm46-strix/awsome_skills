@@ -19,7 +19,9 @@ The root is a collection/router, not a sixth document-generation skill.
    an existing-file edit. Resolve ambiguity rather than choosing a wrong format.
 2. Preserve source files; inspect existing files before selecting an editor.
 3. If external inputs are needed, use the shared helper and reuse one source
-   register/asset set across formats. Skip scraping for local-only tasks.
+   register/asset set across formats. Search with AI or a web search, then go to
+   the primary source; Wikipedia is not a source for facts or images. Skip
+   scraping for local-only tasks.
 4. Read the format guide and only its relevant references. Resolve scripts from
    the repository or installed skill root, not an author's machine paths.
 5. Build/edit a new output copy. Never execute untrusted macros/connections,
@@ -56,11 +58,24 @@ Do not promise this collection works automatically in every AI client.
   `references/shared-scraping.md` from it when changed.
 - Word's portable asset extractor is synchronized from
   `ppt_skill/scripts/extract_office_assets.py`; do not independently fork it.
+- Skill documents are gated. `tools/skillopt_gate.py` is the source of truth for
+  what a `SKILL.md` must contain: frontmatter, protected regions, token budget,
+  required sections and the held-out eval split. `python tools/skillopt_gate.py
+  check` must pass, and a release must pass it with `--baseline` against the
+  previously published tree. Read each skill's `references/skill-evolution.md`
+  before editing its guide.
+- Keep guides compact: the workflow and the hard rules belong in `SKILL.md`,
+  which is loaded on every task, and depth belongs in `references/`.
+- Bump `version:` in every `SKILL.md` frontmatter, in each `evals/evals.json` and
+  in `skills.json` together. The gate fails when they disagree.
+- Release notes live in `CHANGELOG.md`; add the section for the new version first,
+  then tag. `tools/changelog_notes.py` turns it into the GitHub release body.
 - Do not publish `local-archive/`, `outputs/`, dependencies, caches, user files,
   obsolete ZIPs or large native template collections. Their local exclusion is
   not permission to delete them.
-- Run `python tools/verify_repository.py`, the documented regression suites and
-  `python tools/package_skill.py --skill all --version v2.0.0` before publication.
+- Run `python tools/verify_repository.py`, `python tools/skillopt_gate.py check`,
+  the documented regression suites and
+  `python tools/package_skill.py --skill all --version v3.0.0` before publication.
 - Published scraper code and PPT reference artworks are original replacements;
   uncleared imports remain private archives. Keep external font licenses and
   source/credit records intact. Review [the organization report](docs/organization-report.md)
