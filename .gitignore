@@ -31,3 +31,7 @@ skill-review-workspace/
 .freebuff/
 .vscode/
 .idea/
+
+# Orchestrator workspaces and caches (task state is local, not published)
+work/
+.skill-cache/
