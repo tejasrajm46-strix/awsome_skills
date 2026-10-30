@@ -45,6 +45,17 @@ each source supports. Keep chosen local assets next to it with the source page,
 direct URL, creator and license. When you are making two deliverables from the
 same brief, both read this one register instead of researching twice.
 
+The helper ships the machinery to make that concrete and checkable:
+
+- `scripts/source_register.py` creates and validates the register, and
+  `check-spec` proves a builder spec cites register IDs (no parallel scheme).
+- `scripts/select_assets.py` is the review gate: every downloaded candidate is
+  approved (with use and license recorded) or rejected (with a reason) before a
+  builder consumes it. `validate` refuses an incomplete review.
+- `scripts/handoff.py` bundles register, reviewed assets, page data, theme
+  tokens and limitations into one `handoff.json` and validates it. Read
+  `references/handoff-contract.md` for the layout.
+
 A file that downloaded cleanly is not a fact, and it is not permission to reuse
 it. Check the claim and look at the image before either one goes into a document.
 
@@ -67,6 +78,10 @@ small: a dozen candidates per query is plenty.
 
 ## Handoff to the format owner
 
+Receive `handoff.json` (or build one with `scripts/handoff.py bundle`), validate
+it, and work from it: the register IDs for citations, the approved asset paths,
+the theme tokens and the limitations you must carry into your delivery note.
+
 - **PPT:** concise claims, selected image paths and source IDs in the deck spec.
   Check the reference sheets, map tokens onto `theme`, and ship zero transitions.
 - **Word:** fuller evidence, semantic sections, captions and the source register.
@@ -77,6 +92,10 @@ small: a dozen candidates per query is plenty.
   provenance, preserve formulas and macros, and say whether recalculation ran.
 - **Poster:** accurate event and CTA details, chosen imagery, a palette derived
   from the tokens. Keep the reference file untouched.
+
+When two deliverables come from one brief, both cite the same register IDs
+(`source_register.py check-spec`) and can point at the same register through
+`tools/output_manifest.py new --register`.
 
 Building and QA belong to the format skill, not to this helper. If the host
 cannot browse, run code or render, say which capability is missing and hand over

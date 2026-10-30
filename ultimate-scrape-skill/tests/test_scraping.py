@@ -71,6 +71,21 @@ def main():
                             ("XLSX", "xlsm_skill"), ("XLSM", "xlsm_skill"), ("poster", "poster_skill")]:
         assert folder in {s["folder"] for s in route(request)["skills"]}
     assert route("research photos for slides")["shared_helper"] == "ultimate-scrape-skill"
+    create = route("a five-slide deck about tidal energy")
+    assert create["mode"] == "create_new" and create["inputs"] == []
+    assert "inspect the existing file before choosing an editor" not in create["workflow"]
+    edit = route("update the quarterly report.docx and export a PDF of it")
+    assert edit["mode"] == "edit_existing", edit
+    assert "inspect the existing file before choosing an editor" in edit["workflow"]
+    folders = {s["folder"] for s in edit["skills"]}
+    assert {"word_skill", "pdf_skill"} <= folders, edit
+    by_file = {item["file"]: item["folder"] for item in edit["inputs"]}
+    assert by_file == {"report.docx": "word_skill"}, edit
+    image = route("restyle this poster.png for print")
+    assert image["mode"] == "edit_existing"
+    assert {"poster_skill"} <= {s["folder"] for s in image["skills"]}
+    assert {i["folder"] for i in image["inputs"]} == {"poster_skill"}
+    assert route("merge two PDFs")["shared_helper"] is None, "local-only work needs no helper"
     print("PASS: original offline parser, bounds, raster types, deduplication, security and five-format routing")
 
 

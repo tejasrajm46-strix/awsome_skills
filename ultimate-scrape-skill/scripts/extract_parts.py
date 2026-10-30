@@ -26,7 +26,10 @@ def public_url(url):
     parsed = urllib.parse.urlsplit(url)
     if parsed.scheme not in {"http", "https"} or not parsed.hostname or parsed.username or parsed.password:
         raise ValueError("Use a public HTTP(S) URL without embedded credentials")
-    addresses = socket.getaddrinfo(parsed.hostname, parsed.port or (443 if parsed.scheme == "https" else 80))
+    try:
+        addresses = socket.getaddrinfo(parsed.hostname, parsed.port or (443 if parsed.scheme == "https" else 80))
+    except (OSError, UnicodeError) as exc:
+        raise ValueError("Cannot resolve host %r; refusing the URL" % parsed.hostname) from exc
     if not addresses or any(not ipaddress.ip_address(a[4][0]).is_global for a in addresses):
         raise ValueError("Local/private network URLs are not permitted")
     return url
