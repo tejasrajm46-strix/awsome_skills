@@ -45,6 +45,12 @@ jobs:
           set -euo pipefail
           python tools/skillopt_gate.py check
           python tools/test_skillopt_gate.py
+          python tools/test_skill_registry.py
+          python tools/test_skill_cache.py
+          python tools/test_task_planner.py
+          python tools/test_task_state.py
+          python tools/test_task_executor.py
+          python tools/test_orchestrator_e2e.py
           python tools/changelog_notes.py "$VERSION" > /dev/null
       - name: Run all skill regression suites
         run: |
