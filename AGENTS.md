@@ -74,8 +74,32 @@ Do not promise this collection works automatically in every AI client.
   obsolete ZIPs or large native template collections. Their local exclusion is
   not permission to delete them.
 - Run `python tools/verify_repository.py`, `python tools/skillopt_gate.py check`,
-  the documented regression suites and
-  `python tools/package_skill.py --skill all --version v3.0.0` before publication.
+  `python tools/check_release.py`, the documented regression suites and
+  `python tools/package_skill.py --skill all --version <catalog-version>` before
+  publication. `check_release.py` compares skills.json, frontmatter, eval
+  manifests, README links, CHANGELOG.md, committed packages and the release
+  workflow, and byte-matches the committed ZIPs against fresh builds; it reports
+  drift and never repairs it - fix the files it names, then rerun.
+- For multi-output tasks, record what actually ran in an output manifest
+  (`python tools/output_manifest.py new|mark|validate`); its state ladder
+  (generated/validated/rendered/visually_inspected) is derived from evidence on
+  disk, never hand-written.
+- Research tasks that feed a deliverable keep a validated source register
+  (`ultimate-scrape-skill/scripts/source_register.py`): every claim maps to one
+  numbered source, `verified` requires recorded evidence, and each builder spec
+  is cross-referenced with `check-spec` so its citations use register IDs.
+  Downloaded images are approved or rejected through
+  `scripts/select_assets.py` before a builder consumes them, and the whole
+  handoff ships as one validated `handoff.json`
+  (`scripts/handoff.py`; see `references/handoff-contract.md`).
+- Multi-skill tasks may be driven through the orchestrator
+  (`tools/orchestrator.py`): the host LLM authors the task interpretation and
+  performs the manual steps, while the registry, planner, executor and task
+  ledger make discovery, loading, planning, execution and repair checkable.
+  Its commands are allowlisted to this repository's scripts; its plans always
+  include validation; its state file records every transition. It is a tool
+  for agents, not a sixth skill - the root of this repository remains the
+  router.
 - Published scraper code and PPT reference artworks are original replacements;
   uncleared imports remain private archives. Keep external font licenses and
   source/credit records intact. Review [the organization report](docs/organization-report.md)

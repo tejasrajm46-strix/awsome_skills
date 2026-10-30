@@ -23,14 +23,14 @@
 
 ## Choose your skill
 
-| Skill | Built for | Read the guide | Download v3.0.0 |
+| Skill | Built for | Read the guide | Download v3.1.0 |
 |---|---|---|---|
-| **PowerPoint** | Editable slides, native charts and diagrams, measured layouts and original visual references. **No slide transitions.** | [ppt_skill](ppt_skill/SKILL.md) | [PPTX ZIP](releases/skills/pptx-generator-v3.0.0.zip) |
-| **Word** | Professional DOCX creation, existing DOCX/DOTX inspection and package-aware editing guidance. | [word_skill](word_skill/SKILL.md) | [Word ZIP](releases/skills/word-generator-v3.0.0.zip) |
-| **PDF** | Text/table extraction, OCR, merge/split, forms, creation and redaction workflows. | [pdf_skill](pdf_skill/SKILL.md) | [PDF ZIP](releases/skills/pdf-processor-v3.0.0.zip) |
-| **Excel** | XLSX and XLSM in one place: formulas, data cleanup, workbook inventory and macro-preservation safeguards; CSV/TSV too. | [xlsm_skill](xlsm_skill/SKILL.md) | [Excel ZIP](releases/skills/xlsm-processor-v3.0.0.zip) |
-| **Poster** | Original posters, flyers and infographics, plus careful template-reference redesign. | [poster_skill](poster_skill/SKILL.md) | [Poster ZIP](releases/skills/smart-poster-designer-v3.0.0.zip) |
-| **Shared research** | Bounded image/data/style extraction and source handoff for **all five**; optional for local-only tasks. | [ultimate-scrape-skill](ultimate-scrape-skill/SKILL.md) | [Helper ZIP](releases/skills/ultimate-scrape-skill-v3.0.0.zip) |
+| **PowerPoint** | Editable slides, native charts and diagrams, measured layouts and original visual references. **No slide transitions.** | [ppt_skill](ppt_skill/SKILL.md) | [PPTX ZIP](releases/skills/pptx-generator-v3.1.0.zip) |
+| **Word** | Professional DOCX creation, existing DOCX/DOTX inspection and package-aware editing guidance. | [word_skill](word_skill/SKILL.md) | [Word ZIP](releases/skills/word-generator-v3.1.0.zip) |
+| **PDF** | Text/table extraction, OCR, merge/split, forms, creation and redaction workflows. | [pdf_skill](pdf_skill/SKILL.md) | [PDF ZIP](releases/skills/pdf-processor-v3.1.0.zip) |
+| **Excel** | XLSX and XLSM in one place: formulas, data cleanup, workbook inventory and macro-preservation safeguards; CSV/TSV too. | [xlsm_skill](xlsm_skill/SKILL.md) | [Excel ZIP](releases/skills/xlsm-processor-v3.1.0.zip) |
+| **Poster** | Original posters, flyers and infographics, plus careful template-reference redesign. | [poster_skill](poster_skill/SKILL.md) | [Poster ZIP](releases/skills/smart-poster-designer-v3.1.0.zip) |
+| **Shared research** | Bounded image/data/style extraction and source handoff for **all five**; optional for local-only tasks. | [ultimate-scrape-skill](ultimate-scrape-skill/SKILL.md) | [Helper ZIP](releases/skills/ultimate-scrape-skill-v3.1.0.zip) |
 
 Each format ZIP includes a portable copy of the shared helper. Install one skill
 without leaving its research guidance or scripts missing. Multiple deliverables
@@ -108,6 +108,65 @@ Metrics in these examples may be illustrative. They are not performance
 claims, and the frames above are new renders of the decks rather than
 stock screenshots.
 
+## Skill intelligence layer
+
+A capable agent should not load six skill documents to answer one request, and
+should not improvise a workflow it cannot later audit. `tools/orchestrator.py`
+is the deterministic half of that: a registry, progressive loader, planner,
+controlled executor and state machine that a reasoning LLM drives as tools.
+
+**Division of labor.** The host LLM reasons: it writes a task interpretation
+(objective, deliverables, research needs) and performs every `manual` step -
+research, spec writing, render review, the delivery note. The repository
+tooling does everything checkable: discovery, metadata validation, plan
+generation, command execution and the ledger.
+
+```bash
+python tools/skill_registry.py index                     # what exists, validated
+python tools/skill_registry.py discover --formats pptx,pdf --json
+python tools/orchestrator.py new-task  work/tasks/t1 --objective "Research X; build deck + report"
+python tools/orchestrator.py interpret work/tasks/t1 --interpretation interp.json
+python tools/orchestrator.py load      work/tasks/t1 --skills ppt word --references references/deck-schema.md
+python tools/orchestrator.py plan      work/tasks/t1    # dependency DAG, allowlisted commands
+python tools/orchestrator.py run       work/tasks/t1    # command steps; manual steps await the LLM
+python tools/orchestrator.py done      work/tasks/t1 --step s2-research --note "register: 3 sources"
+python tools/orchestrator.py status    work/tasks/t1
+python tools/orchestrator.py report    work/tasks/t1
+```
+
+- **Progressive loading.** Stage A loads ~90-token metadata for every candidate;
+  stage B loads only the selected skills' authoritative guides; stage C loads
+  named references. The ledger records exactly which files entered the task and
+  at what measured token cost - the e2e test proves an irrelevant skill is
+  never loaded and staged context is a fraction of loading everything.
+- **Planning.** The interpretation is validated against the catalog (unknown
+  format → refuse; research needed → shared helper included), then expanded
+  into a DAG: inputs → research → handoff validation → builds → per-deliverable
+  validation → render review → consistency → manifest → delivery. Modes
+  (`fast`/`balanced`/`deep`) change depth - render review, consistency,
+  repair budget - never safety: every mode plans validation for every
+  deliverable.
+- **Controlled execution.** Commands are python/node only, inside allowlisted
+  skill/tool roots (symlinks resolved before the containment check), no shell,
+  no chaining; real return codes or it did not happen. A four-status protocol
+  separates what the evidence supports: `command_completed` (the executor ran
+  it), `manual_pending`, `manual_completed` (the host supplied an evidence
+  file) and `validated` (an independent validator actually ran - never
+  self-assigned). Failed steps are retried only inside a bounded REPAIR cycle.
+- **Resume safety.** The ledger hashes the plan, each executed script and each
+  loaded guide; a task resumed after any of them changed re-runs the affected
+  steps instead of trusting stale results.
+- **State.** Every transition, load, attempt and limitation lands in
+  `task-state.json` - a crashed task resumes from disk.
+- **Caching.** Content-hash keyed metadata cache: a modified guide is a new
+  hash, so stale instructions cannot be served; hit rate is measured, not
+  assumed.
+
+This layer orchestrates the five skills and the shared helper; it is not a
+sixth skill and executes nothing outside the repository's own scripts. The
+research half of the contract (register, asset review, handoff bundle) is
+described under [Reuse researched inputs](#see-the-workflow).
+
 ## Install a skill
 
 Download a ZIP above or from [GitHub Releases](https://github.com/tejasrajm46-strix/awsome_skills/releases).
@@ -116,7 +175,7 @@ Extract it into **your client's documented skills directory**. For clients using
 
 ```bash
 mkdir -p ~/.agents/skills
-unzip pptx-generator-v3.0.0.zip -d ~/.agents/skills/
+unzip pptx-generator-v3.1.0.zip -d ~/.agents/skills/
 ```
 
 PowerShell:
@@ -124,7 +183,7 @@ PowerShell:
 ```powershell
 $skills = Join-Path $HOME '.agents/skills'
 New-Item -ItemType Directory -Force $skills | Out-Null
-Expand-Archive pptx-generator-v3.0.0.zip -DestinationPath $skills
+Expand-Archive pptx-generator-v3.1.0.zip -DestinationPath $skills
 ```
 
 Use a clean destination or back up existing installations; do not blindly replace
@@ -181,8 +240,12 @@ python ultimate-scrape-skill/scripts/extract_parts.py \
 
 The saved-page example uses no network or optional dependency. Live public HTML
 and explicit raster downloads use the standard library with item/byte limits;
-local/private addresses are rejected. JavaScript-only pages need the host's
-browser or an authorized export. Image contact sheets optionally use Pillow.
+local/private addresses and redirects into them are rejected. JavaScript-only
+pages need the host's browser or an authorized export. Image contact sheets
+optionally use Pillow. Research that feeds a deliverable ships as one validated
+handoff bundle - register, reviewed assets and limitations - via
+`scripts/handoff.py`; see the
+[handoff contract](ultimate-scrape-skill/references/handoff-contract.md).
 
 ### Compose a poster
 
@@ -223,7 +286,7 @@ xlsm_skill/                XLSX/XLSM/CSV/TSV
 poster_skill/              Original and template-based visual design
 ultimate-scrape-skill/      Shared bounded research inputs
 releases/skills/            Six installable ZIPs
-tools/                     Packaging, the skill gate, asset generators and checks
+tools/                     Packaging, the skill gate, the orchestrator, asset generators and checks
 docs/                      Identity, deck gallery, examples and reports
 ```
 
@@ -238,8 +301,11 @@ There is no duplicate `xlsx_skill` and no OneTake video in this publication.
 ## Test and package
 
 ```bash
-python tools/package_skill.py --skill all --version v3.0.0
+python tools/package_skill.py --skill all --version v3.1.0
 python tools/verify_repository.py
+python tools/check_release.py
+python tools/test_check_release.py
+python tools/test_output_manifest.py
 python tools/test_package_skill.py
 python tools/skillopt_gate.py check
 python tools/test_skillopt_gate.py
@@ -251,17 +317,29 @@ python pdf_skill/tests/test_inspect_pdf.py
 python xlsm_skill/tests/test_inspect_workbook.py
 python xlsm_skill/tests/test_inspect_xlsm.py
 python ultimate-scrape-skill/tests/test_scraping.py
+python ultimate-scrape-skill/tests/test_source_register.py
+python ultimate-scrape-skill/tests/test_security.py
+python ultimate-scrape-skill/tests/test_handoff.py
+python tools/test_skill_registry.py
+python tools/test_skill_cache.py
+python tools/test_task_planner.py
+python tools/test_task_state.py
+python tools/test_task_executor.py
+python tools/test_orchestrator_e2e.py
 node poster_skill/tests/test_template_mode.mjs
 ```
 
 Verification includes script syntax, local links, shared-file synchronization,
 original asset provenance and deterministic extracted-package checks. The poster
 integration test renders through Chrome. [Release automation](.github/workflows/release.yml)
-checks all skills and publishes all six packages on a version-tag push.
+checks all skills and publishes all six packages on a version-tag push;
+`tools/check_release.py` is the same release-consistency gate runnable before
+you tag, and `tools/output_manifest.py` records per-task proof of what was
+generated, validated, rendered and visually inspected.
 
-To see the gate that v3.0.0 had to pass, score the current tree against the
-extracted v2.0.0 baseline. It exits non-zero unless every skill is fully compliant
-and strictly better than what was published before:
+To see the gate the published documents had to improve on, score the current tree
+against the extracted v2.0.0 baseline. It exits non-zero unless every skill is
+fully compliant and strictly better than what was published before:
 
 ```bash
 python tools/skillopt_gate.py check --baseline v2.0.0

@@ -3,7 +3,7 @@ name: smart-poster-designer
 description: "Design posters, flyers, infographics, event graphics, launch visuals, social graphics and print one-sheets as PNG/JPG/PDF. When the user supplies a design, template or reference image and wants its style, layout, background or look reused, use Template Reference Mode: study the source, rebuild its background and visual language, then swap in the new text and imagery while keeping the reference's hierarchy. Use it for template redesigns even when the user says 'copy this design' or 'same background, change the content'. Never overwrite the source template."
 license: MIT
 compatibility: Node 18+ for the bundled compose/render scripts; Chrome or Chromium for PNG/PDF; ImageMagick or macOS sips for JPG. Any image or layout tool you already have also works.
-version: v3.0.0
+version: v3.1.0
 ---
 
 # Smart Poster Designer

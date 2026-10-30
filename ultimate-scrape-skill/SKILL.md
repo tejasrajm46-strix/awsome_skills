@@ -3,7 +3,7 @@ name: ultimate-scrape-skill
 description: "Shared bounded web and AI research plus asset extraction for PowerPoint, Word, PDF, Excel and poster tasks. Use for outside facts, images, page tables or a site's visual style, and for multi-format briefs. Pull only the images, data or template tokens you need, check claims and image rights at the source, then hand the result to the format skill. Skip it for local-only tasks."
 license: MIT
 compatibility: Python 3.8+ standard library for saved-page parsing, public HTTP HTML retrieval and bounded raster downloads. Pillow is optional for local contact sheets. JavaScript-only pages need the host browser or an export the user provides. No API keys required.
-version: v3.0.0
+version: v3.1.0
 ---
 
 # Ultimate Scrape — one shared input pipeline
@@ -30,7 +30,9 @@ This helper produces inputs; each format skill owns its editing, building and QA
    filing, the published study, the dataset - not an aggregator that copied it.
    Three to six focused questions is usually enough; widen the net for disputed
    or high-stakes claims. Keep title, URL, access date and supported claim IDs in
-   one register.
+   one register; `scripts/source_register.py` creates and validates that register
+   offline, and a source is only `verified` once evidence names where it is
+   supported.
    **Do not use Wikipedia as a source**, for facts or for images. It is a summary
    anyone can edit at any time, and there is no author or revision to cite when a
    number turns out wrong. Use what it cites instead. A Wikipedia link handed to
@@ -40,9 +42,15 @@ This helper produces inputs; each format skill owns its editing, building and QA
    Bytes are fetched only for a live page or with `--download`.
 4. Check raw data before treating it as evidence. Filter and deduplicate image
    candidates, then look at the ones you chose. Record creator, source page,
-   direct URL, license, attribution and access date. A clean download is neither
+   direct URL, license, attribution and access date; `scripts/select_assets.py`
+   records approve/reject decisions so only reviewed files reach a builder,
+   and `validate` refuses an unfinished review. A clean download is neither
    proof of a fact nor permission to reuse the file.
-5. Hand the checked claims, source IDs and local asset paths to the format owner.
+5. Hand the checked claims, source IDs and local asset paths to the format owner
+   as one validated bundle: `scripts/handoff.py bundle` assembles register,
+   reviewed assets, data, theme tokens and limitations into `handoff.json`.
+   Cross-reference each builder spec with
+   `scripts/source_register.py check-spec` so its citations use register IDs.
    Translate the heuristic style tokens into that builder's schema. Reuse the
    inputs across deliverables; do not paste a full report into slides.
 6. Run the format's saved-file validation and render review. PPT output carries
@@ -110,9 +118,18 @@ for the source → select → place → verify path.
 
 `python <helper-path>/tests/test_scraping.py` covers the saved-page interface, the
 limits, download format/deduplication/cleanup, URL security and routing without a
-live site. See [`references/provenance.md`](references/provenance.md) for the
+live site; `python <helper-path>/tests/test_security.py` covers redirect chains,
+private destinations, MIME mismatches, size limits and hostile page text;
+`python <helper-path>/tests/test_source_register.py` covers the register schema,
+its evidence rule and spec cross-referencing; and
+`python <helper-path>/tests/test_handoff.py` proves two deliverables reuse one
+register and one reviewed asset set. See
+[`references/provenance.md`](references/provenance.md) for the
 history: the uncleared imported code was replaced before publication and stays
 archived locally. This implementation is original repository work under MIT.
+[`references/source-register.md`](references/source-register.md) documents the
+register fields and [`references/handoff-contract.md`](references/handoff-contract.md)
+the handoff bundle.
 
 Evolution of this guide is gated: read
 [`references/skill-evolution.md`](references/skill-evolution.md) before editing it.

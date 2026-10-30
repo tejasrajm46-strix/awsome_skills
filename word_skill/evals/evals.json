@@ -1,6 +1,6 @@
 {
   "skill_name": "word-generator",
-  "skill_version": "v3.0.0",
+  "skill_version": "v3.1.0",
   "evals": [
     {"id": 1, "split": "selection", "prompt": "Make a professional general-audience Word brief on human evolution with a sourced infographic, evidence table, limitations and linked references.", "expected_output": "Editable DOCX with semantic headings, original captioned figure and alt text, defensible claims and zero strict structural warnings; rendered page review when available.", "files": [], "assertions": ["DOCX reopens successfully", "Every embedded image has descriptive alt text", "References are clickable and claims use matching source IDs", "Rendering status is disclosed honestly"]},
     {"id": 2, "split": "selection", "prompt": "Turn these incident notes into a two-page Word report with an executive summary, timeline, impact and next actions; don't invent owners or metrics.", "expected_output": "Concise editable report, explicit unknowns, semantic headings and stable pagination verified by rendering.", "files": [], "assertions": ["No fabricated owners or metrics", "Semantic heading styles are used", "Requested length is verified or labelled unverified"]},

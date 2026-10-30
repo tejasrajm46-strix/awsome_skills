@@ -3,6 +3,105 @@
 Notable changes to Awesome Skills. Newest first, and the release workflow uses the
 section for a version tag as the body of the GitHub release.
 
+## [v3.1.0] - 2026-10-30
+
+Release metadata, research provenance and output verification become checkable
+artifacts instead of prose promises. No format builder changed; the shared
+research pipeline gained the tooling that enforces its own rules, and the
+collection gained the checks that prove it followed them.
+
+### Added
+
+- **Skill intelligence layer** (`tools/orchestrator.py` with
+  `skill_registry.py`, `skill_loader.py`, `skill_cache.py`, `task_planner.py`,
+  `task_executor.py`, `task_state.py`, and three test suites). The
+  deterministic half of LLM orchestration: a catalog-driven registry (no skill
+  hardcoded - a new compatible skill is discoverable by catalog entry alone),
+  progressive three-stage loading with measured token cost and a
+  content-hash cache that cannot serve stale instructions, interpretation
+  validation and dependency-ordered plan generation whose commands are
+  allowlisted repository scripts, a controlled executor with timeouts and
+  bounded repair that never reports an unobserved success, and a persisted
+  task state machine (CREATED through DELIVERY with recorded transitions).
+  Modes (`fast`/`balanced`/`deep`) change depth - render review,
+  cross-format consistency, repair budget - never safety: every mode plans
+  validation for every deliverable. The host LLM authors interpretations and
+  performs the manual steps; the layer makes the rest checkable.
+- **Manual-step completion protocol.** Step statuses are distinct and not
+  interchangeable: `command_completed` (a controlled command actually ran -
+  only the executor records it), `manual_pending`, `manual_completed` (the
+  host supplied an evidence file through `done --evidence`; work finished,
+  verification not implied) and `validated` (set only by the validation pass
+  over a validator that ran as a command; a manual completion can never
+  self-assign it). Deliveries report per-deliverable checks, and a task with
+  manual-only validation ships marked `fully_validated: false`.
+- **Resume freshness.** The ledger stores the plan's hash, each command step's
+  script hash and each loaded guide's hash. On resume, a changed plan refuses
+  to continue, and any step whose script or skill guide changed on disk is
+  demoted to `stale` and re-runs - persisted state cannot silently skip work
+  whose instructions moved. Failed steps are retried only inside a REPAIR
+  cycle, never blindly. The executor additionally resolves symlinks before
+  its containment check, so a link inside a skill root cannot smuggle a
+  script in from outside the repository.
+- **Research handoff contract.** `ultimate-scrape-skill/scripts/handoff.py`
+  assembles and validates one `handoff.json` per research workspace - register,
+  reviewed assets, page data, theme tokens and limitations - so a format skill
+  consumes one predictable structure instead of re-deciding from prose.
+  `references/handoff-contract.md` documents the layout;
+  `references/shared-scraping.md` wires it into all five format skills.
+- **Asset selection workflow.** `ultimate-scrape-skill/scripts/select_assets.py`
+  is the review gate between downloaded candidates and the builders: every
+  candidate is approved (with intended use and license recorded) or rejected
+  (with a reason), `validate` refuses an incomplete review, and approvals
+  re-hash the file so a swapped candidate cannot pass on an old decision.
+- **Register/spec cross-reference.** `source_register.py check-spec` compares a
+  builder spec's citations against the register, so slides and documents cite
+  register IDs exactly - unknown IDs fail, contradicted sources cannot be
+  cited, unverified ones warn (or fail under `--strict`), and both output
+  manifests can point at the same register (`tools/output_manifest.py new
+  --register`).
+- **Security regression suite** (`ultimate-scrape-skill/tests/test_security.py`):
+  redirect chains (every hop validated, private hops refused before urllib),
+  private/mixed DNS destinations, malformed URLs (with a fail-closed
+  `ValueError` contract for unresolvable hosts), MIME mismatches judged by
+  magic bytes, oversized HTML and saved pages, mid-stream download cleanup, and
+  hostile page instructions preserved verbatim as inert data with a static
+  no-dynamic-execution guard.
+- **Cross-format reuse proof** (`ultimate-scrape-skill/tests/test_handoff.py`):
+  one brief, one register, one reviewed asset set, two deliverables - both
+  specs cross-referenced against the shared register, both output manifests
+  pointing at it.
+- **Release-consistency checker** (`tools/check_release.py`, with
+  `tools/test_check_release.py`). It compares every place a version lives -
+  `skills.json`, each `SKILL.md` frontmatter, each `evals/evals.json`, the README
+  download links, the CHANGELOG section, the committed packages and the release
+  workflow - and fails with the exact file when they disagree. Committed ZIPs are
+  byte-compared against fresh deterministic rebuilds, and each package's inner
+  SKILL.md must carry the catalog version, so a package that no longer
+  matches its sources cannot be tagged. It reports drift; it never repairs it.
+- **Source register** (`ultimate-scrape-skill/scripts/source_register.py`, with
+  tests and `references/source-register.md`). The "no fact without a source ID"
+  rule becomes a validated JSON artifact: stable IDs, one claim mapped to exactly
+  one source, `accessed` dates, and a `verified` status that is refused without
+  recorded evidence. Unknown fields are rejected so metadata cannot be invented
+  into the schema.
+- **Output manifest** (`tools/output_manifest.py`, with
+  `tools/test_output_manifest.py`). One machine-readable manifest per task
+  records which checks ran for each output and derives the state ladder -
+  `generated` -> `validated` -> `rendered` -> `visually_inspected` - from checks
+  that have evidence on disk. A hand-written state is refused; a deck that merely
+  built reads as `generated`.
+
+### Changed
+
+- **The release workflow derives its version from `skills.json`** instead of
+  hardcoding one in three places - the mechanism behind earlier version drift.
+  The publish job now also refuses a tag that disagrees with the catalog.
+- **Router awareness** (`ultimate-scrape-skill/scripts/route.py`): the checklist
+  now distinguishes creating from editing, detects input files by extension, and
+  adds an "inspect the existing file first" step for edit requests.
+- **Version is `v3.1.0` everywhere**; packages rebuilt from this tree.
+
 ## [v3.0.0] - 2026-10-06
 
 Skill documents are now gated, so a release cannot quietly make them worse.

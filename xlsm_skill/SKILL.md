@@ -3,7 +3,7 @@ name: xlsm-processor
 description: "Create, read, clean, edit and audit Excel workbooks (.xlsx, .xlsm, .xltx, .xltm), CSV and TSV data, formulas, charts and financial models. Use it for ordinary and macro-enabled spreadsheets. Keep formulas, formatting, VBA and embedded controls intact, and never run a macro or refresh a connection just to look at a file."
 license: MIT
 compatibility: Python 3.8+ for the package inspectors; openpyxl for everyday editing; pandas is optional for flat tabular data. Excel or LibreOffice is needed to recalculate formulas. Complex macros and controls need Microsoft Excel.
-version: v3.0.0
+version: v3.1.0
 ---
 
 # Excel — XLSX and XLSM
