@@ -5,6 +5,8 @@
   </picture>
 </p>
 
+<h1 align="center">Awesome Skills</h1>
+
 <p align="center"><strong>FROM INTENT TO ARTIFACT.</strong><br />Five focused AI skills. One shared research pipeline.</p>
 
 <p align="center">
@@ -14,37 +16,48 @@
   <img src="https://img.shields.io/badge/outputs-editable-176B60?style=flat-square" alt="Editable outputs">
 </p>
 
-<p align="center"><a href="#see-the-output">See the output</a> · <a href="#choose-your-skill">Explore skills</a> · <a href="#give-your-agent-one-link">Use with an agent</a> · <a href="#install-a-skill">Download &amp; install</a> · <a href="#quality-that-you-can-check">Quality &amp; safety</a></p>
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#skills">Skills</a> ·
+  <a href="#see-the-output">Output</a> ·
+  <a href="#skill-intelligence-layer">Architecture</a> ·
+  <a href="#install-a-skill">Install</a> ·
+  <a href="#documentation">Documentation</a> ·
+  <a href="#quality-that-you-can-check">Quality</a>
+</p>
 
 ![Awesome Skills: from intent to artifact, with PowerPoint, Word, PDF, Excel and poster workflows.](docs/assets/hero.png)
 
 > **A good file is more than a good answer.** Keep content editable, preserve the
 > user's source, and check the saved artifact before calling it finished.
 
-## Choose your skill
+## What this is
 
-| Skill | Built for | Read the guide | Download v3.2.0 |
-|---|---|---|---|
-| **PowerPoint** | Editable slides, native charts and diagrams, measured layouts and original visual references. **No slide transitions.** | [ppt_skill](ppt_skill/SKILL.md) | [PPTX ZIP](releases/skills/pptx-generator-v3.2.0.zip) |
-| **Word** | Professional DOCX creation, existing DOCX/DOTX inspection and package-aware editing guidance. | [word_skill](word_skill/SKILL.md) | [Word ZIP](releases/skills/word-generator-v3.2.0.zip) |
-| **PDF** | Text/table extraction, OCR, merge/split, forms, creation and redaction workflows. | [pdf_skill](pdf_skill/SKILL.md) | [PDF ZIP](releases/skills/pdf-processor-v3.2.0.zip) |
-| **Excel** | XLSX and XLSM in one place: formulas, data cleanup, workbook inventory and macro-preservation safeguards; CSV/TSV too. | [xlsm_skill](xlsm_skill/SKILL.md) | [Excel ZIP](releases/skills/xlsm-processor-v3.2.0.zip) |
-| **Poster** | Original posters, flyers and infographics, plus careful template-reference redesign. | [poster_skill](poster_skill/SKILL.md) | [Poster ZIP](releases/skills/smart-poster-designer-v3.2.0.zip) |
-| **Shared research** | Bounded image/data/style extraction and source handoff for **all five**; optional for local-only tasks. | [ultimate-scrape-skill](ultimate-scrape-skill/SKILL.md) | [Helper ZIP](releases/skills/ultimate-scrape-skill-v3.2.0.zip) |
+Awesome Skills is a collection of five production-focused document skills plus one
+shared research helper, written to be read by an AI agent and verified by a human.
+Each skill owns one output format, carries its own workflow and hard rules, and
+ships the scripts that build and validate the artifact. Research is not duplicated
+per format: one source register and one reviewed asset set feed every deliverable.
 
-Each format ZIP includes a portable copy of the shared helper. Install one skill
-without leaving its research guidance or scripts missing. Multiple deliverables
-share one numbered source register and one selected asset set.
+| | |
+|---|---|
+| **Formats** | PPTX · DOCX/DOTX · PDF · XLSX/XLSM/CSV/TSV · PNG/JPG/PDF/HTML posters |
+| **Shared layer** | Bounded research, numbered source register, reviewed assets, validated handoff |
+| **Entry point** | [`AGENTS.md`](AGENTS.md) for agents · [`skills.json`](skills.json) for machines |
+| **License** | [MIT](LICENSE) for code and original artwork |
 
-## Give your agent one link
+The design intent is narrow: **editable output, preserved sources, checked
+artifacts** — and no claim that a check ran when it did not.
 
-**Agent entry point:**
+## Quick start
+
+### 1 · Give your agent the entry point
 
 ```text
 https://raw.githubusercontent.com/tejasrajm46-strix/awsome_skills/main/AGENTS.md
 ```
 
-Copy/paste this prompt into a browsing-enabled, tool-enabled agent:
+Paste this prompt into a browsing-enabled, tool-enabled agent:
 
 ```text
 Read https://raw.githubusercontent.com/tejasrajm46-strix/awsome_skills/main/AGENTS.md
@@ -68,6 +81,38 @@ Working in ChatGPT? Read [the ChatGPT guide](docs/chatgpt-guide.md). Other clien
 [multi-model compatibility](docs/multi-model-compatibility.md). Copy-paste task
 prompts: [the prompt library](docs/prompt-library.md). Measured host capabilities and
 the v3.2.0 defect fixes: [the compatibility report](docs/compatibility-report.md).
+
+### 2 · Install one skill
+
+Download a ZIP from [GitHub Releases](https://github.com/tejasrajm46-strix/awsome_skills/releases)
+or from the table below, then extract it into **your client's documented skills
+directory**. Full instructions: [Install a skill](#install-a-skill).
+
+### 3 · Build and validate
+
+```bash
+python -m pip install python-pptx
+python ppt_skill/scripts/build_deck.py examples/quick-start.json -o deck.pptx
+python ppt_skill/scripts/validate_deck.py deck.pptx --expect 5 --strict
+```
+
+A build that returns no error is not a validated deck. Run the validator, then
+open the file; [Workflows](#workflows) has the equivalent chain for every format.
+
+## Skills
+
+| Skill | Built for | Read the guide | Download v3.2.0 |
+|---|---|---|---|
+| **PowerPoint** | Editable slides, native charts and diagrams, measured layouts and original visual references. **No slide transitions.** | [ppt_skill](ppt_skill/SKILL.md) | [PPTX ZIP](releases/skills/pptx-generator-v3.2.0.zip) |
+| **Word** | Professional DOCX creation, existing DOCX/DOTX inspection and package-aware editing guidance. | [word_skill](word_skill/SKILL.md) | [Word ZIP](releases/skills/word-generator-v3.2.0.zip) |
+| **PDF** | Text/table extraction, OCR, merge/split, forms, creation and redaction workflows. | [pdf_skill](pdf_skill/SKILL.md) | [PDF ZIP](releases/skills/pdf-processor-v3.2.0.zip) |
+| **Excel** | XLSX and XLSM in one place: formulas, data cleanup, workbook inventory and macro-preservation safeguards; CSV/TSV too. | [xlsm_skill](xlsm_skill/SKILL.md) | [Excel ZIP](releases/skills/xlsm-processor-v3.2.0.zip) |
+| **Poster** | Original posters, flyers and infographics, plus careful template-reference redesign. | [poster_skill](poster_skill/SKILL.md) | [Poster ZIP](releases/skills/smart-poster-designer-v3.2.0.zip) |
+| **Shared research** | Bounded image/data/style extraction and source handoff for **all five**; optional for local-only tasks. | [ultimate-scrape-skill](ultimate-scrape-skill/SKILL.md) | [Helper ZIP](releases/skills/ultimate-scrape-skill-v3.2.0.zip) |
+
+Each format ZIP includes a portable copy of the shared helper. Install one skill
+without leaving its research guidance or scripts missing. Multiple deliverables
+share one numbered source register and one selected asset set.
 
 ## See the output
 
@@ -119,6 +164,17 @@ A capable agent should not load six skill documents to answer one request, and
 should not improvise a workflow it cannot later audit. `tools/orchestrator.py`
 is the deterministic half of that: a registry, progressive loader, planner,
 controlled executor and state machine that a reasoning LLM drives as tools.
+
+```mermaid
+flowchart LR
+    T["Task request"] --> I["interpretation.json<br/>authored by the host LLM"]
+    I --> R["Registry<br/>skills.json + SKILL.md metadata"]
+    R --> P["Planner<br/>validated dependency DAG"]
+    P --> E["Executor<br/>allowlisted python / node scripts"]
+    E --> O["Deliverables"]
+    E --> L[("task-state.json<br/>transitions, attempts, evidence")]
+    I -. "manual steps recorded via done --evidence" .-> L
+```
 
 **Division of labor.** The host LLM reasons: it writes a task interpretation
 (objective, deliverables, research needs) and performs every `manual` step -
@@ -176,32 +232,9 @@ python tools/orchestrator.py report    work/tasks/t1
 This layer orchestrates the five skills and the shared helper; it is not a
 sixth skill and executes nothing outside the repository's own scripts. The
 research half of the contract (register, asset review, handoff bundle) is
-described under [Reuse researched inputs](#see-the-workflow).
+described under [Reuse researched inputs](#reuse-researched-inputs).
 
-## Install a skill
-
-Download a ZIP above or from [GitHub Releases](https://github.com/tejasrajm46-strix/awsome_skills/releases).
-Extract it into **your client's documented skills directory**. For clients using
-`~/.agents/skills/`, Bash/Git Bash:
-
-```bash
-mkdir -p ~/.agents/skills
-unzip pptx-generator-v3.2.0.zip -d ~/.agents/skills/
-```
-
-PowerShell:
-
-```powershell
-$skills = Join-Path $HOME '.agents/skills'
-New-Item -ItemType Directory -Force $skills | Out-Null
-Expand-Archive pptx-generator-v3.2.0.zip -DestinationPath $skills
-```
-
-Use a clean destination or back up existing installations; do not blindly replace
-another skill. ZIPs include guides, scripts, tests and references—not dependencies,
-private user outputs or Office/browser applications.
-
-## See the workflow
+## Workflows
 
 **Understand → preserve → gather only what is missing → build/edit → validate → render/review.**
 
@@ -239,7 +272,7 @@ python pdf_skill/scripts/inspect_pdf.py report.pdf --json
 These use the standard library. They do not calculate formulas, execute VBA,
 scan for malware or prove secure redaction. Their guides distinguish each check.
 
-### Reuse researched inputs across formats
+### Reuse researched inputs
 
 ```bash
 python ultimate-scrape-skill/scripts/route.py "research for slides and Word" --json
@@ -273,6 +306,30 @@ Read [template-reference mode](poster_skill/references/template-reference-mode.m
 for supplied designs. Baked-in text is not editable; background repair needs real
 pixel review. JPG export additionally needs ImageMagick or macOS `sips`.
 
+## Install a skill
+
+Download a ZIP from the [Skills](#skills) table or from
+[GitHub Releases](https://github.com/tejasrajm46-strix/awsome_skills/releases).
+Extract it into **your client's documented skills directory**. For clients using
+`~/.agents/skills/`, Bash/Git Bash:
+
+```bash
+mkdir -p ~/.agents/skills
+unzip pptx-generator-v3.2.0.zip -d ~/.agents/skills/
+```
+
+PowerShell:
+
+```powershell
+$skills = Join-Path $HOME '.agents/skills'
+New-Item -ItemType Directory -Force $skills | Out-Null
+Expand-Archive pptx-generator-v3.2.0.zip -DestinationPath $skills
+```
+
+Use a clean destination or back up existing installations; do not blindly replace
+another skill. ZIPs include guides, scripts, tests and references—not dependencies,
+private user outputs or Office/browser applications.
+
 ## Quality that you can check
 
 - **Editable first.** Native text, charts, tables and supported diagrams—not screenshots pretending to be Office files.
@@ -289,6 +346,7 @@ pixel review. JPG export additionally needs ImageMagick or macOS `sips`.
 ```text
 AGENTS.md                  Entry point and shared operating rules
 CHANGELOG.md               Release notes, newest first
+LICENSE                    MIT
 skills.json                Canonical catalog and version
 ppt_skill/                 PowerPoint + original reference assets
 word_skill/                Word creation, inspection and editing guidance
@@ -310,16 +368,37 @@ without regressing it.
 Local archives, dependencies, caches, videos and private deliverables are excluded.
 There is no duplicate `xlsx_skill` and no OneTake video in this publication.
 
+## Documentation
+
+**[Getting started](#quick-start)** · [Install a skill](#install-a-skill) · [Workflows](#workflows) · [Quality checks](#quality-that-you-can-check)
+
+| Category | Documents |
+|---|---|
+| **Skills** | [PowerPoint](ppt_skill/SKILL.md) · [Word](word_skill/SKILL.md) · [PDF](pdf_skill/SKILL.md) · [Excel](xlsm_skill/SKILL.md) · [Poster](poster_skill/SKILL.md) · [Shared research](ultimate-scrape-skill/SKILL.md) |
+| **Agent integration** | [Entry point](AGENTS.md) · [ChatGPT guide](docs/chatgpt-guide.md) · [Multi-model compatibility](docs/multi-model-compatibility.md) · [Prompt library](docs/prompt-library.md) |
+| **Orchestration** | [Skill intelligence layer](#skill-intelligence-layer) · [Orchestrator](tools/orchestrator.py) · [Task planner](tools/task_planner.py) · [Task state](tools/task_state.py) · [Output manifest](tools/output_manifest.py) · [Capability probe](tools/capability_probe.py) |
+| **Examples** | [Five-slide starter](examples/quick-start.json) · [Word starter](examples/word-quick-start.json) · [Human-evolution specification](examples/human-evolution.json) · [Rendered output](#see-the-output) |
+| **Research** | [Handoff contract](ultimate-scrape-skill/references/handoff-contract.md) · [OOXML review](word_skill/references/ooxml-review.md) · [Template-reference mode](poster_skill/references/template-reference-mode.md) |
+| **Validation** | [Compatibility report](docs/compatibility-report.md) · [SkillOpt gate](tools/skillopt_gate.py) · [Gate report](docs/skillopt-gate-report.md) · [Release checks](tools/check_release.py) |
+| **Releases** | [CHANGELOG](CHANGELOG.md) · [Releases](https://github.com/tejasrajm46-strix/awsome_skills/releases) · [Packages](releases/skills/) · [Release workflow](.github/workflows/release.yml) |
+| **Project** | [Organization report](docs/organization-report.md) · [Brand masters](docs/brand/README.md) · [License](LICENSE) |
+
 ## Test and package
 
 ```bash
 python tools/package_skill.py --skill all --version v3.2.0
 python tools/verify_repository.py
 python tools/check_release.py
+python tools/skillopt_gate.py check
+```
+
+<details>
+<summary><strong>All verification commands</strong></summary>
+
+```bash
 python tools/test_check_release.py
 python tools/test_output_manifest.py
 python tools/test_package_skill.py
-python tools/skillopt_gate.py check
 python tools/test_skillopt_gate.py
 python ppt_skill/tests/test_layout_rules.py
 python ppt_skill/tests/test_extract_office_assets.py
@@ -342,6 +421,8 @@ python tools/test_orchestration_defects.py
 python tools/test_capability_probe.py
 node poster_skill/tests/test_template_mode.mjs
 ```
+
+</details>
 
 Verification includes script syntax, local links, shared-file synchronization,
 original asset provenance and deterministic extracted-package checks. The poster
