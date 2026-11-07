@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-labelledby="heroC titleC">
+  <title id="heroC">Awesome Skills — product overview</title>
+  <desc id="titleC">Light hero with indigo and violet accents. The title "Awesome Skills" sits beside three stacked output tiles labelled PPTX, DOCX and XLSM.</desc>
+  <defs>
+    <linearGradient id="cBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FBFAFF"/>
+      <stop offset="1" stop-color="#F2EFFB"/>
+    </linearGradient>
+    <radialGradient id="cGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#8B5CF6" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="420" fill="url(#cBg)"/>
+  <ellipse cx="1060" cy="48" rx="270" ry="180" fill="url(#cGlow)"/>
+
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">
+    <text x="64" y="94" font-size="19" letter-spacing="3" fill="#6D5BE8">AI DOCUMENT SYSTEM</text>
+    <text x="64" y="176" font-size="62" font-weight="700" fill="#161426">Awesome Skills</text>
+    <text x="64" y="226" font-size="24" fill="#4A4662">Editable documents, built and</text>
+    <text x="64" y="260" font-size="24" fill="#4A4662">checked by AI agents.</text>
+    <text x="64" y="330" font-size="20" fill="#6B6785">5 format skills · 1 shared helper · MIT</text>
+  </g>
+
+  <!-- output tiles, back to front -->
+  <g>
+    <rect x="968" y="214" width="168" height="104" rx="14" fill="#FFFFFF" stroke="#E2DEF4"/>
+    <rect x="968" y="214" width="168" height="6" rx="3" fill="#8B5CF6"/>
+    <text x="1056" y="258" font-size="20" fill="#2A2540" font-family="ui-monospace,SFMono-Regular,Consolas,monospace">XLSM</text>
+    <rect x="1056" y="272" width="64" height="7" rx="3.5" fill="#DCD8EE"/>
+    <rect x="1056" y="288" width="44" height="7" rx="3.5" fill="#E7E4F5"/>
+
+    <rect x="856" y="156" width="180" height="110" rx="14" fill="#FFFFFF" stroke="#E2DEF4"/>
+    <rect x="856" y="156" width="180" height="6" rx="3" fill="#6D5BE8"/>
+    <text x="948" y="202" font-size="20" fill="#2A2540" font-family="ui-monospace,SFMono-Regular,Consolas,monospace">DOCX</text>
+    <rect x="948" y="216" width="72" height="7" rx="3.5" fill="#DCD8EE"/>
+    <rect x="948" y="232" width="50" height="7" rx="3.5" fill="#E7E4F5"/>
+
+    <rect x="738" y="96" width="190" height="118" rx="14" fill="#FFFFFF" stroke="#E2DEF4"/>
+    <rect x="738" y="96" width="190" height="6" rx="3" fill="#4F46E5"/>
+    <text x="764" y="146" font-size="20" fill="#2A2540" font-family="ui-monospace,SFMono-Regular,Consolas,monospace">PPTX</text>
+    <rect x="764" y="162" width="132" height="7" rx="3.5" fill="#DCD8EE"/>
+    <rect x="764" y="178" width="96" height="7" rx="3.5" fill="#E7E4F5"/>
+    <rect x="764" y="194" width="60" height="7" rx="3.5" fill="#EFEDF8"/>
+  </g>
+
+  <text x="738" y="352" font-size="18" fill="#6B6785" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">Editable · checked before delivery</text>
+</svg>

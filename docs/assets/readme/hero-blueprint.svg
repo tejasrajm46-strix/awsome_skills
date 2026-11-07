@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-labelledby="heroB titleB">
+  <title id="heroB">Awesome Skills — engineering blueprint</title>
+  <desc id="titleB">Dark blueprint hero with a fine cyan grid. The title sits beside a numbered rail: 01 registry, 02 loader, 03 planner, 04 executor, 05 ledger.</desc>
+  <defs>
+    <pattern id="bGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#39D7EA" stroke-opacity="0.10"/>
+    </pattern>
+    <pattern id="bGridL" width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M120 0H0V120" fill="none" stroke="#39D7EA" stroke-opacity="0.16"/>
+    </pattern>
+    <linearGradient id="bRule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#39D7EA" stop-opacity="0.65"/>
+      <stop offset="1" stop-color="#39D7EA" stop-opacity="0.05"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="420" fill="#050E16"/>
+  <rect width="1200" height="420" fill="url(#bGrid)"/>
+  <rect width="1200" height="420" fill="url(#bGridL)"/>
+
+  <g stroke="#2BD4E8" stroke-opacity="0.5" stroke-width="2" fill="none">
+    <path d="M16 44V16H44"/>
+    <path d="M1156 16H1184V44"/>
+    <path d="M1184 376V404H1156"/>
+    <path d="M44 404H16V376"/>
+  </g>
+
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">
+    <text x="64" y="92" font-size="18" letter-spacing="2" fill="#4FD8E8" font-family="ui-monospace,SFMono-Regular,Consolas,monospace">SPEC / AWSOME_SKILLS / README</text>
+    <text x="64" y="158" font-size="52" font-weight="700" fill="#F2FBFF" letter-spacing="1">AWESOME SKILLS</text>
+    <path d="M64 182H470" stroke="url(#bRule)" stroke-width="2"/>
+    <text x="64" y="220" font-size="22" fill="#9DB4C2">Five format skills. One shared research pipeline.</text>
+    <text x="64" y="252" font-size="20" fill="#7E97A6">One register. One asset set. One validated handoff.</text>
+    <text x="64" y="322" font-size="18" fill="#5E7C8C" font-family="ui-monospace,SFMono-Regular,Consolas,monospace">catalog v3.2.0 / MIT / 6 packages</text>
+  </g>
+
+  <path d="M656 96V340" stroke="#2BD4E8" stroke-opacity="0.35" stroke-width="2" stroke-dasharray="4 6"/>
+
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">
+    <g font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="20" fill="#39D7EA" text-anchor="end">
+      <text x="636" y="106">01</text>
+      <text x="636" y="160">02</text>
+      <text x="636" y="214">03</text>
+      <text x="636" y="268">04</text>
+      <text x="636" y="322">05</text>
+    </g>
+    <g font-size="22" fill="#EAF7FB">
+      <text x="684" y="102">Registry</text>
+      <text x="684" y="156">Loader</text>
+      <text x="684" y="210">Planner</text>
+      <text x="684" y="264">Executor</text>
+      <text x="684" y="318">Ledger</text>
+    </g>
+    <g font-size="18" fill="#8AA4B2">
+      <text x="684" y="126">skills.json plus each SKILL.md</text>
+      <text x="684" y="180">metadata, guide, named references</text>
+      <text x="684" y="234">validated DAG, allowlisted commands</text>
+      <text x="684" y="288">real return codes, bounded repair</text>
+      <text x="684" y="342">transitions, attempts, evidence files</text>
+    </g>
+  </g>
+
+  <g fill="#050E16" stroke="#39D7EA" stroke-opacity="0.7" stroke-width="2">
+    <circle cx="656" cy="100" r="4"/>
+    <circle cx="656" cy="154" r="4"/>
+    <circle cx="656" cy="208" r="4"/>
+    <circle cx="656" cy="262" r="4"/>
+    <circle cx="656" cy="316" r="4"/>
+  </g>
+</svg>

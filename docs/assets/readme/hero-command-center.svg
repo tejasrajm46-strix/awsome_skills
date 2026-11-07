@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" role="img" aria-labelledby="heroA titleA">
+  <title id="heroA">Awesome Skills — command center</title>
+  <desc id="titleA">Dark navy hero: the title "From intent to artifact." beside a four-stage flow — discover, plan, execute, validate — above six skill cards for PowerPoint, Word, PDF, Excel, Poster and Research.</desc>
+  <defs>
+    <linearGradient id="aBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070C1C"/>
+      <stop offset="1" stop-color="#121C3D"/>
+    </linearGradient>
+    <pattern id="aGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#8296C4" stroke-opacity="0.10"/>
+    </pattern>
+    <linearGradient id="aFlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4F7BFF"/>
+      <stop offset="0.5" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <radialGradient id="aGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#4F7BFF" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#4F7BFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="420" fill="url(#aBg)"/>
+  <rect width="1200" height="420" fill="url(#aGrid)"/>
+  <ellipse cx="1010" cy="64" rx="290" ry="170" fill="url(#aGlow)"/>
+
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">
+    <text x="64" y="92" font-size="19" letter-spacing="3" fill="#7FA6FF">AI ARTIFACT SYSTEM</text>
+    <text x="64" y="170" font-size="58" font-weight="700" fill="#F5F8FF">From intent</text>
+    <text x="64" y="232" font-size="58" font-weight="700" fill="#F5F8FF">to artifact.</text>
+    <rect x="64" y="258" width="96" height="4" rx="2" fill="url(#aFlow)"/>
+    <text x="64" y="302" font-size="23" fill="#A9B7D8">Five format skills. One shared research pipeline.</text>
+    <text x="64" y="356" font-size="20" fill="#7F8DB0">v3.2.0 · MIT · editable output, checked before delivery</text>
+  </g>
+
+  <!-- discover -> plan -> execute -> validate -->
+  <g>
+    <rect x="620" y="96" width="108" height="46" rx="12" fill="#FFFFFF" fill-opacity="0.06" stroke="#6C7FB0" stroke-opacity="0.5"/>
+    <rect x="746" y="96" width="108" height="46" rx="12" fill="#FFFFFF" fill-opacity="0.06" stroke="#6C7FB0" stroke-opacity="0.5"/>
+    <rect x="872" y="96" width="108" height="46" rx="12" fill="#FFFFFF" fill-opacity="0.06" stroke="#6C7FB0" stroke-opacity="0.5"/>
+    <rect x="998" y="96" width="108" height="46" rx="12" fill="#FFFFFF" fill-opacity="0.06" stroke="#6C7FB0" stroke-opacity="0.5"/>
+    <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif" font-size="19" letter-spacing="1" fill="#DCE6FF" text-anchor="middle">
+      <text x="674" y="125">DISCOVER</text>
+      <text x="800" y="125">PLAN</text>
+      <text x="926" y="125">EXECUTE</text>
+      <text x="1052" y="125">VALIDATE</text>
+    </g>
+    <g stroke="url(#aFlow)" stroke-width="2">
+      <path d="M730 119H741"/>
+      <path d="M856 119H867"/>
+      <path d="M982 119H993"/>
+    </g>
+    <g fill="#22D3EE">
+      <path d="M744 119L737 115L737 123Z"/>
+      <path d="M870 119L863 115L863 123Z"/>
+      <path d="M996 119L989 115L989 123Z"/>
+    </g>
+  </g>
+
+  <!-- six skills -->
+  <g>
+    <rect x="620" y="206" width="164" height="58" rx="12" fill="#0E1735" stroke="#5C6FA0" stroke-opacity="0.45"/>
+    <rect x="796" y="206" width="164" height="58" rx="12" fill="#0E1735" stroke="#5C6FA0" stroke-opacity="0.45"/>
+    <rect x="972" y="206" width="164" height="58" rx="12" fill="#0E1735" stroke="#5C6FA0" stroke-opacity="0.45"/>
+    <rect x="620" y="278" width="164" height="58" rx="12" fill="#0E1735" stroke="#5C6FA0" stroke-opacity="0.45"/>
+    <rect x="796" y="278" width="164" height="58" rx="12" fill="#0E1735" stroke="#5C6FA0" stroke-opacity="0.45"/>
+    <rect x="972" y="278" width="164" height="58" rx="12" fill="#0E1735" stroke="#5C6FA0" stroke-opacity="0.45"/>
+    <g fill="#22D3EE">
+      <circle cx="642" cy="235" r="4"/>
+      <circle cx="818" cy="235" r="4"/>
+      <circle cx="994" cy="235" r="4"/>
+      <circle cx="642" cy="307" r="4"/>
+      <circle cx="818" cy="307" r="4"/>
+      <circle cx="994" cy="307" r="4"/>
+    </g>
+    <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif" font-size="20" fill="#E8EEFF">
+      <text x="660" y="242">PowerPoint</text>
+      <text x="836" y="242">Word</text>
+      <text x="1012" y="242">PDF</text>
+      <text x="660" y="314">Excel</text>
+      <text x="836" y="314">Poster</text>
+      <text x="1012" y="314">Research</text>
+    </g>
+  </g>
+
+  <text x="620" y="382" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif" font-size="18" fill="#7E8CAE">Validation is planned for every deliverable</text>
+</svg>
