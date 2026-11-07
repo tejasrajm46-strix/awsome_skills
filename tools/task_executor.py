@@ -45,6 +45,12 @@ import skill_cache
 ALLOWED_ROOTS = ("ppt_skill/", "word_skill/", "pdf_skill/", "xlsm_skill/",
                  "poster_skill/", "ultimate-scrape-skill/", "tools/")
 CHAINED = re.compile(r"[;|&<>`]|\$\(")
+# Plans carry `{{name}}` placeholders for values only the host can know (the
+# builder spec, the research directory). The planner declares them, the executor
+# refuses to run a step that still contains one, and both use this shape - the
+# old `<spec>` form was rejected as shell redirection, which made the failure
+# look like a security refusal instead of an unfinished plan.
+PLACEHOLDER = re.compile(r"\{\{\s*([A-Za-z0-9_-]+)\s*\}\}")
 OUTPUT_TAIL = 4000
 
 
@@ -99,10 +105,41 @@ def check_command(step, root):
             return ValueError("step %s: script %s resolves outside the repository "
                               "(symlink or junction)" % (step["id"], script))
     for argument in command[2:]:
-        if isinstance(argument, str) and CHAINED.search(argument):
+        if not isinstance(argument, str):
+            return ValueError("step %s: command arguments must be strings" % step["id"])
+        placeholder = PLACEHOLDER.search(argument)
+        if placeholder:
+            return ValueError("step %s: argument %r still holds the placeholder %s; the "
+                              "host must replace it with a concrete path in plan.json "
+                              "before this step can run"
+                              % (step["id"], argument, placeholder.group(0)))
+        if CHAINED.search(argument):
             return ValueError("step %s: argument %r contains shell metacharacters; "
                               "commands run without a shell" % (step["id"], argument))
     return None
+
+
+def input_hashes(step, root):
+    """Content hashes of the files a step's own arguments name.
+
+    Only arguments that resolve to an existing file inside the repository count:
+    flags and output paths are not inputs, so an unrelated file changing never
+    invalidates a step. `task_state.freshen()` compares these on resume, which
+    is what stops a specification edited after a build from letting the stale
+    output pass as current.
+    """
+    hashes = {}
+    if not root or not os.path.isdir(root):
+        return hashes
+    for argument in (step.get("command") or [])[2:]:
+        if not isinstance(argument, str) or argument.startswith("-"):
+            continue
+        normalized = argument.replace(os.sep, "/")
+        candidate = (argument if os.path.isabs(argument)
+                     else os.path.join(root, *normalized.split("/")))
+        if os.path.isfile(candidate) and _contained(root, candidate):
+            hashes[normalized] = skill_cache.sha256_of(candidate)
+    return hashes
 
 
 class SubprocessRunner:
@@ -200,7 +237,8 @@ def execute_ready(state, plan, runner, root, max_steps=100):
                               seconds=result.seconds,
                               detail=result.summary()["detail"] or None,
                               script=script, script_sha256=script_sha,
-                              skill=step.get("skill"))
+                              skill=step.get("skill"),
+                              inputs=input_hashes(step, root))
         else:
             state.record_step(step["id"], "failed",
                               seconds=result.seconds,

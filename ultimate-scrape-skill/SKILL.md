@@ -3,7 +3,7 @@ name: ultimate-scrape-skill
 description: "Shared bounded web and AI research plus asset extraction for PowerPoint, Word, PDF, Excel and poster tasks. Use for outside facts, images, page tables or a site's visual style, and for multi-format briefs. Pull only the images, data or template tokens you need, check claims and image rights at the source, then hand the result to the format skill. Skip it for local-only tasks."
 license: MIT
 compatibility: Python 3.8+ standard library for saved-page parsing, public HTTP HTML retrieval and bounded raster downloads. Pillow is optional for local contact sheets. JavaScript-only pages need the host browser or an export the user provides. No API keys required.
-version: v3.1.0
+version: v3.2.0
 ---
 
 # Ultimate Scrape — one shared input pipeline

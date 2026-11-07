@@ -30,6 +30,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 
 if __package__ in (None, ""):
@@ -39,6 +40,11 @@ import skill_registry
 
 MODES = ("fast", "balanced", "deep")
 MODE_REPAIR = {"fast": 1, "balanced": 2, "deep": 3}
+# Values only the host can supply travel as `{{name}}` and are declared on the
+# step. The executor refuses to run a command that still contains one, so an
+# unfilled plan fails loudly instead of executing a placeholder as a path.
+PLACEHOLDER = re.compile(r"\{\{\s*([A-Za-z0-9_-]+)\s*\}\}")
+ANGLE = re.compile(r"<[A-Za-z0-9_-]+>")
 
 
 def validate_interpretation(interpretation, index, mode=None):
@@ -83,10 +89,11 @@ def validate_interpretation(interpretation, index, mode=None):
 
 
 def _step(step_id, name, skill=None, command=None, depends=(), group=None,
-          manual=False, optional=False, kind="work"):
+          manual=False, optional=False, kind="work", placeholders=()):
     return {"id": step_id, "name": name, "skill": skill, "kind": kind,
             "command": command, "depends_on": list(depends),
-            "parallel_group": group, "manual": manual, "optional": optional}
+            "parallel_group": group, "manual": manual, "optional": optional,
+            "placeholders": list(placeholders)}
 
 
 def build_plan(interpretation, index, mode=None):
@@ -113,14 +120,16 @@ def build_plan(interpretation, index, mode=None):
         handoff_id = "s3-handoff"
         helper_scripts = skills[helper_key]["scripts"]["research"]
         handoff_cmd = None
+        handoff_placeholders = []
         for script in helper_scripts:
             if script.endswith("handoff.py"):
                 handoff_cmd = ["python", os.path.join(skills[helper_key]["folder"], script),
-                               "validate", "<research-dir>/handoff.json"]
+                               "validate", "{{research-dir}}/handoff.json"]
+                handoff_placeholders = ["research-dir"]
         steps.append(_step(handoff_id, "Validate the research handoff bundle",
                            skill=helper_key, command=handoff_cmd, depends=[research_id],
                            optional=handoff_cmd is None, manual=handoff_cmd is None,
-                           kind="validation"))
+                           kind="validation", placeholders=handoff_placeholders))
 
     build_ids = {}
     for number, deliverable in enumerate(deliverables, 1):
@@ -133,19 +142,25 @@ def build_plan(interpretation, index, mode=None):
         if has_inputs:
             depends.append(inspect_id)
         command = None
+        placeholders = []
         manual = True
         if skill["scripts"]["builders"]:
             builder = skill["scripts"]["builders"][0]
             suffix = ".mjs" if builder.endswith(".mjs") else ".py"
-            command = ["node" if suffix == ".mjs" else "python",
-                       os.path.join(skill["folder"], builder)] + \
-                      (["--dna", "<dna>", "--content", "<content>", "--out",
-                        deliverable["path"]] if suffix == ".mjs" else
-                       ["<spec>", "-o", deliverable["path"]])
+            if suffix == ".mjs":
+                command = ["node", os.path.join(skill["folder"], builder),
+                           "--dna", "{{dna}}", "--content", "{{content}}",
+                           "--out", deliverable["path"]]
+                placeholders = ["dna", "content"]
+            else:
+                command = ["python", os.path.join(skill["folder"], builder),
+                           "{{spec}}", "-o", deliverable["path"]]
+                placeholders = ["spec"]
             manual = False
         steps.append(_step(build_id, "Build %s (%s)" % (deliverable["path"], skill["name"]),
                            skill=skill["key"], command=command, depends=depends,
-                           group="build-%d" % number, manual=manual, kind="build"))
+                           group="build-%d" % number, manual=manual, kind="build",
+                           placeholders=placeholders))
         build_ids[deliverable["path"]] = build_id
         validator = skill["scripts"]["validators"][0] if skill["scripts"]["validators"] else None
         validate_cmd = None
@@ -172,10 +187,10 @@ def build_plan(interpretation, index, mode=None):
                            skill=helper_key, depends=consistency_deps, manual=True))
     steps.append(_step("s-manifest", "Write the output manifest for every deliverable",
                        command=["python", os.path.join("tools", "output_manifest.py"),
-                                "validate", "<task>/manifest.json"],
+                                "validate", "{{task}}/manifest.json"],
                        depends=["b%d-validate" % number for number in
                                 range(1, len(deliverables) + 1)],
-                       optional=True, manual=True))
+                       optional=True, manual=True, placeholders=["task"]))
     steps.append(_step("s-deliver", "Deliver outputs with an honest validation report",
                        manual=True,
                        depends=["b%d-validate" % number for number in
@@ -203,6 +218,26 @@ def _check_plan(steps, mode):
                      "poster_skill/", "ultimate-scrape-skill/", "tools/")):
                 raise ValueError("step %s command %r is outside the repository's "
                                  "allowlisted script roots" % (step["id"], script))
+    # The placeholder contract both sides rely on: `{{name}}` only, declared on
+    # the step, and actually used. An angle-bracket placeholder is rejected here
+    # rather than at run time, where the shell-metacharacter gate would blame it.
+    for step in steps:
+        arguments = [arg for arg in (step.get("command") or [])[2:] if isinstance(arg, str)]
+        for argument in (step.get("command") or [])[2:]:
+            if not isinstance(argument, str):
+                raise ValueError("step %s: command arguments must be strings" % step["id"])
+            if ANGLE.search(argument):
+                raise ValueError("step %s: %r uses an angle-bracket placeholder; plans use "
+                                 "{{name}} so the executor can detect an unfilled value"
+                                 % (step["id"], argument))
+        declared = set(step.get("placeholders") or [])
+        used = {name for argument in arguments for name in PLACEHOLDER.findall(argument)}
+        if used - declared:
+            raise ValueError("step %s: placeholder(s) %s used but not declared"
+                             % (step["id"], ", ".join(sorted(used - declared))))
+        if declared - used:
+            raise ValueError("step %s: declared placeholder(s) %s appear in no argument"
+                             % (step["id"], ", ".join(sorted(declared - used))))
     return True
 
 

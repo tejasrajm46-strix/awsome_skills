@@ -3,7 +3,7 @@ name: pptx-generator
 description: "Build, design, inspect or restyle editable PowerPoint (.pptx) decks, slides, pitch decks and speaker notes from outlines, reports, research or an existing template. Measured layouts, native charts, diagrams, visual reference assets and saved-file validation. Decks ship with no slide transitions. Read this before hand-writing python-pptx code or rebuilding a deck someone gave you."
 license: MIT
 compatibility: Python 3.8+ with python-pptx and lxml (they install together). Charts are native PPTX charts, so matplotlib is not needed. LibreOffice is optional and only used to render a PDF preview.
-version: v3.1.0
+version: v3.2.0
 ---
 
 # PPTX Generator

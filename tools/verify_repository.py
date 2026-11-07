@@ -49,7 +49,12 @@ def main():
 
     # Validate all explicit local Markdown links in published text; raw web links
     # and code examples are not interpreted as repository paths.
-    documents = [ROOT / "README.md", ROOT / "AGENTS.md", ROOT / "docs/organization-report.md"]
+    documents = [ROOT / "README.md", ROOT / "AGENTS.md",
+                 ROOT / "docs/organization-report.md",
+                 ROOT / "docs/chatgpt-guide.md",
+                 ROOT / "docs/multi-model-compatibility.md",
+                 ROOT / "docs/prompt-library.md",
+                 ROOT / "docs/compatibility-report.md"]
     for spec in skills:
         documents.extend((ROOT / spec["folder"]).rglob("*.md"))
     checked = 0

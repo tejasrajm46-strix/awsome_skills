@@ -93,14 +93,36 @@ class SkillLoader:
                 "linked_references": linked, "required_references": required,
                 "load_record": record}
 
+    def resolve_reference(self, key, name):
+        """Resolve a caller-supplied reference name to the skill's index entry.
+
+        Accepts the exact index path, the same path with a leading ``./``, and a
+        bare basename when exactly one reference matches it. Unknown and
+        ambiguous names raise ValueError listing what the skill ships, so a
+        hallucinated path is refused with an actionable message rather than a
+        crash or a silent empty load.
+        """
+        skill = self._skill(key)
+        normalized = name.replace(os.sep, "/").strip()
+        while normalized.startswith("./"):
+            normalized = normalized[2:]
+        normalized = normalized.lstrip("/")
+        if normalized in skill["references"]:
+            return normalized
+        matches = [ref for ref in skill["references"]
+                   if ref.rsplit("/", 1)[-1] == normalized or ref.endswith("/" + normalized)]
+        if len(matches) == 1:
+            return matches[0]
+        if len(matches) > 1:
+            raise ValueError("%s has several references matching %r: %s; pass the full path"
+                             % (key, name, ", ".join(matches)))
+        raise ValueError("%s has no reference %r; available: %s"
+                         % (key, name, ", ".join(skill["references"]) or "none"))
+
     def reference(self, key, name):
         """Stage C: one reference, by its index-listed name; unknown names are refused."""
         skill = self._skill(key)
-        normalized = (name.replace(os.sep, "/").lstrip("./")
-                      if name.startswith("./") else name.replace(os.sep, "/"))
-        if normalized not in skill["references"]:
-            raise ValueError("%s has no reference %r; available: %s"
-                             % (key, name, ", ".join(skill["references"]) or "none"))
+        normalized = self.resolve_reference(key, name)
         path = os.path.join(self.index["root"], skill["folder"], normalized)
         if self.cache:
             entry, from_cache = self.cache.get(path)

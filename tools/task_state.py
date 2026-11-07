@@ -8,9 +8,9 @@
     state.transition("DELIVERY");  print(state.report())
 
 States: CREATED -> UNDERSTANDING -> SKILL_DISCOVERY -> SKILL_LOADING ->
-PLANNING -> EXECUTION -> VALIDATION -> DELIVERY, with REPAIR only reachable
-from VALIDATION (and returning to VALIDATION), plus FAILED and CANCELLED from
-any non-terminal state. Every transition is checked against this table and
+PLANNING -> EXECUTION -> VALIDATION -> DELIVERY, with REPAIR reachable from
+EXECUTION (a build failed mid-run) or VALIDATION (a check failed) and always
+returning to VALIDATION, plus FAILED and CANCELLED from any non-terminal state. Every transition is checked against this table and
 recorded with a reason and timestamp - an orchestration run that cannot say how
 it got here is not debuggable.
 
@@ -60,7 +60,10 @@ TRANSITIONS = {
     "SKILL_DISCOVERY": {"SKILL_LOADING", "FAILED", "CANCELLED"},
     "SKILL_LOADING": {"PLANNING", "FAILED", "CANCELLED"},
     "PLANNING": {"EXECUTION", "FAILED", "CANCELLED"},
-    "EXECUTION": {"VALIDATION", "FAILED", "CANCELLED"},
+    # A build that fails mid-run may enter REPAIR directly: forcing the host to
+    # detour through VALIDATION first left the retry gate closed at the moment
+    # it was needed. The budget still bounds how many cycles can open.
+    "EXECUTION": {"VALIDATION", "REPAIR", "FAILED", "CANCELLED"},
     "VALIDATION": {"REPAIR", "DELIVERY", "FAILED", "CANCELLED"},
     "REPAIR": {"VALIDATION", "FAILED", "CANCELLED"},
     "DELIVERY": set(), "FAILED": set(), "CANCELLED": set(),
@@ -164,7 +167,8 @@ class TaskState:
         self._save()
 
     def record_step(self, step_id, status, outputs=None, seconds=None, detail=None,
-                    script=None, script_sha256=None, skill=None, independent=False):
+                    script=None, script_sha256=None, skill=None, independent=False,
+                    inputs=None):
         if status not in STEP_STATUSES:
             raise ValueError("unknown step status %r (known: %s)"
                              % (status, ", ".join(STEP_STATUSES)))
@@ -191,6 +195,8 @@ class TaskState:
             entry["script"] = script
         if script_sha256:
             entry["script_sha256"] = script_sha256
+        if inputs:
+            entry["inputs"] = dict(sorted(inputs.items()))
         if skill and "skill" not in entry:
             entry["skill"] = skill
         if status != "stale" and "stale_reason" in entry and status in DONE_STATUSES:
@@ -220,9 +226,10 @@ class TaskState:
 
         A plan.json that no longer matches its recorded hash is a hard refusal:
         the ledger's step results would describe a plan that no longer exists.
-        A command step whose script changed, or whose skill guide changed after
-        the guide was loaded, is demoted to ``stale`` so the executor re-runs
-        it - resumption never skips work whose instructions moved.
+        A command step whose script changed, whose skill guide changed after the
+        guide was loaded, or whose own input arguments changed on disk is demoted
+        to ``stale`` so the executor re-runs it - resumption never skips work
+        whose instructions or inputs moved.
         """
         notes = []
         plan_path = os.path.join(self.workspace, "plan.json")
@@ -252,6 +259,13 @@ class TaskState:
                             skill_cache.sha256_of(guide_path) != guide["sha256"]:
                         reasons.append("skill guide %s changed after it was loaded"
                                        % guide["path"])
+            if step["status"] == "command_completed":
+                for recorded_path, recorded_sha in sorted((step.get("inputs") or {}).items()):
+                    input_path = os.path.join(root, *recorded_path.replace("\\", "/").split("/"))
+                    if not os.path.isfile(input_path):
+                        reasons.append("input %s is gone" % recorded_path)
+                    elif recorded_sha and skill_cache.sha256_of(input_path) != recorded_sha:
+                        reasons.append("input %s changed since it ran" % recorded_path)
             if reasons:
                 note = "%s: %s" % (step["id"], "; ".join(reasons))
                 notes.append(note)

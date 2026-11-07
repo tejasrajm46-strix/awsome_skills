@@ -3,7 +3,7 @@ name: word-generator
 description: "Write, read and edit Microsoft Word documents (.docx, .dotx): reports, briefs, proposals, letters, handouts and document reviews, built from notes, research, an outline or a JSON spec. Use it to create a new Word file or to inspect and carefully edit an existing one. Editing a DOCX or template needs package-aware preservation; the bundled builder creates new documents and is not a lossless template round-trip."
 license: MIT
 compatibility: Python 3.8+ with python-docx. Word or LibreOffice is optional and only used to review rendered pagination; structural checks cannot certify how a page looks.
-version: v3.1.0
+version: v3.2.0
 ---
 
 # Word Generator

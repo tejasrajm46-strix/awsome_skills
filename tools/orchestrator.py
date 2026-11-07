@@ -54,6 +54,21 @@ def load_or_create_state(workspace, mode=None):
     raise SystemExit("no task at %s; run new-task first" % workspace)
 
 
+def _transition(state, to_state, reason):
+    """Change state, returning a report instead of raising on an illegal move.
+
+    A `validate` that finds a failed step in a terminal state is a real
+    situation, not a programming error: it must be reported with the states
+    involved, and the CLI must keep running. Everything that can decide to move
+    the ledger goes through here.
+    """
+    try:
+        state.transition(to_state, reason=reason)
+    except task_state.IllegalTransition as exc:
+        return "illegal transition %s -> %s (%s)" % (state.state, to_state, exc)
+    return None
+
+
 def cmd_new_task(args):
     state = task_state.TaskState.create(args.workspace, args.objective, args.mode)
     state.transition("UNDERSTANDING", reason="task created")
@@ -120,6 +135,36 @@ def cmd_load(args):
     index = skill_registry.build_index()
     loader = skill_loader.SkillLoader(index, skill_cache.SkillCache(
         os.path.join(args.workspace, ".skill-cache")))
+    known = {skill["key"]: skill for skill in index["skills"]}
+    unknown = [key for key in args.skills if key not in known]
+    if unknown:
+        print("FAIL: unknown skill(s) %s; catalog keys: %s"
+              % (", ".join(unknown), ", ".join(sorted(known))))
+        return 1
+    # `--references` is task-level while references are per-skill, so each name
+    # is resolved against every requested skill that actually ships it, and the
+    # whole request is checked before anything loads. A name no skill ships is a
+    # refusal with the available list - never a traceback halfway through a load.
+    resolved, missing = {}, []
+    for name in args.references or []:
+        owners = []
+        for key in args.skills:
+            try:
+                owners.append((key, loader.resolve_reference(key, name)))
+            except ValueError:
+                continue
+        if not owners:
+            missing.append(name)
+        for key, canonical in owners:
+            bucket = resolved.setdefault(key, [])
+            if canonical not in bucket:
+                bucket.append(canonical)
+    if missing:
+        for name in missing:
+            print("FAIL: no requested skill has reference %r" % name)
+        for key in args.skills:
+            print("  %-10s %s" % (key, ", ".join(known[key]["references"]) or "no references"))
+        return 1
     records = []
     for key in args.skills:
         info = loader.skill(key)
@@ -129,7 +174,7 @@ def cmd_load(args):
                  "cached" if info["load_record"]["from_cache"] else "fresh"))
         print("  required references (heuristic): %s"
               % (", ".join(info["required_references"]) or "none flagged"))
-        for name in args.references or []:
+        for name in resolved.get(key, []):
             ref = loader.reference(key, name)
             records.append(ref["load_record"])
             print("  reference %s (~%d tokens)" % (name, ref["tokens_est"]))
@@ -156,7 +201,10 @@ def cmd_run(args):
             print("%-16s %-8s %s" % (step["id"], kind, step["name"]))
         return 0
     if state.state == "PLANNING":
-        state.transition("EXECUTION", reason="execution started")
+        error = _transition(state, "EXECUTION", "execution started")
+        if error:
+            print("FAIL: %s" % error)
+            return 1
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     try:
         stale = state.freshen(root)
@@ -166,6 +214,26 @@ def cmd_run(args):
     for note in stale:
         print("STALE: %s (re-running)" % note)
     executed = task_executor.execute_ready(state, plan, task_executor.SubprocessRunner(), root)
+    failed = [s["id"] for s in state.data["steps"] if s["status"] == "failed"]
+    if failed and state.state == "REPAIR":
+        print("retry still failing: %s; repair cycle %d/%d - fix the cause and `run` "
+              "again, or `validate` to close the cycle"
+              % (", ".join(failed), state.repair_count(), state.data["repair_limit"]))
+        return 2
+    if failed and state.repair_count() < state.data["repair_limit"]:
+        error = _transition(state, "REPAIR", "failed steps: %s" % ", ".join(failed))
+        if error:
+            print("FAIL: %s" % error)
+            return 1
+        print("failed: %s; repair cycle %d/%d - a mid-run failure enters REPAIR "
+              "directly, so fix the cause and `run` again, then `validate`"
+              % (", ".join(failed), state.repair_count(), state.data["repair_limit"]))
+        return 2
+    if failed:
+        error = _transition(state, "FAILED", "repair limit reached with failing steps")
+        print("FAILED: %s%s" % (", ".join(failed),
+                                "" if not error else " (%s)" % error))
+        return 1
     pending_manual = [step["id"] for step in task_executor.ready_steps(plan, state.data)
                       if step.get("manual")]
     ready_auto = [step["id"] for step in task_executor.ready_steps(plan, state.data)
@@ -215,11 +283,18 @@ def cmd_validate(args):
     with open(plan_path, encoding="utf-8") as handle:
         plan = json.load(handle)
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    stale = state.freshen(root)
+    try:
+        stale = state.freshen(root)
+    except task_state.StaleTask as exc:
+        print("FAIL: %s" % exc)
+        return 1
     for note in stale:
         print("STALE: %s (re-runs on the next `run`)" % note)
     if state.state == "EXECUTION":
-        state.transition("VALIDATION", reason="command steps complete")
+        error = _transition(state, "VALIDATION", "command steps complete")
+        if error:
+            print("FAIL: %s" % error)
+            return 1
     statuses = {s["id"]: s["status"] for s in state.data["steps"]}
     failed = [s["id"] for s in state.data["steps"] if s["status"] == "failed"]
     # A step blocks delivery until it is done (or failed) - except an optional
@@ -254,30 +329,55 @@ def cmd_validate(args):
                "repair_limit": state.data["repair_limit"],
                "stale": stale}
     state.record_validation(summary)
+    if failed and state.state == "REPAIR":
+        # This cycle's retry did not clear the failure: close the cycle first,
+        # then decide whether the budget allows another one. Staying in REPAIR
+        # would make a second REPAIR entry illegal and the count meaningless.
+        spent = _transition(state, "VALIDATION",
+                            "repair cycle spent with remaining failures: %s"
+                            % ", ".join(failed))
+        if spent:
+            print("FAIL: %s" % spent)
+            return 1
     if failed and state.repair_count() < state.data["repair_limit"]:
         # Stay in REPAIR: the host applies its fix and re-runs the failed steps
         # there; the next `validate` closes the cycle. Bouncing straight back to
         # VALIDATION would leave the retry gate closed and the cycle fiction.
-        state.transition("REPAIR", reason="failed steps: %s" % ", ".join(failed))
+        error = _transition(state, "REPAIR", "failed steps: %s" % ", ".join(failed))
+        if error:
+            print("FAIL: %s" % error)
+            print("the task is %s; a repair cycle can only open from EXECUTION "
+                  "or VALIDATION" % state.state)
+            return 1
         print("failed steps recorded; repair cycle %d/%d - fix and `run`, then "
-              "`validate` again" % (state.repair_count() + 1, state.data["repair_limit"]))
+              "`validate` again" % (state.repair_count(), state.data["repair_limit"]))
         return 2
     if failed:
-        state.transition("FAILED", reason="repair limit reached with failing steps")
-        print("FAILED: %s" % ", ".join(failed))
+        error = _transition(state, "FAILED", "repair limit reached with failing steps")
+        print("FAILED: %s%s" % (", ".join(failed),
+                                "" if not error else " (%s)" % error))
         return 1
     if pending:
         if state.state == "REPAIR":
-            state.transition("VALIDATION", reason="repair applied; revalidating")
+            error = _transition(state, "VALIDATION", "repair applied; revalidating")
+            if error:
+                print("FAIL: %s" % error)
+                return 1
         print("awaiting completion of: %s" % ", ".join(pending))
         if not fully_validated:
             print("deliverable checks not fully validated: %s"
                   % ", ".join("%s=%s" % (e["step"], e["state"]) for e in per_deliverable))
         return 0
     if state.state == "REPAIR":
-        state.transition("VALIDATION", reason="repair cycle closed")
+        error = _transition(state, "VALIDATION", "repair cycle closed")
+        if error:
+            print("FAIL: %s" % error)
+            return 1
     if state.state == "VALIDATION":
-        state.transition("DELIVERY", reason="all steps completed")
+        error = _transition(state, "DELIVERY", "all steps completed")
+        if error:
+            print("FAIL: %s" % error)
+            return 1
     print("all steps completed; %s" %
           ("every deliverable passed an independent validator"
            if fully_validated else

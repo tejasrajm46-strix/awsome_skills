@@ -3,7 +3,7 @@ name: pdf-processor
 description: "Use whenever a PDF is involved, as input or output: pull out text, tables or images, OCR a scan, create or export, merge, split, reorder, rotate, watermark, fill forms, redact, compress, encrypt, or read metadata. Work out whether each page really holds text or is only a scan before choosing a tool, and never describe a picture of text as editable source. Only call something redacted once the content is gone and you have searched the saved output to prove it."
 license: MIT
 compatibility: Python 3.8+. pypdf for page structure, pdfplumber for layout and tables, reportlab for generation, Poppler or MuPDF for rendering and OCR. The inspection script needs only the standard library.
-version: v3.1.0
+version: v3.2.0
 ---
 
 # PDF Processor

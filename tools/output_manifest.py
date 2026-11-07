@@ -21,6 +21,14 @@ output that is gone is `missing`, and one with a failed check is
 A deck that merely built is `generated`, and the manifest is what stops it being
 reported as anything more.
 
+Path resolution: every path stored in the manifest resolves against the
+manifest's own directory unless it is absolute. That is the whole rule, and
+`resolve_path` is the only place it is applied - outputs, evidence,
+`sources_register` and inputs all follow it, so a manifest keeps validating
+regardless of the directory you invoke the tool from. Pass an absolute path and
+it is used exactly as given; pass `--out sub/manifest.json` and a stored
+`deck.pptx` means `sub/deck.pptx`, beside the manifest.
+
 Standard library only. The manifest is a report, not a repair tool: it never
 writes output files, only records what exists.
 """
@@ -71,6 +79,18 @@ def find_output(manifest, output_path):
     return None
 
 
+def resolve_path(base, path):
+    """Manifest paths are relative to the manifest's directory unless absolute."""
+    if os.path.isabs(path):
+        return path
+    return os.path.join(base, *path.replace("\\", "/").split("/"))
+
+
+def path_exists(base, path):
+    resolved = resolve_path(base, path)
+    return os.path.isfile(resolved) or os.path.isdir(resolved)
+
+
 def derived_state(output, exists):
     """Recompute the state ladder from the checks; never trust a stored one."""
     checks = output.get("checks", {})
@@ -109,7 +129,7 @@ def validate_manifest(manifest, base):
     if register is not None:
         if not isinstance(register, str) or not register.strip():
             errors.append("sources_register must be a path")
-        elif not os.path.isfile(os.path.join(base, register)):
+        elif not os.path.isfile(resolve_path(base, register)):
             errors.append("sources_register %s does not exist" % register)
     if not isinstance(manifest.get("inputs", []), list):
         errors.append("inputs must be a list of paths")
@@ -127,7 +147,7 @@ def validate_manifest(manifest, base):
             continue
         if output.get("format") not in FORMATS:
             errors.append("%s: format must be one of %s" % (label, ", ".join(FORMATS)))
-        exists = os.path.isfile(os.path.join(base, path)) or os.path.isdir(os.path.join(base, path))
+        exists = path_exists(base, path)
         checks = output.get("checks", {})
         if not isinstance(checks, dict):
             errors.append("%s: checks must be an object" % label)
@@ -150,8 +170,7 @@ def validate_manifest(manifest, base):
                 if not isinstance(evidence, str) or not evidence.strip():
                     errors.append("%s: check %s is %s but records no evidence"
                                   % (label, name, status))
-                elif not (os.path.isfile(os.path.join(base, evidence))
-                          or os.path.isdir(os.path.join(base, evidence))):
+                elif not path_exists(base, evidence):
                     errors.append("%s: check %s evidence %s does not exist"
                                   % (label, name, evidence))
             elif evidence:
@@ -178,7 +197,8 @@ def main(argv=None):
 
     new = sub.add_parser("new", help="start a manifest for one task")
     new.add_argument("--task", required=True, help="task identifier, e.g. artifact-001")
-    new.add_argument("--out", required=True)
+    new.add_argument("--out", required=True,
+                     help="manifest path; stored relative paths resolve against its directory")
     new.add_argument("--input", dest="inputs", action="append", default=[],
                      help="input file (repeatable)")
     new.add_argument("--output", dest="outputs", action="append", default=[],
@@ -239,7 +259,7 @@ def main(argv=None):
         if args.detail:
             entry["detail"] = args.detail
         output.setdefault("checks", {})[args.check] = entry
-        exists = os.path.isfile(os.path.join(base, args.output))
+        exists = path_exists(base, args.output)
         output["state"] = derived_state(output, exists)
         save_manifest(args.manifest, manifest)
         print("marked %s: %s = %s (state: %s)"

@@ -3,6 +3,80 @@
 Notable changes to Awesome Skills. Newest first, and the release workflow uses the
 section for a version tag as the body of the GitHub release.
 
+## [v3.2.0] - 2026-11-07
+
+Orchestration defects found by the v3.1.0 release test are fixed at the root, and
+the collection now measures what a host can do instead of assuming it. No format
+builder changed; the skill guides are unchanged apart from the version bump.
+
+### Fixed
+
+- **`load --references` across skills (E.1).** References are per-skill while the
+  flag is task-level, so one name the current skill did not ship crashed the CLI
+  mid-load. Names now resolve per requested skill (exact path, `./path`, or an
+  unambiguous basename), the whole request is validated before anything is
+  recorded, and an unknown name or skill is refused with the available list.
+  Covers every catalog entry, including the reference shared by all five format
+  skills.
+- **REPAIR unreachable from EXECUTION (E.2).** A build failing mid-run dead-ended
+  until the host detoured through `validate`. `EXECUTION -> REPAIR` is now a
+  legal transition, `run` opens a cycle directly (exit code 2) or records FAILED
+  when the budget is spent, failed steps retry only inside the cycle, and
+  terminal states still refuse every move.
+- **`freshen()` ignored input specifications (E.3).** Resumption hash-checked the
+  plan, scripts and loaded guides, but not the files a command's arguments named,
+  so a spec edited after a build left stale output looking current. The executor
+  now records a content hash for each existing input argument and `freshen()`
+  demotes the step when one changes or disappears. Unrelated files are never
+  hashed, so they cannot invalidate work.
+- **`validate` crashed on `DELIVERY -> REPAIR` (E.4).** Every CLI state change now
+  goes through a guarded helper: an illegal move is reported with both states and
+  the exit code, the CLI keeps running, the ledger is unchanged, and a stale plan
+  refusal is reported instead of raised.
+- **`output_manifest.py` path rules were implicit and inconsistent (E.5).** One
+  documented rule now applies everywhere - a stored path resolves against the
+  manifest's directory unless absolute - via a single `resolve_path`, used by
+  `validate`, `mark`, evidence, outputs and `sources_register`. `mark` no longer
+  treats a directory output as missing.
+- **Repair counter off-by-one and the `<spec>` mismatch (E.6).** The cycle number
+  was printed one ahead of the cycle just opened. The planner emitted angle-bracket
+  placeholders that the executor refused as shell redirection; plans now carry
+  `{{name}}` placeholders declared per step, the planner rejects undeclared, unused
+  or angle-bracket forms, and the executor refuses an unfilled placeholder with a
+  message that names the value and says it must be concretised.
+
+### Added
+
+- **Capability probe** (`tools/capability_probe.py`, standard library only):
+  reports 13 operations as `available`, `unavailable`, `unverified` or
+  `permission_required`. Document, spreadsheet, presentation and image probes
+  build and discard a real artifact; rendering and PDF tooling are detected
+  rather than assumed; installing dependencies stays `permission_required` and
+  the network is untouched without `--allow-network`. Human and JSON reports.
+- **Client documentation**: [the ChatGPT guide](docs/chatgpt-guide.md),
+  [multi-model compatibility](docs/multi-model-compatibility.md),
+  [the prompt library](docs/prompt-library.md) and
+  [the compatibility report](docs/compatibility-report.md). `AGENTS.md` and the
+  README point at them, and `verify_repository.py` now link-checks all of them.
+- **Two regression suites**: `tools/test_orchestration_defects.py` pins each of
+  E.1-E.6 at the CLI level, and `tools/test_capability_probe.py` pins the status
+  vocabulary, the authorization boundary and the JSON/text reports. Both run in
+  the release workflow.
+
+### Verification
+
+- `tools/verify_repository.py`, `tools/skillopt_gate.py check` (six documents at
+  100.00, unchanged token counts) and `tools/check_release.py` pass, with the six
+  packages rebuilt from this tree.
+- Five of the six defects were reproduced against the untouched v3.1.0 tree
+  before the fix; the manifest defect was a documentation and consistency gap
+  (its relative-path resolution already worked, but `mark` disagreed with
+  `validate` and nothing documented the rule).
+- The capability probe on the development host: 9 available, 1 unavailable (PDF
+  generation - no renderer on PATH), 1 unverified (rendering), 2
+  permission_required (dependency install, network). Not a claim about any other
+  host.
+
 ## [v3.1.0] - 2026-10-30
 
 Release metadata, research provenance and output verification become checkable

@@ -51,6 +51,8 @@ jobs:
           python tools/test_task_state.py
           python tools/test_task_executor.py
           python tools/test_orchestrator_e2e.py
+          python tools/test_orchestration_defects.py
+          python tools/test_capability_probe.py
           python tools/changelog_notes.py "$VERSION" > /dev/null
       - name: Run all skill regression suites
         run: |

@@ -1,6 +1,6 @@
 {
   "skill_name": "pptx-generator",
-  "skill_version": "v3.1.0",
+  "skill_version": "v3.2.0",
   "split_policy": "The selection split is what an edit is optimised against; the test split is held out and is only ever used to check a finished candidate.",
   "evals": [
     {

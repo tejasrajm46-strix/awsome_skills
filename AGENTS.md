@@ -13,6 +13,11 @@ The root is a collection/router, not a sixth document-generation skill.
 | Poster/flyer/infographic | [poster_skill/SKILL.md](poster_skill/SKILL.md) |
 | External research/images/page data/style | [ultimate-scrape-skill/SKILL.md](ultimate-scrape-skill/SKILL.md) |
 
+Client guides: [ChatGPT](docs/chatgpt-guide.md) ·
+[other clients](docs/multi-model-compatibility.md) ·
+[copy-paste prompts](docs/prompt-library.md) ·
+[measured compatibility](docs/compatibility-report.md).
+
 ## Mandatory workflow
 
 1. Confirm exact output format/path, audience, constraints and what must survive
@@ -47,6 +52,18 @@ If browsing is available, read this file and follow links. If file/code tools ar
 available, download/clone the repository or use the skill ZIPs. Otherwise provide
 an outline/spec and state that file generation cannot run in that environment.
 Do not promise this collection works automatically in every AI client.
+
+Probe before promising. `python tools/capability_probe.py` (standard library
+only) reports each operation as `available`, `unavailable`, `unverified` (a claim
+to confirm, never a fact) or `permission_required` (installing a dependency, or
+network access not explicitly allowed). Adding `--json` gives the same facts
+machine-readable. Never describe an operation that the probe, or an actual run,
+did not perform.
+
+Client setup and per-model limits are in [the ChatGPT guide](docs/chatgpt-guide.md)
+and [multi-model compatibility](docs/multi-model-compatibility.md); task prompts
+are in [the prompt library](docs/prompt-library.md), and measured results in
+[the compatibility report](docs/compatibility-report.md).
 
 ## Repository maintenance
 

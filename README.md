@@ -23,14 +23,14 @@
 
 ## Choose your skill
 
-| Skill | Built for | Read the guide | Download v3.1.0 |
+| Skill | Built for | Read the guide | Download v3.2.0 |
 |---|---|---|---|
-| **PowerPoint** | Editable slides, native charts and diagrams, measured layouts and original visual references. **No slide transitions.** | [ppt_skill](ppt_skill/SKILL.md) | [PPTX ZIP](releases/skills/pptx-generator-v3.1.0.zip) |
-| **Word** | Professional DOCX creation, existing DOCX/DOTX inspection and package-aware editing guidance. | [word_skill](word_skill/SKILL.md) | [Word ZIP](releases/skills/word-generator-v3.1.0.zip) |
-| **PDF** | Text/table extraction, OCR, merge/split, forms, creation and redaction workflows. | [pdf_skill](pdf_skill/SKILL.md) | [PDF ZIP](releases/skills/pdf-processor-v3.1.0.zip) |
-| **Excel** | XLSX and XLSM in one place: formulas, data cleanup, workbook inventory and macro-preservation safeguards; CSV/TSV too. | [xlsm_skill](xlsm_skill/SKILL.md) | [Excel ZIP](releases/skills/xlsm-processor-v3.1.0.zip) |
-| **Poster** | Original posters, flyers and infographics, plus careful template-reference redesign. | [poster_skill](poster_skill/SKILL.md) | [Poster ZIP](releases/skills/smart-poster-designer-v3.1.0.zip) |
-| **Shared research** | Bounded image/data/style extraction and source handoff for **all five**; optional for local-only tasks. | [ultimate-scrape-skill](ultimate-scrape-skill/SKILL.md) | [Helper ZIP](releases/skills/ultimate-scrape-skill-v3.1.0.zip) |
+| **PowerPoint** | Editable slides, native charts and diagrams, measured layouts and original visual references. **No slide transitions.** | [ppt_skill](ppt_skill/SKILL.md) | [PPTX ZIP](releases/skills/pptx-generator-v3.2.0.zip) |
+| **Word** | Professional DOCX creation, existing DOCX/DOTX inspection and package-aware editing guidance. | [word_skill](word_skill/SKILL.md) | [Word ZIP](releases/skills/word-generator-v3.2.0.zip) |
+| **PDF** | Text/table extraction, OCR, merge/split, forms, creation and redaction workflows. | [pdf_skill](pdf_skill/SKILL.md) | [PDF ZIP](releases/skills/pdf-processor-v3.2.0.zip) |
+| **Excel** | XLSX and XLSM in one place: formulas, data cleanup, workbook inventory and macro-preservation safeguards; CSV/TSV too. | [xlsm_skill](xlsm_skill/SKILL.md) | [Excel ZIP](releases/skills/xlsm-processor-v3.2.0.zip) |
+| **Poster** | Original posters, flyers and infographics, plus careful template-reference redesign. | [poster_skill](poster_skill/SKILL.md) | [Poster ZIP](releases/skills/smart-poster-designer-v3.2.0.zip) |
+| **Shared research** | Bounded image/data/style extraction and source handoff for **all five**; optional for local-only tasks. | [ultimate-scrape-skill](ultimate-scrape-skill/SKILL.md) | [Helper ZIP](releases/skills/ultimate-scrape-skill-v3.2.0.zip) |
 
 Each format ZIP includes a portable copy of the shared helper. Install one skill
 without leaving its research guidance or scripts missing. Multiple deliverables
@@ -63,6 +63,11 @@ The [catalog](skills.json) gives machine-readable identities and routing.
 browsing to read GitHub and code/file tools to run builders and return actual
 files. A text-only session can create an outline/spec, not honestly claim a
 rendered Office file. Follow your client's supported skill location and permissions.
+
+Working in ChatGPT? Read [the ChatGPT guide](docs/chatgpt-guide.md). Other clients:
+[multi-model compatibility](docs/multi-model-compatibility.md). Copy-paste task
+prompts: [the prompt library](docs/prompt-library.md). Measured host capabilities and
+the v3.2.0 defect fixes: [the compatibility report](docs/compatibility-report.md).
 
 ## See the output
 
@@ -161,6 +166,12 @@ python tools/orchestrator.py report    work/tasks/t1
 - **Caching.** Content-hash keyed metadata cache: a modified guide is a new
   hash, so stale instructions cannot be served; hit rate is measured, not
   assumed.
+- **Capability detection.** `python tools/capability_probe.py --json` reports what
+  this host can actually do - document builds, rendering, shell, git, network -
+  as `available`, `unavailable`, `unverified` or `permission_required`. Library
+  probes build and discard a real artifact; the network is never touched without
+  `--allow-network`. A capability that is not `available` is never described as
+  performed.
 
 This layer orchestrates the five skills and the shared helper; it is not a
 sixth skill and executes nothing outside the repository's own scripts. The
@@ -175,7 +186,7 @@ Extract it into **your client's documented skills directory**. For clients using
 
 ```bash
 mkdir -p ~/.agents/skills
-unzip pptx-generator-v3.1.0.zip -d ~/.agents/skills/
+unzip pptx-generator-v3.2.0.zip -d ~/.agents/skills/
 ```
 
 PowerShell:
@@ -183,7 +194,7 @@ PowerShell:
 ```powershell
 $skills = Join-Path $HOME '.agents/skills'
 New-Item -ItemType Directory -Force $skills | Out-Null
-Expand-Archive pptx-generator-v3.1.0.zip -DestinationPath $skills
+Expand-Archive pptx-generator-v3.2.0.zip -DestinationPath $skills
 ```
 
 Use a clean destination or back up existing installations; do not blindly replace
@@ -287,7 +298,8 @@ poster_skill/              Original and template-based visual design
 ultimate-scrape-skill/      Shared bounded research inputs
 releases/skills/            Six installable ZIPs
 tools/                     Packaging, the skill gate, the orchestrator, asset generators and checks
-docs/                      Identity, deck gallery, examples and reports
+docs/                      Identity, client guides, prompt library, compatibility report,
+                           deck gallery and reports
 ```
 
 Every skill keeps its depth in `references/`: `SKILL.md` carries the workflow and
@@ -301,7 +313,7 @@ There is no duplicate `xlsx_skill` and no OneTake video in this publication.
 ## Test and package
 
 ```bash
-python tools/package_skill.py --skill all --version v3.1.0
+python tools/package_skill.py --skill all --version v3.2.0
 python tools/verify_repository.py
 python tools/check_release.py
 python tools/test_check_release.py
@@ -326,6 +338,8 @@ python tools/test_task_planner.py
 python tools/test_task_state.py
 python tools/test_task_executor.py
 python tools/test_orchestrator_e2e.py
+python tools/test_orchestration_defects.py
+python tools/test_capability_probe.py
 node poster_skill/tests/test_template_mode.mjs
 ```
 
