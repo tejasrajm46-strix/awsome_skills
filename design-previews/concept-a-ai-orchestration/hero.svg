@@ -4,18 +4,18 @@
 
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#090D1A"/>
-      <stop offset="0.55" stop-color="#0D1526"/>
-      <stop offset="1" stop-color="#111A2E"/>
+      <stop offset="0" stop-color="#15191E"/>
+      <stop offset="0.55" stop-color="#1A1F25"/>
+      <stop offset="1" stop-color="#252D35"/>
     </linearGradient>
     <radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#60A5FA" stop-opacity="0.30"/>
-      <stop offset="0.55" stop-color="#60A5FA" stop-opacity="0.08"/>
-      <stop offset="1" stop-color="#60A5FA" stop-opacity="0"/>
+      <stop offset="0" stop-color="#83E6CE" stop-opacity="0.30"/>
+      <stop offset="0.55" stop-color="#83E6CE" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#83E6CE" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="violetHalo" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#8B5CF6" stop-opacity="0.38"/>
-      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/>
+      <stop offset="0" stop-color="#00B8A9" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#00B8A9" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="vignette" cx="0.5" cy="0.42" r="0.78">
       <stop offset="0" stop-color="#000000" stop-opacity="0"/>
@@ -23,55 +23,55 @@
       <stop offset="1" stop-color="#000000" stop-opacity="0.40"/>
     </radialGradient>
     <linearGradient id="coreGrad" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#60A5FA"/>
-      <stop offset="0.55" stop-color="#8B5CF6"/>
-      <stop offset="1" stop-color="#22D3EE"/>
+      <stop offset="0" stop-color="#83E6CE"/>
+      <stop offset="0.55" stop-color="#00B8A9"/>
+      <stop offset="1" stop-color="#00B8A9"/>
     </linearGradient>
     <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#60A5FA" stop-opacity="0"/>
-      <stop offset="0.5" stop-color="#22D3EE" stop-opacity="0.85"/>
-      <stop offset="1" stop-color="#8B5CF6" stop-opacity="0"/>
+      <stop offset="0" stop-color="#83E6CE" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#00B8A9" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#00B8A9" stop-opacity="0"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="440" fill="url(#bg)"/>
   <g id="title-block">
-    <text x="64" y="120" font-size="18" fill="#22D3EE" font-weight="600" letter-spacing="4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">AI EXECUTION ECOSYSTEM</text>
-    <text x="64" y="184" font-size="54" fill="#F1F5F9" font-weight="700" letter-spacing="0.5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">AWESOME SKILLS</text>
+    <text x="64" y="120" font-size="18" fill="#00B8A9" font-weight="600" letter-spacing="4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">AI EXECUTION ECOSYSTEM</text>
+    <text x="64" y="184" font-size="54" fill="#F4F7F8" font-weight="700" letter-spacing="0.5" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">AWESOME SKILLS</text>
     <path d="M64 210H214" stroke="url(#edge)" stroke-width="2"/>
-    <text x="64" y="250" font-size="23" fill="#94A3B8" font-weight="400" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">Six skills. One pipeline.</text>
-    <text x="64" y="330" font-size="19" fill="#64748B" font-weight="400" font-family="ui-monospace,SFMono-Regular,Consolas,monospace">v3.2.0  /  MIT  /  validated delivery</text>
+    <text x="64" y="250" font-size="23" fill="#C5D0D8" font-weight="400" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">Six skills. One pipeline.</text>
+    <text x="64" y="330" font-size="19" fill="#7C8B96" font-weight="400" font-family="ui-monospace,SFMono-Regular,Consolas,monospace">v3.2.0  /  MIT  /  validated delivery</text>
   </g>
   <ellipse cx="876" cy="208" rx="300" ry="200" fill="url(#halo)"/>
   <ellipse cx="1120" cy="70" rx="210" ry="130" fill="url(#violetHalo)"/>
-<circle cx="876" cy="208" r="112" fill="none" stroke="#243253" stroke-width="1" stroke-opacity="0.7"/>
-<circle cx="876" cy="208" r="150" fill="none" stroke="#1B2740" stroke-width="1" stroke-opacity="0.55" stroke-dasharray="2 9"/>
-<circle cx="876.0" cy="70.0" r="7" fill="#111A2E" stroke="#243253" stroke-width="1"/>
-<circle cx="995.5115057222525" cy="139.0" r="7" fill="#111A2E" stroke="#243253" stroke-width="1"/>
-<circle cx="995.5115057222525" cy="277.0" r="7" fill="#111A2E" stroke="#243253" stroke-width="1"/>
-<circle cx="876.0" cy="346.0" r="7" fill="#111A2E" stroke="#243253" stroke-width="1"/>
-<circle cx="756.4884942777475" cy="277.0" r="7" fill="#111A2E" stroke="#243253" stroke-width="1"/>
-<circle cx="756.4884942777475" cy="139.0" r="7" fill="#111A2E" stroke="#243253" stroke-width="1"/>
-  <g id="links"><path d="M876.0 130.0L876.0 97.0" fill="none" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.55"/><path d="M943.5 169.0L972.1 152.5" fill="none" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.55"/><path d="M943.5 247.0L972.1 263.5" fill="none" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.55"/><path d="M876.0 286.0L876.0 319.0" fill="none" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.55"/><path d="M808.5 247.0L779.9 263.5" fill="none" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.55"/><path d="M808.5 169.0L779.9 152.5" fill="none" stroke="#22D3EE" stroke-width="1.2" stroke-opacity="0.55"/></g>
-  <g id="core"><circle cx="876" cy="208" r="74" fill="none" stroke="#33456B" stroke-width="1.2" stroke-opacity="0.75"/><circle cx="876" cy="208" r="50" fill="url(#coreGrad)"/><g transform="translate(852 184) scale(0.19)"><path fill="#090D1A" fill-opacity="0.82" d="M80 32H224V80H80V104H176L224 152V176L176 224H32V176H176V152H80L32 104V80Z"/></g></g>
-  <g id="module-1"><circle cx="876.0" cy="70.0" r="25" fill="#111A2E" stroke="#60A5FA" stroke-width="1.4" stroke-opacity="0.55"/>
-<circle cx="876.0" cy="70.0" r="4" fill="#60A5FA" opacity="0.9"/>
-<text x="876.0" y="116.0" font-size="17" fill="#94A3B8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PPTX</text></g>
-  <g id="module-2"><circle cx="995.5115057222525" cy="139.0" r="25" fill="#111A2E" stroke="#22D3EE" stroke-width="1.4" stroke-opacity="0.55"/>
-<circle cx="995.5115057222525" cy="139.0" r="4" fill="#22D3EE" opacity="0.9"/>
-<text x="995.5115057222525" y="185.0" font-size="17" fill="#94A3B8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">DOCX</text></g>
-  <g id="module-3"><circle cx="995.5115057222525" cy="277.0" r="25" fill="#111A2E" stroke="#8B5CF6" stroke-width="1.4" stroke-opacity="0.55"/>
-<circle cx="995.5115057222525" cy="277.0" r="4" fill="#8B5CF6" opacity="0.9"/>
-<text x="995.5115057222525" y="323.0" font-size="17" fill="#94A3B8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PDF</text></g>
-  <g id="module-4"><circle cx="876.0" cy="346.0" r="25" fill="#111A2E" stroke="#60A5FA" stroke-width="1.4" stroke-opacity="0.55"/>
-<circle cx="876.0" cy="346.0" r="4" fill="#60A5FA" opacity="0.9"/>
-<text x="876.0" y="392.0" font-size="17" fill="#94A3B8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">XLSX</text></g>
-  <g id="module-5"><circle cx="756.4884942777475" cy="277.0" r="25" fill="#111A2E" stroke="#22D3EE" stroke-width="1.4" stroke-opacity="0.55"/>
-<circle cx="756.4884942777475" cy="277.0" r="4" fill="#22D3EE" opacity="0.9"/>
-<text x="756.4884942777475" y="323.0" font-size="17" fill="#94A3B8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">POSTER</text></g>
-  <g id="module-6"><circle cx="756.4884942777475" cy="139.0" r="25" fill="#111A2E" stroke="#8B5CF6" stroke-width="1.4" stroke-opacity="0.55"/>
-<circle cx="756.4884942777475" cy="139.0" r="4" fill="#8B5CF6" opacity="0.9"/>
-<text x="756.4884942777475" y="185.0" font-size="17" fill="#94A3B8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">RESEARCH</text></g>
-  <g id="pipeline"><rect x="588.0" y="366" width="86" height="38" rx="10" fill="#111A2E" stroke="#33456B" stroke-width="1"/><circle cx="604.0" cy="385" r="3.5" fill="#60A5FA"/><text x="618.0" y="391" font-size="15" fill="#F1F5F9" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PPTX</text><rect x="686.0" y="366" width="86" height="38" rx="10" fill="#111A2E" stroke="#33456B" stroke-width="1"/><circle cx="702.0" cy="385" r="3.5" fill="#22D3EE"/><text x="716.0" y="391" font-size="15" fill="#F1F5F9" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">DOCX</text><rect x="784.0" y="366" width="86" height="38" rx="10" fill="#111A2E" stroke="#33456B" stroke-width="1"/><circle cx="800.0" cy="385" r="3.5" fill="#8B5CF6"/><text x="814.0" y="391" font-size="15" fill="#F1F5F9" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PDF</text><rect x="882.0" y="366" width="86" height="38" rx="10" fill="#111A2E" stroke="#33456B" stroke-width="1"/><circle cx="898.0" cy="385" r="3.5" fill="#60A5FA"/><text x="912.0" y="391" font-size="15" fill="#F1F5F9" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">XLSX</text><rect x="980.0" y="366" width="86" height="38" rx="10" fill="#111A2E" stroke="#33456B" stroke-width="1"/><circle cx="996.0" cy="385" r="3.5" fill="#22D3EE"/><text x="1010.0" y="391" font-size="15" fill="#F1F5F9" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">POSTER</text><rect x="1078.0" y="366" width="86" height="38" rx="10" fill="#111A2E" stroke="#33456B" stroke-width="1"/><circle cx="1094.0" cy="385" r="3.5" fill="#8B5CF6"/><text x="1108.0" y="391" font-size="15" fill="#F1F5F9" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">RESEARCH</text></g>
-  <g id="output"><rect x="772" y="156" width="168" height="104" rx="16" fill="#111A2E" stroke="#33456B" stroke-width="1.2"/><rect x="772" y="156" width="168" height="6" rx="3" fill="#60A5FA"/><text x="796" y="196" font-size="14" fill="#22D3EE" font-weight="700" letter-spacing="2.4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">DELIVERABLE</text><rect x="796" y="210" width="118" height="7" rx="3.5" fill="#22304D"/><rect x="796" y="224" width="84" height="7" rx="3.5" fill="#1B2740"/><circle cx="898" cy="240" r="12" fill="#0B2A24" stroke="#22D3EE" stroke-width="1.6"/><path d="M892 240L896 245L904 234" fill="none" stroke="#34D399" stroke-width="2"/></g>
+<circle cx="876" cy="208" r="112" fill="none" stroke="#2E3841" stroke-width="1" stroke-opacity="0.7"/>
+<circle cx="876" cy="208" r="150" fill="none" stroke="#2E3841" stroke-width="1" stroke-opacity="0.55" stroke-dasharray="2 9"/>
+<circle cx="876.0" cy="70.0" r="7" fill="#252D35" stroke="#2E3841" stroke-width="1"/>
+<circle cx="995.5115057222525" cy="139.0" r="7" fill="#252D35" stroke="#2E3841" stroke-width="1"/>
+<circle cx="995.5115057222525" cy="277.0" r="7" fill="#252D35" stroke="#2E3841" stroke-width="1"/>
+<circle cx="876.0" cy="346.0" r="7" fill="#252D35" stroke="#2E3841" stroke-width="1"/>
+<circle cx="756.4884942777475" cy="277.0" r="7" fill="#252D35" stroke="#2E3841" stroke-width="1"/>
+<circle cx="756.4884942777475" cy="139.0" r="7" fill="#252D35" stroke="#2E3841" stroke-width="1"/>
+  <g id="links"><path d="M876.0 130.0L876.0 97.0" fill="none" stroke="#00B8A9" stroke-width="1.2" stroke-opacity="0.55"/><path d="M943.5 169.0L972.1 152.5" fill="none" stroke="#00B8A9" stroke-width="1.2" stroke-opacity="0.55"/><path d="M943.5 247.0L972.1 263.5" fill="none" stroke="#00B8A9" stroke-width="1.2" stroke-opacity="0.55"/><path d="M876.0 286.0L876.0 319.0" fill="none" stroke="#00B8A9" stroke-width="1.2" stroke-opacity="0.55"/><path d="M808.5 247.0L779.9 263.5" fill="none" stroke="#00B8A9" stroke-width="1.2" stroke-opacity="0.55"/><path d="M808.5 169.0L779.9 152.5" fill="none" stroke="#00B8A9" stroke-width="1.2" stroke-opacity="0.55"/></g>
+  <g id="core"><circle cx="876" cy="208" r="74" fill="none" stroke="#3A4750" stroke-width="1.2" stroke-opacity="0.75"/><circle cx="876" cy="208" r="50" fill="url(#coreGrad)"/><g transform="translate(852 184) scale(0.19)"><path fill="#15191E" fill-opacity="0.82" d="M80 32H224V80H80V104H176L224 152V176L176 224H32V176H176V152H80L32 104V80Z"/></g></g>
+  <g id="module-1"><circle cx="876.0" cy="70.0" r="25" fill="#252D35" stroke="#83E6CE" stroke-width="1.4" stroke-opacity="0.55"/>
+<circle cx="876.0" cy="70.0" r="4" fill="#83E6CE" opacity="0.9"/>
+<text x="876.0" y="116.0" font-size="17" fill="#C5D0D8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PPTX</text></g>
+  <g id="module-2"><circle cx="995.5115057222525" cy="139.0" r="25" fill="#252D35" stroke="#00B8A9" stroke-width="1.4" stroke-opacity="0.55"/>
+<circle cx="995.5115057222525" cy="139.0" r="4" fill="#00B8A9" opacity="0.9"/>
+<text x="995.5115057222525" y="185.0" font-size="17" fill="#C5D0D8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">DOCX</text></g>
+  <g id="module-3"><circle cx="995.5115057222525" cy="277.0" r="25" fill="#252D35" stroke="#00B8A9" stroke-width="1.4" stroke-opacity="0.55"/>
+<circle cx="995.5115057222525" cy="277.0" r="4" fill="#00B8A9" opacity="0.9"/>
+<text x="995.5115057222525" y="323.0" font-size="17" fill="#C5D0D8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PDF</text></g>
+  <g id="module-4"><circle cx="876.0" cy="346.0" r="25" fill="#252D35" stroke="#83E6CE" stroke-width="1.4" stroke-opacity="0.55"/>
+<circle cx="876.0" cy="346.0" r="4" fill="#83E6CE" opacity="0.9"/>
+<text x="876.0" y="392.0" font-size="17" fill="#C5D0D8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">XLSX</text></g>
+  <g id="module-5"><circle cx="756.4884942777475" cy="277.0" r="25" fill="#252D35" stroke="#00B8A9" stroke-width="1.4" stroke-opacity="0.55"/>
+<circle cx="756.4884942777475" cy="277.0" r="4" fill="#00B8A9" opacity="0.9"/>
+<text x="756.4884942777475" y="323.0" font-size="17" fill="#C5D0D8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">POSTER</text></g>
+  <g id="module-6"><circle cx="756.4884942777475" cy="139.0" r="25" fill="#252D35" stroke="#00B8A9" stroke-width="1.4" stroke-opacity="0.55"/>
+<circle cx="756.4884942777475" cy="139.0" r="4" fill="#00B8A9" opacity="0.9"/>
+<text x="756.4884942777475" y="185.0" font-size="17" fill="#C5D0D8" font-weight="600" text-anchor="middle" letter-spacing="1.2" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">RESEARCH</text></g>
+  <g id="pipeline"><rect x="588.0" y="366" width="86" height="38" rx="10" fill="#252D35" stroke="#3A4750" stroke-width="1"/><circle cx="604.0" cy="385" r="3.5" fill="#83E6CE"/><text x="618.0" y="391" font-size="15" fill="#F4F7F8" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PPTX</text><rect x="686.0" y="366" width="86" height="38" rx="10" fill="#252D35" stroke="#3A4750" stroke-width="1"/><circle cx="702.0" cy="385" r="3.5" fill="#00B8A9"/><text x="716.0" y="391" font-size="15" fill="#F4F7F8" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">DOCX</text><rect x="784.0" y="366" width="86" height="38" rx="10" fill="#252D35" stroke="#3A4750" stroke-width="1"/><circle cx="800.0" cy="385" r="3.5" fill="#00B8A9"/><text x="814.0" y="391" font-size="15" fill="#F4F7F8" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">PDF</text><rect x="882.0" y="366" width="86" height="38" rx="10" fill="#252D35" stroke="#3A4750" stroke-width="1"/><circle cx="898.0" cy="385" r="3.5" fill="#83E6CE"/><text x="912.0" y="391" font-size="15" fill="#F4F7F8" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">XLSX</text><rect x="980.0" y="366" width="86" height="38" rx="10" fill="#252D35" stroke="#3A4750" stroke-width="1"/><circle cx="996.0" cy="385" r="3.5" fill="#00B8A9"/><text x="1010.0" y="391" font-size="15" fill="#F4F7F8" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">POSTER</text><rect x="1078.0" y="366" width="86" height="38" rx="10" fill="#252D35" stroke="#3A4750" stroke-width="1"/><circle cx="1094.0" cy="385" r="3.5" fill="#00B8A9"/><text x="1108.0" y="391" font-size="15" fill="#F4F7F8" font-weight="600" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">RESEARCH</text></g>
+  <g id="output"><rect x="772" y="156" width="168" height="104" rx="16" fill="#252D35" stroke="#3A4750" stroke-width="1.2"/><rect x="772" y="156" width="168" height="6" rx="3" fill="#FFB454"/><text x="796" y="196" font-size="14" fill="#00B8A9" font-weight="700" letter-spacing="2.4" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',PingFang SC,sans-serif">DELIVERABLE</text><rect x="796" y="210" width="118" height="7" rx="3.5" fill="#2C353D"/><rect x="796" y="224" width="84" height="7" rx="3.5" fill="#2E3841"/><circle cx="898" cy="240" r="12" fill="#132B27" stroke="#00B8A9" stroke-width="1.6"/><path d="M892 240L896 245L904 234" fill="none" stroke="#83E6CE" stroke-width="2"/></g>
   <rect width="1200" height="440" fill="url(#vignette)"/>
 </svg>

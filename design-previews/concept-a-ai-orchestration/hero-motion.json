@@ -2,7 +2,7 @@
   "width": 1200,
   "fps": 30,
   "duration": 5.0,
-  "colors": 160,
+  "colors": 144,
   "dither": "none",
   "clip_to_base_alpha": true,
   "max_size_mb": 2.0,
