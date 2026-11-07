@@ -1,0 +1,194 @@
+{
+  "width": 1200,
+  "fps": 30,
+  "duration": 5.0,
+  "colors": 192,
+  "dither": "none",
+  "clip_to_base_alpha": true,
+  "max_size_mb": 2.0,
+  "reveals": [
+    {
+      "id": "stream",
+      "axis": "x",
+      "start": 0.35,
+      "end": 1.15,
+      "exit": {
+        "start": 4.4,
+        "end": 4.85
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "card-1",
+      "enter": {
+        "start": 0.55,
+        "end": 1.25,
+        "from": [
+          0,
+          14
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.9,
+        "to": [
+          0,
+          14
+        ]
+      }
+    },
+    {
+      "id": "card-2",
+      "enter": {
+        "start": 0.7100000000000001,
+        "end": 1.41,
+        "from": [
+          0,
+          14
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.9,
+        "to": [
+          0,
+          14
+        ]
+      }
+    },
+    {
+      "id": "card-3",
+      "enter": {
+        "start": 0.8700000000000001,
+        "end": 1.57,
+        "from": [
+          0,
+          14
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.9,
+        "to": [
+          0,
+          14
+        ]
+      }
+    },
+    {
+      "id": "card-4",
+      "enter": {
+        "start": 1.03,
+        "end": 1.73,
+        "from": [
+          0,
+          14
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.9,
+        "to": [
+          0,
+          14
+        ]
+      }
+    },
+    {
+      "id": "card-5",
+      "enter": {
+        "start": 1.19,
+        "end": 1.8900000000000001,
+        "from": [
+          0,
+          14
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.9,
+        "to": [
+          0,
+          14
+        ]
+      }
+    },
+    {
+      "id": "card-6",
+      "enter": {
+        "start": 1.35,
+        "end": 2.05,
+        "from": [
+          0,
+          14
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.9,
+        "to": [
+          0,
+          14
+        ]
+      }
+    },
+    {
+      "id": "deliverable-1",
+      "enter": {
+        "start": 2.75,
+        "end": 3.35,
+        "from": [
+          0,
+          18
+        ]
+      },
+      "exit": {
+        "start": 4.5,
+        "end": 4.95,
+        "to": [
+          0,
+          18
+        ]
+      }
+    },
+    {
+      "id": "deliverable-2",
+      "enter": {
+        "start": 2.95,
+        "end": 3.55,
+        "from": [
+          0,
+          18
+        ]
+      },
+      "exit": {
+        "start": 4.5,
+        "end": 4.95,
+        "to": [
+          0,
+          18
+        ]
+      }
+    },
+    {
+      "id": "deliverable-3",
+      "enter": {
+        "start": 3.15,
+        "end": 3.75,
+        "from": [
+          0,
+          18
+        ]
+      },
+      "exit": {
+        "start": 4.5,
+        "end": 4.95,
+        "to": [
+          0,
+          18
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "width": 1200,
+  "fps": 30,
+  "duration": 5.0,
+  "colors": 160,
+  "dither": "none",
+  "clip_to_base_alpha": true,
+  "max_size_mb": 2.0,
+  "reveals": [
+    {
+      "id": "links",
+      "axis": "x",
+      "start": 1.15,
+      "end": 1.95,
+      "exit": {
+        "start": 2.4,
+        "end": 2.76
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "core",
+      "enter": {
+        "start": 0.05,
+        "end": 1.0,
+        "from": [
+          0,
+          16
+        ]
+      },
+      "exit": {
+        "start": 2.45,
+        "end": 2.85,
+        "to": [
+          0,
+          -22
+        ]
+      }
+    },
+    {
+      "id": "module-1",
+      "enter": {
+        "start": 0.6,
+        "end": 1.35,
+        "from": [
+          0,
+          12
+        ]
+      },
+      "exit": {
+        "start": 2.4,
+        "end": 2.78,
+        "to": [
+          0,
+          -18
+        ]
+      }
+    },
+    {
+      "id": "module-2",
+      "enter": {
+        "start": 0.75,
+        "end": 1.5,
+        "from": [
+          0,
+          12
+        ]
+      },
+      "exit": {
+        "start": 2.4,
+        "end": 2.78,
+        "to": [
+          0,
+          -18
+        ]
+      }
+    },
+    {
+      "id": "module-3",
+      "enter": {
+        "start": 0.9,
+        "end": 1.65,
+        "from": [
+          0,
+          12
+        ]
+      },
+      "exit": {
+        "start": 2.4,
+        "end": 2.78,
+        "to": [
+          0,
+          -18
+        ]
+      }
+    },
+    {
+      "id": "module-4",
+      "enter": {
+        "start": 1.05,
+        "end": 1.8,
+        "from": [
+          0,
+          12
+        ]
+      },
+      "exit": {
+        "start": 2.4,
+        "end": 2.78,
+        "to": [
+          0,
+          -18
+        ]
+      }
+    },
+    {
+      "id": "module-5",
+      "enter": {
+        "start": 1.2,
+        "end": 1.95,
+        "from": [
+          0,
+          12
+        ]
+      },
+      "exit": {
+        "start": 2.4,
+        "end": 2.78,
+        "to": [
+          0,
+          -18
+        ]
+      }
+    },
+    {
+      "id": "module-6",
+      "enter": {
+        "start": 1.35,
+        "end": 2.1,
+        "from": [
+          0,
+          12
+        ]
+      },
+      "exit": {
+        "start": 2.4,
+        "end": 2.78,
+        "to": [
+          0,
+          -18
+        ]
+      }
+    },
+    {
+      "id": "pipeline",
+      "enter": {
+        "start": 2.6,
+        "end": 3.3,
+        "from": [
+          0,
+          22
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.95,
+        "to": [
+          0,
+          22
+        ]
+      }
+    },
+    {
+      "id": "output",
+      "enter": {
+        "start": 3.3,
+        "end": 4.0,
+        "from": [
+          0,
+          16
+        ]
+      },
+      "exit": {
+        "start": 4.5,
+        "end": 4.96,
+        "to": [
+          0,
+          -16
+        ]
+      }
+    }
+  ]
+}

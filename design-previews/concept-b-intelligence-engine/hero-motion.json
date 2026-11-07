@@ -1,0 +1,175 @@
+{
+  "width": 1200,
+  "fps": 30,
+  "duration": 5.0,
+  "colors": 192,
+  "dither": "none",
+  "clip_to_base_alpha": true,
+  "max_size_mb": 2.0,
+  "reveals": [
+    {
+      "id": "flow",
+      "axis": "x",
+      "start": 2.45,
+      "end": 3.2,
+      "exit": {
+        "start": 4.4,
+        "end": 4.85
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "packet",
+      "enter": {
+        "start": 0.5,
+        "end": 1.25,
+        "from": [
+          -90,
+          0
+        ]
+      },
+      "exit": {
+        "start": 1.5,
+        "end": 1.95,
+        "to": [
+          40,
+          0
+        ]
+      }
+    },
+    {
+      "id": "registry-ping",
+      "enter": {
+        "start": 1.2,
+        "end": 1.6,
+        "from": [
+          0,
+          0
+        ]
+      },
+      "exit": {
+        "start": 1.9,
+        "end": 2.2,
+        "to": [
+          0,
+          0
+        ]
+      }
+    },
+    {
+      "id": "node-1",
+      "enter": {
+        "start": 1.95,
+        "end": 2.3,
+        "from": [
+          0,
+          6
+        ]
+      },
+      "exit": {
+        "start": 4.4,
+        "end": 4.8,
+        "to": [
+          0,
+          -8
+        ]
+      }
+    },
+    {
+      "id": "node-2",
+      "enter": {
+        "start": 2.15,
+        "end": 2.5,
+        "from": [
+          0,
+          6
+        ]
+      },
+      "exit": {
+        "start": 4.4,
+        "end": 4.8,
+        "to": [
+          0,
+          -8
+        ]
+      }
+    },
+    {
+      "id": "node-3",
+      "enter": {
+        "start": 2.35,
+        "end": 2.7,
+        "from": [
+          0,
+          6
+        ]
+      },
+      "exit": {
+        "start": 4.4,
+        "end": 4.8,
+        "to": [
+          0,
+          -8
+        ]
+      }
+    },
+    {
+      "id": "node-4",
+      "enter": {
+        "start": 2.55,
+        "end": 2.9,
+        "from": [
+          0,
+          6
+        ]
+      },
+      "exit": {
+        "start": 4.4,
+        "end": 4.8,
+        "to": [
+          0,
+          -8
+        ]
+      }
+    },
+    {
+      "id": "validated",
+      "enter": {
+        "start": 3.2,
+        "end": 3.7,
+        "from": [
+          0,
+          10
+        ]
+      },
+      "exit": {
+        "start": 4.45,
+        "end": 4.85,
+        "to": [
+          0,
+          -10
+        ]
+      }
+    },
+    {
+      "id": "deliverables",
+      "enter": {
+        "start": 3.55,
+        "end": 4.25,
+        "from": [
+          0,
+          20
+        ]
+      },
+      "exit": {
+        "start": 4.55,
+        "end": 4.97,
+        "to": [
+          0,
+          20
+        ]
+      }
+    }
+  ]
+}
