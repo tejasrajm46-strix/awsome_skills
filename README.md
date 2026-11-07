@@ -26,7 +26,12 @@
   <a href="#quality-that-you-can-check">Quality</a>
 </p>
 
-![Awesome Skills: from intent to artifact, with PowerPoint, Word, PDF, Excel and poster workflows.](docs/assets/hero.png)
+<p align="center">
+  <img src="design-previews/concept-a-ai-orchestration/hero.gif" width="100%"
+       alt="Animated Awesome Skills hero: a teal orchestrator core lights up, six skill modules appear around it, links activate, the modules converge into a pipeline and a validated deliverable appears">
+</p>
+
+<sub align="center">Animated hero · static fallback: <a href="design-previews/concept-a-ai-orchestration/hero.svg">hero.svg</a></sub>
 
 > **A good file is more than a good answer.** Keep content editable, preserve the
 > user's source, and check the saved artifact before calling it finished.
